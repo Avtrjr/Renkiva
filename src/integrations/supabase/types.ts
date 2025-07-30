@@ -485,6 +485,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      discover_nearby_content: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          title: string
+          description: string
+          category: string
+          thumbnail_url: string
+          video_url: string
+          duration_minutes: number
+          file_size_bytes: number
+          distance_meters: number
+          signal_strength: number
+          sender_node: string
+        }[]
+      }
       get_sponsor_stats: {
         Args: { sponsor_user_id: string }
         Returns: Json
