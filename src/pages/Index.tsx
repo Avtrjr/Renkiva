@@ -151,6 +151,7 @@ const Index = () => {
                 <div 
                   className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-black/40"
                   onClick={() => {
+                    console.log('Play button clicked');
                     setCurrentStream({
                       title: "Tears of Steel",
                       senderName: 'Featured Demo',
