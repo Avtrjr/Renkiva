@@ -123,7 +123,7 @@ const StreamPlayer = ({
   }, [fragments, streaming_url, assembled]);
 
   return (
-    <div className="bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-xl shadow-xl">
+    <div className="space-y-2">{/* Removed the gradient background window */}
       <h2 className="text-xl font-bold">🎬 {title || 'Unknown Title'}</h2>
       <p className="text-sm">📡 Source: {source || 'MeshTV Network'}</p>
       <p className="text-sm">🧬 Fragments: {fragments.length}</p>
