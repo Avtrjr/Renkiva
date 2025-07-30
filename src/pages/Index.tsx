@@ -12,6 +12,7 @@ import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
 import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 import ContentLibrary from "@/components/ContentLibrary";
+import CommunityLibrary from "@/components/CommunityLibrary";
 import StarterPackGallery from "@/components/StarterPackGallery";
 import UploadContent from "@/components/UploadContent";
 import UploadInstructions from "@/components/UploadInstructions";
@@ -204,6 +205,21 @@ const Index = () => {
           </div>
           <ContentLibrary onPlayContent={handlePlayContent} />
           <StarterPackGallery onSelect={handleStarterPackSelect} />
+        </section>
+
+        {/* Community Library Section */}
+        <section>
+          <CommunityLibrary 
+            onSelect={(upload) => {
+              setCurrentStream({
+                title: upload.title,
+                senderName: 'Community Upload',
+                signalStrength: 100,
+                distance: '0m'
+              });
+              setFragments(upload.fragments);
+            }}
+          />
         </section>
 
         {/* Nearby Streams Section */}
