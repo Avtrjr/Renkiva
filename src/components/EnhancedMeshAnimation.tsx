@@ -36,6 +36,8 @@ interface DataPacket {
 export function EnhancedMeshAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
+  const nodesRef = useRef<MeshNode[]>([]);
+  const packetsRef = useRef<DataPacket[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [nodes, setNodes] = useState<MeshNode[]>([]);
   const [packets, setPackets] = useState<DataPacket[]>([]);
@@ -117,6 +119,7 @@ export function EnhancedMeshAnimation() {
     ];
 
     setNodes(initialNodes);
+    nodesRef.current = initialNodes;
   }, []);
 
   // Animation loop
@@ -142,148 +145,148 @@ export function EnhancedMeshAnimation() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw nodes
-      setNodes(prevNodes => {
-        const updatedNodes = prevNodes.map(node => {
-          // Update position with boundary collision
-          let newX = node.x + node.velocity.x;
-          let newY = node.y + node.velocity.y;
-          let newVelX = node.velocity.x;
-          let newVelY = node.velocity.y;
+      const updatedNodes = nodesRef.current.map(node => {
+        // Update position with boundary collision
+        let newX = node.x + node.velocity.x;
+        let newY = node.y + node.velocity.y;
+        let newVelX = node.velocity.x;
+        let newVelY = node.velocity.y;
 
-          if (newX <= node.radius || newX >= canvas.width - node.radius) {
-            newVelX = -newVelX;
-            newX = Math.max(node.radius, Math.min(canvas.width - node.radius, newX));
-          }
-          if (newY <= node.radius || newY >= canvas.height - node.radius) {
-            newVelY = -newVelY;
-            newY = Math.max(node.radius, Math.min(canvas.height - node.radius, newY));
-          }
+        if (newX <= node.radius || newX >= canvas.width - node.radius) {
+          newVelX = -newVelX;
+          newX = Math.max(node.radius, Math.min(canvas.width - node.radius, newX));
+        }
+        if (newY <= node.radius || newY >= canvas.height - node.radius) {
+          newVelY = -newVelY;
+          newY = Math.max(node.radius, Math.min(canvas.height - node.radius, newY));
+        }
 
-          return {
-            ...node,
-            x: newX,
-            y: newY,
-            velocity: { x: newVelX, y: newVelY },
-            dataFlow: Math.sin(Date.now() * 0.001 + parseInt(node.id.slice(-1))) * 0.5 + 0.5
-          };
-        });
+        return {
+          ...node,
+          x: newX,
+          y: newY,
+          velocity: { x: newVelX, y: newVelY },
+          dataFlow: Math.sin(Date.now() * 0.001 + parseInt(node.id.slice(-1))) * 0.5 + 0.5
+        };
+      });
 
-        // Draw connections
-        updatedNodes.forEach(node => {
-          node.connections.forEach(connId => {
-            const connectedNode = updatedNodes.find(n => n.id === connId);
-            if (connectedNode) {
-              // Draw connection line
-              ctx.strokeStyle = `rgba(139, 92, 246, ${0.3 + node.dataFlow * 0.4})`;
-              ctx.lineWidth = 1 + node.dataFlow * 2;
-              ctx.beginPath();
-              ctx.moveTo(node.x, node.y);
-              ctx.lineTo(connectedNode.x, connectedNode.y);
-              ctx.stroke();
+      // Draw connections
+      updatedNodes.forEach(node => {
+        node.connections.forEach(connId => {
+          const connectedNode = updatedNodes.find(n => n.id === connId);
+          if (connectedNode) {
+            // Draw connection line
+            ctx.strokeStyle = `rgba(139, 92, 246, ${0.3 + node.dataFlow * 0.4})`;
+            ctx.lineWidth = 1 + node.dataFlow * 2;
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(connectedNode.x, connectedNode.y);
+            ctx.stroke();
 
-              // Draw data flow particles
-              if (Math.random() < 0.1) {
-                const packet: DataPacket = {
-                  id: `packet_${Date.now()}_${Math.random()}`,
-                  fromNode: node.id,
-                  toNode: connectedNode.id,
-                  progress: 0,
-                  color: node.color,
-                  type: ['video', 'audio', 'metadata'][Math.floor(Math.random() * 3)] as any
-                };
-                setPackets(prev => [...prev.slice(-20), packet]); // Keep last 20 packets
-              }
+            // Draw data flow particles
+            if (Math.random() < 0.1) {
+              const packet: DataPacket = {
+                id: `packet_${Date.now()}_${Math.random()}`,
+                fromNode: node.id,
+                toNode: connectedNode.id,
+                progress: 0,
+                color: node.color,
+                type: ['video', 'audio', 'metadata'][Math.floor(Math.random() * 3)] as any
+              };
+              packetsRef.current = [...packetsRef.current.slice(-20), packet]; // Keep last 20 packets
             }
-          });
+          }
         });
+      });
 
-        // Draw nodes
-        updatedNodes.forEach(node => {
-          // Outer glow
-          const glowGradient = ctx.createRadialGradient(
-            node.x, node.y, 0,
-            node.x, node.y, node.radius * 3
-          );
-          glowGradient.addColorStop(0, `${node.color}80`);
-          glowGradient.addColorStop(1, 'transparent');
-          
-          ctx.fillStyle = glowGradient;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, node.radius * 3, 0, Math.PI * 2);
-          ctx.fill();
+      // Draw nodes
+      updatedNodes.forEach(node => {
+        // Outer glow
+        const glowGradient = ctx.createRadialGradient(
+          node.x, node.y, 0,
+          node.x, node.y, node.radius * 3
+        );
+        glowGradient.addColorStop(0, `${node.color}80`);
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius * 3, 0, Math.PI * 2);
+        ctx.fill();
 
-          // Node core
-          ctx.fillStyle = node.color;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-          ctx.fill();
+        // Node core
+        ctx.fillStyle = node.color;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fill();
 
-          // Pulse ring
-          const pulseRadius = node.radius + Math.sin(Date.now() * 0.003 + parseInt(node.id.slice(-1))) * 4;
-          ctx.strokeStyle = `${node.color}60`;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
-          ctx.stroke();
+        // Pulse ring
+        const pulseRadius = node.radius + Math.sin(Date.now() * 0.003 + parseInt(node.id.slice(-1))) * 4;
+        ctx.strokeStyle = `${node.color}60`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
+        ctx.stroke();
 
-          // Trust level indicator
-          ctx.fillStyle = 'white';
-          ctx.font = '8px monospace';
-          ctx.textAlign = 'center';
-          const trustSymbol = node.trustLevel === 'verified' ? '⭐' : 
-                            node.trustLevel === 'private' ? '🔒' : '👻';
-          ctx.fillText(trustSymbol, node.x, node.y - node.radius - 8);
-        });
-
-        return updatedNodes;
+        // Trust level indicator
+        ctx.fillStyle = 'white';
+        ctx.font = '8px monospace';
+        ctx.textAlign = 'center';
+        const trustSymbol = node.trustLevel === 'verified' ? '⭐' : 
+                          node.trustLevel === 'private' ? '🔒' : '👻';
+        ctx.fillText(trustSymbol, node.x, node.y - node.radius - 8);
       });
 
       // Update and draw data packets
-      setPackets(prevPackets => {
-        const updatedPackets = prevPackets.map(packet => ({
-          ...packet,
-          progress: Math.min(1, packet.progress + 0.02)
-        })).filter(packet => packet.progress < 1);
+      const updatedPackets = packetsRef.current.map(packet => ({
+        ...packet,
+        progress: Math.min(1, packet.progress + 0.02)
+      })).filter(packet => packet.progress < 1);
 
-        updatedPackets.forEach(packet => {
-          const fromNode = nodes.find(n => n.id === packet.fromNode);
-          const toNode = nodes.find(n => n.id === packet.toNode);
+      updatedPackets.forEach(packet => {
+        const fromNode = updatedNodes.find(n => n.id === packet.fromNode);
+        const toNode = updatedNodes.find(n => n.id === packet.toNode);
+        
+        if (fromNode && toNode) {
+          const x = fromNode.x + (toNode.x - fromNode.x) * packet.progress;
+          const y = fromNode.y + (toNode.y - fromNode.y) * packet.progress;
           
-          if (fromNode && toNode) {
-            const x = fromNode.x + (toNode.x - fromNode.x) * packet.progress;
-            const y = fromNode.y + (toNode.y - fromNode.y) * packet.progress;
+          // Draw packet
+          ctx.fillStyle = packet.color;
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Draw packet trail
+          const trailLength = 10;
+          for (let i = 0; i < trailLength; i++) {
+            const trailProgress = Math.max(0, packet.progress - i * 0.02);
+            const trailX = fromNode.x + (toNode.x - fromNode.x) * trailProgress;
+            const trailY = fromNode.y + (toNode.y - fromNode.y) * trailProgress;
+            const alpha = (trailLength - i) / trailLength * 0.5;
             
-            // Draw packet
-            ctx.fillStyle = packet.color;
+            ctx.fillStyle = `${packet.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
             ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.arc(trailX, trailY, 1, 0, Math.PI * 2);
             ctx.fill();
-            
-            // Draw packet trail
-            const trailLength = 10;
-            for (let i = 0; i < trailLength; i++) {
-              const trailProgress = Math.max(0, packet.progress - i * 0.02);
-              const trailX = fromNode.x + (toNode.x - fromNode.x) * trailProgress;
-              const trailY = fromNode.y + (toNode.y - fromNode.y) * trailProgress;
-              const alpha = (trailLength - i) / trailLength * 0.5;
-              
-              ctx.fillStyle = `${packet.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
-              ctx.beginPath();
-              ctx.arc(trailX, trailY, 1, 0, Math.PI * 2);
-              ctx.fill();
-            }
           }
+        }
+      });
+
+      // Update refs and state
+      nodesRef.current = updatedNodes;
+      packetsRef.current = updatedPackets;
+      
+      // Update stats and visual state less frequently
+      if (Math.random() < 0.1) {
+        setNodes([...updatedNodes]);
+        setPackets([...updatedPackets]);
+        setStats({
+          activeNodes: updatedNodes.length,
+          dataPackets: updatedPackets.length,
+          networkLoad: Math.round((updatedPackets.length / 20) * 100)
         });
-
-        return updatedPackets;
-      });
-
-      // Update stats
-      setStats({
-        activeNodes: nodes.length,
-        dataPackets: packets.length,
-        networkLoad: Math.round((packets.length / 20) * 100)
-      });
+      }
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -295,7 +298,7 @@ export function EnhancedMeshAnimation() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPlaying, nodes, packets]);
+  }, [isPlaying]);
 
   const toggleAnimation = () => {
     setIsPlaying(!isPlaying);
