@@ -116,7 +116,7 @@ const Hero = () => {
             </Button>
             
             {/* Feature Pills - Centered */}
-            <div className="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+            <div className="flex justify-center gap-3 max-w-2xl mx-auto">
               <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
                 📡 Mesh Network
               </Badge>
