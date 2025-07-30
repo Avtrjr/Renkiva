@@ -298,12 +298,53 @@ export async function fetchFreeContent(): Promise<ContentItem[]> {
 
 export async function fetchContentById(id: string): Promise<ContentItem | null> {
   await new Promise(resolve => setTimeout(resolve, 500));
-  return legalContentLibrary.find(item => item.id === id) || null;
+  
+  // First check in the legal content library
+  const legalContent = legalContentLibrary.find(item => item.id === id);
+  if (legalContent) {
+    return legalContent;
+  }
+  
+  // Then check in Supabase shows
+  try {
+    const { supabase } = await import('@/integrations/supabase/client');
+    const { data: show, error } = await supabase
+      .from('shows')
+      .select('*')
+      .eq('id', id)
+      .eq('is_public', true)
+      .single();
+
+    if (error || !show) {
+      return null;
+    }
+
+    // Convert Supabase show to ContentItem format
+    return {
+      id: show.id,
+      title: show.title,
+      description: show.description || '',
+      category: show.category || 'Other',
+      rating: 7.0, // Default rating for user content
+      releaseDate: show.created_at.split('T')[0],
+      thumbnailUrl: show.thumbnail_url || `https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=750&fit=crop&crop=center`,
+      backdropUrl: show.thumbnail_url || `https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1280&h=720&fit=crop&crop=center`,
+      media_type: show.category?.toLowerCase().includes('movie') ? 'movie' as const : 'tv' as const,
+      streaming_url: show.video_url || undefined,
+      is_legal: true,
+      source: 'User Upload',
+      duration_minutes: show.duration_minutes || undefined,
+      file_size_bytes: show.file_size_bytes || undefined
+    };
+  } catch (error) {
+    console.error('Error fetching content by ID from Supabase:', error);
+    return null;
+  }
 }
 
 export async function searchContent(query: string): Promise<ContentItem[]> {
-  await new Promise(resolve => setTimeout(resolve, 800));
-  return legalContentLibrary.filter(item => 
+  const allContent = await fetchAllContent();
+  return allContent.filter(item => 
     item.title.toLowerCase().includes(query.toLowerCase()) ||
     item.description.toLowerCase().includes(query.toLowerCase()) ||
     item.category.toLowerCase().includes(query.toLowerCase())
