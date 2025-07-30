@@ -250,10 +250,6 @@ const Index = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">
         
-        {/* Current Stream Player */}
-        {currentStream && <section>
-            <StreamPlayer title={currentStream.title} source={currentStream.senderName} fragments={fragments} signalStrength={currentStream.signalStrength} distance={currentStream.distance} streaming_url={currentStream.streaming_url} />
-          </section>}
         
         {/* 3D Mesh Network Visualization */}
         <section>
