@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import StreamCard from "@/components/StreamCard";
 import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
+import MeshSimulation from "@/components/MeshSimulation";
 
 const Index = () => {
   // Mock data for nearby streams
@@ -40,6 +41,11 @@ const Index = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">
         
+        {/* Mesh Network Simulation */}
+        <section>
+          <MeshSimulation />
+        </section>
+
         {/* Nearby Streams Section */}
         <section>
           <div className="mb-8">
