@@ -7,8 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/hooks/useAuth';
 import { useShows } from '@/hooks/useShows';
 import MeshNetworkStatus from '@/components/MeshNetworkStatus';
-import UploadContentForm from '@/components/UploadContentForm';
-import ContentUploadGuide from '@/components/ContentUploadGuide';
+import EasyUpload from '@/components/EasyUpload';
 import { 
   Settings,
   Upload,
@@ -283,10 +282,7 @@ const MeshTVDashboard = () => {
         </TabsContent>
 
         <TabsContent value="upload" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <UploadContentForm onUploadComplete={() => window.location.reload()} />
-            <ContentUploadGuide />
-          </div>
+          <EasyUpload onUploadComplete={() => window.location.reload()} />
         </TabsContent>
       </Tabs>
     </div>
