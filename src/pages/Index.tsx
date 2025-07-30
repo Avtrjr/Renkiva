@@ -142,27 +142,23 @@ const Index = () => {
       {/* Real-Time Diagnostics Overlay */}
       <DiagnosticsOverlay isOpen={showDiagnostics} onToggle={() => setShowDiagnostics(!showDiagnostics)} />
 
-      {/* Hero Section */}
-      <Hero />
-
-      {/* Capabilities Section */}
-      <CapabilitiesSection />
-
-      {/* Featured MeshTV Showcase */}
-      <section className="container mx-auto px-6 py-8">        
+      {/* Featured MeshTV Showcase - Main Feature */}
+      <section className="container mx-auto px-6 pt-8 pb-6">        
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-2">
-              🎬 Experience MeshTV in Action
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Watch "Big Buck Bunny" - streaming without traditional internet infrastructure
+            <h1 className="text-4xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-3">
+              🎬 MeshTV Demo Node
+            </h1>
+            <p className="text-lg text-muted-foreground mb-2">
+              Experience decentralized streaming without traditional internet infrastructure
+            </p>
+            <p className="text-sm text-muted-foreground/80">
+              Watch "Big Buck Bunny" streaming through our mesh network
             </p>
           </div>
           
           <Card className="mesh-card border border-primary/20 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden">
-            <CardContent className="p-3">
-              {/* Compact Video Player */}
+            <CardContent className="p-4">
               <div className="aspect-video bg-background/80 rounded-lg overflow-hidden border border-border/50">
                 <StreamPlayer 
                   title="Big Buck Bunny (Featured Demo)"
@@ -178,16 +174,22 @@ const Index = () => {
                 />
               </div>
               
-              {/* Compact Info */}
-              <div className="mt-3 text-center animate-fade-in">
-                <p className="text-xs text-muted-foreground/80">
-                  🌐 <strong>Decentralized Streaming</strong> • No traditional internet required • Mesh network powered
+              <div className="mt-4 text-center animate-fade-in">
+                <p className="text-sm text-muted-foreground/80">
+                  🌐 <strong>Live Demo</strong> • Mesh Network Powered • Zero Traditional Internet
                 </p>
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
+
+      {/* Hero Section */}
+      <Hero />
+
+      {/* Capabilities Section */}
+      <CapabilitiesSection />
+
 
       {/* AI-Curated Recommendations */}
       <section className="container mx-auto px-6 py-12">
