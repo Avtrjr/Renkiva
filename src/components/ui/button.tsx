@@ -20,7 +20,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline hover:text-primary-glow transition-cyber",
         cyber: "bg-gradient-cyber text-foreground hover:shadow-cyber rounded-lg border border-primary/30 animate-neon-pulse font-bold",
         neon: "bg-gradient-neon text-foreground hover:shadow-neon rounded-lg border border-secondary/30 transition-glow",
-        mesh: "bg-gradient-mesh text-foreground hover:shadow-glow rounded-lg border border-accent/30 animate-mesh-rotate",
+        mesh: "bg-gradient-mesh text-foreground hover:shadow-glow rounded-lg border border-accent/30",
       },
       size: {
         default: "h-12 px-6 py-3",

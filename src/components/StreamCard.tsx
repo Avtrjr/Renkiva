@@ -92,7 +92,7 @@ const StreamCard = ({
         <Button 
           variant="mesh" 
           size="sm" 
-          className="w-full group-hover:animate-pulse-mesh"
+          className="w-full"
           onClick={handlePlay}
         >
           ▶️ {streaming_url ? 'Stream Now' : 'Play Now'}

@@ -18,15 +18,15 @@
     --popover: 220 35% 6%;
     --popover-foreground: 180 100% 95%;
 
-    /* Electric Cyan Primary */
-    --primary: 180 100% 50%;
+    /* Electric Cyan Primary - More Masculine Steel Blue */
+    --primary: 210 100% 45%;
     --primary-foreground: 220 40% 2%;
-    --primary-glow: 180 100% 70%;
+    --primary-glow: 210 95% 65%;
 
-    /* Neon Purple Secondary */
-    --secondary: 280 100% 60%;
+    /* Neon Purple Secondary - Darker Masculine Purple */
+    --secondary: 270 80% 45%;
     --secondary-foreground: 220 40% 2%;
-    --secondary-glow: 280 100% 80%;
+    --secondary-glow: 270 85% 65%;
 
     /* Electric Pink Accent */
     --accent: 320 100% 55%;
