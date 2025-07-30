@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface BroadcastToggleProps {
   onFileUpload?: (file: File) => void;
-  onBroadcastStart?: (isActive: boolean) => void;
+  onBroadcastStart?: (title: string) => void;
   onMeshModeChange?: (isEnabled: boolean) => void;
 }
 
@@ -20,6 +20,7 @@ const BroadcastToggle = ({
 }: BroadcastToggleProps) => {
   const [isMeshMode, setIsMeshMode] = useState(false);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [title, setTitle] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [connectedPeers, setConnectedPeers] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState("0 KB/s");
@@ -59,7 +60,6 @@ const BroadcastToggle = ({
         description: "Your device is no longer broadcasting to the mesh",
       });
       setIsBroadcasting(false);
-      onBroadcastStart?.(false);
     }
   };
 
@@ -73,13 +73,22 @@ const BroadcastToggle = ({
       return;
     }
 
-    setIsBroadcasting(enabled);
-    onBroadcastStart?.(enabled);
+    if (enabled && !title.trim()) {
+      toast({
+        title: "Enter Show Title",
+        description: "Please enter a title for your broadcast",
+        variant: "destructive"
+      });
+      return;
+    }
 
-    if (enabled) {
+    setIsBroadcasting(enabled);
+    
+    if (enabled && title.trim()) {
+      onBroadcastStart?.(title.trim());
       toast({
         title: "Broadcasting Started",
-        description: "Your content is now live on the mesh network",
+        description: `"${title}" is now live on the mesh network`,
       });
     } else {
       toast({
@@ -199,6 +208,18 @@ const BroadcastToggle = ({
           </div>
         )}
 
+        {/* Show Title Input */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Show Title</label>
+          <input
+            type="text"
+            placeholder="e.g., Planet Earth S1E1"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          />
+        </div>
+
         {/* File Upload Area */}
         <div
           className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200 ${
@@ -265,7 +286,7 @@ const BroadcastToggle = ({
         <Button 
           variant="mesh" 
           className="w-full"
-          disabled={!isMeshMode}
+          disabled={!isMeshMode || (!isBroadcasting && !title.trim())}
           onClick={() => handleBroadcastToggle(!isBroadcasting)}
         >
           {isBroadcasting ? "Stop Broadcasting" : "Start Broadcasting"}

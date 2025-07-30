@@ -110,9 +110,18 @@ class SyncService {
 
     if (this.isOnline) {
       try {
-        // For now, we'll store in local storage or a custom table
+        // Store locally and sync to Supabase for aggregated analytics
         this.storeLocally('viewing_stats', data);
         console.log('Viewing stats logged:', data);
+        
+        // Update show broadcasts table for real-time stats
+        await supabase
+          .from('broadcast_sessions')
+          .update({ 
+            viewer_count: 1, // Could aggregate this properly
+            updated_at: new Date().toISOString() 
+          })
+          .eq('session_name', stats.streamTitle);
       } catch (error) {
         console.error('Failed to log viewing stats:', error);
         this.queueForSync('viewing_stats', data);

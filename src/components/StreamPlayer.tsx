@@ -4,23 +4,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
+import { syncService } from "@/services/syncService";
 
 interface StreamPlayerProps {
-  streamTitle: string;
-  senderName: string;
-  signalStrength: number;
-  distance: string;
+  title: string;
+  source: string;
+  fragments: any[];
   ttl?: number;
+  signalStrength?: number;
+  distance?: string;
   onAdImpression?: (adData: any) => void;
   onViewingStats?: (stats: any) => void;
 }
 
 const StreamPlayer = ({
-  streamTitle,
-  senderName,
-  signalStrength,
-  distance,
+  title,
+  source,
+  fragments,
   ttl = 5,
+  signalStrength = 85,
+  distance = "Unknown",
   onAdImpression,
   onViewingStats
 }: StreamPlayerProps) => {
@@ -53,30 +56,36 @@ const StreamPlayer = ({
   useEffect(() => {
     if (isPlaying) {
       const statsInterval = setInterval(() => {
-        onViewingStats?.({
-          streamTitle,
-          senderName,
+        const stats = {
+          streamTitle: title,
+          senderName: source,
           watchTime: currentTime,
           signalStrength,
           bufferHealth,
           timestamp: new Date().toISOString()
-        });
+        };
+        
+        syncService.logViewingStats(stats);
+        onViewingStats?.(stats);
       }, 30000); // Send stats every 30 seconds
 
       return () => clearInterval(statsInterval);
     }
-  }, [isPlaying, currentTime, streamTitle, senderName, signalStrength, bufferHealth, onViewingStats]);
+  }, [isPlaying, currentTime, title, source, signalStrength, bufferHealth, onViewingStats]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
     if (!isPlaying) {
-      // Simulate ad impression when starting playback
-      onAdImpression?.({
-        streamTitle,
-        senderName,
+      // Log ad impression when starting playback
+      const adData = {
+        streamTitle: title,
+        senderName: source,
         timestamp: new Date().toISOString(),
-        adType: 'pre-roll'
-      });
+        adType: 'pre-roll' as const
+      };
+      
+      syncService.logAdImpression(adData);
+      onAdImpression?.(adData);
     }
   };
 
@@ -116,12 +125,13 @@ const StreamPlayer = ({
         {/* Video Area */}
         <div className="relative aspect-video bg-gradient-mesh-dark flex items-center justify-center">
           {/* Mock video display */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-6xl mb-4">📺</div>
-                <p className="text-lg font-medium text-foreground">{streamTitle}</p>
-                <p className="text-sm text-muted-foreground">Streaming from {senderName}</p>
+                <p className="text-lg font-medium text-foreground">{title}</p>
+                <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
+                <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
               </div>
             </div>
           </div>
@@ -194,7 +204,7 @@ const StreamPlayer = ({
 
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">
-                via {senderName}'s mesh
+                via {source} mesh
               </span>
               <Button variant="ghost" size="sm" onClick={toggleFullscreen}>
                 {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
