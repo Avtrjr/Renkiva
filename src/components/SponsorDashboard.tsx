@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { getSponsorStats, submitAdAsset } from '@/services/sponsorService';
 import { Upload, Eye, Smartphone, DollarSign } from 'lucide-react';
 
 interface SponsorStats {
@@ -27,14 +28,22 @@ export default function SponsorDashboard() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Mock data for now - replace with actual API call
-    const mockStats = {
-      views: 24680,
-      devices: 1247,
-      estimatedRevenue: 346.50
+    const fetchStats = async () => {
+      try {
+        const data = await getSponsorStats();
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch sponsor stats:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load sponsor statistics.",
+          variant: "destructive"
+        });
+      }
     };
-    setStats(mockStats);
-  }, []);
+
+    fetchStats();
+  }, [toast]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -69,29 +78,26 @@ export default function SponsorDashboard() {
     
     setUploading(true);
     try {
-      // TODO: Implement actual file upload to Supabase Storage
-      // This would involve:
-      // 1. Upload to 'ad-assets' bucket
-      // 2. Create record in 'ad_assets' table
-      // 3. Return success/failure
+      const result = await submitAdAsset(file);
       
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Ad uploaded successfully!",
-        description: `${file.name} has been submitted for review.`,
-      });
-      
-      setFile(null);
-      // Reset file input
-      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
+      if (result.success) {
+        toast({
+          title: "Ad uploaded successfully!",
+          description: `${file.name} has been submitted for review.`,
+        });
+        
+        setFile(null);
+        // Reset file input
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+      } else {
+        throw new Error(result.error || 'Upload failed');
+      }
       
     } catch (error) {
       toast({
         title: "Upload failed",
-        description: "There was an error uploading your ad. Please try again.",
+        description: error instanceof Error ? error.message : "There was an error uploading your ad. Please try again.",
         variant: "destructive"
       });
     } finally {
