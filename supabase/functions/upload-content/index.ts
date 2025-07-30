@@ -36,15 +36,31 @@ serve(async (req) => {
     const body = await req.json();
     const { title, description, category, video_url, thumbnail_url, duration_minutes, file_size_bytes } = body;
 
-    // Get user record to get internal user ID
-    const { data: userData, error: userError } = await supabase
+    // Get user record to get internal user ID, create if doesn't exist
+    let { data: userData, error: userError } = await supabase
       .from('users')
       .select('id')
       .eq('auth_user_id', user.id)
       .single();
 
     if (userError || !userData) {
-      throw new Error("User not found");
+      // User doesn't exist in users table, create it
+      const { data: newUser, error: createError } = await supabase
+        .from('users')
+        .insert({
+          auth_user_id: user.id,
+          username: user.user_metadata?.username || user.email?.split('@')[0] || 'user',
+          display_name: user.user_metadata?.display_name || user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+          avatar_url: user.user_metadata?.avatar_url
+        })
+        .select('id')
+        .single();
+
+      if (createError) {
+        throw new Error(`Failed to create user record: ${createError.message}`);
+      }
+      
+      userData = newUser;
     }
 
     // Insert content into shows table
