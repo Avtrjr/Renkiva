@@ -1,20 +1,24 @@
-import { useState, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
-import { syncService } from "@/services/syncService";
+import { useState, useEffect } from "react";
+import { videoFragmenter } from "@/lib/fragmenter";
 
 interface StreamPlayerProps {
   title: string;
   source: string;
   fragments: any[];
+  metadata?: {
+    description?: string;
+    category?: string;
+    rating?: string;
+    release?: string;
+    duration?: string;
+    studio?: string;
+    size?: string;
+  };
   ttl?: number;
   signalStrength?: number;
   distance?: string;
   streaming_url?: string;
-  onAdImpression?: (adData: any) => void;
+  onAdImpression?: (data: any) => void;
   onViewingStats?: (stats: any) => void;
 }
 
@@ -22,27 +26,20 @@ const StreamPlayer = ({
   title,
   source,
   fragments,
+  metadata = {},
   ttl = 5,
-  signalStrength = 85,
-  distance = "Unknown",
+  signalStrength = 95,
+  distance = "Direct",
   streaming_url,
   onAdImpression,
   onViewingStats
 }: StreamPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(100); // Mock duration
-  const [bufferHealth, setBufferHealth] = useState(85);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [assembled, setAssembled] = useState(false);
+  const [bufferHealth] = useState(93);
 
-  // Simulate TTL countdown
-  const [currentTTL, setCurrentTTL] = useState(ttl);
-
-  // Fragment assembly and video source management
+  // Fragment assembly using the fragmenter utility
   const reassembleFragments = (fragments: any[]) => {
     if (!fragments || fragments.length === 0) return null;
     
@@ -75,236 +72,62 @@ const StreamPlayer = ({
   useEffect(() => {
     if (fragments && fragments.length > 0) {
       const totalExpected = fragments[0]?.total || fragments.length;
-      
-      // Only reassemble if we have all expected fragments
-      if (fragments.length >= totalExpected) {
-        const assembledBuffer = reassembleFragments(fragments);
-        if (assembledBuffer) {
-          // Create blob with appropriate MIME type
-          const blob = new Blob([assembledBuffer], { type: 'video/mp4' });
-          const videoURL = URL.createObjectURL(blob);
-          setVideoSrc(videoURL);
-          
-          // Cleanup previous URL
-          return () => {
-            if (videoSrc) {
-              URL.revokeObjectURL(videoSrc);
-            }
-          };
+      if (fragments.length === totalExpected && !assembled) {
+        const fullBuffer = reassembleFragments(fragments);
+        if (fullBuffer) {
+          const blob = new Blob([fullBuffer], { type: 'video/mp4' });
+          const url = URL.createObjectURL(blob);
+          setVideoSrc(url);
+          setAssembled(true);
         }
       }
     } else if (streaming_url) {
       // Use direct streaming URL if no fragments
       setVideoSrc(streaming_url);
     }
-  }, [fragments, streaming_url]);
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTTL(prev => Math.max(0, prev - 0.1));
-      
-      // Update current time from video element if playing
-      if (videoRef.current && !isNaN(videoRef.current.currentTime)) {
-        setCurrentTime(videoRef.current.currentTime);
-      }
-      
-      // Simulate buffer health fluctuation based on signal strength
-      const healthVariation = (Math.random() - 0.5) * 20;
-      setBufferHealth(Math.max(20, Math.min(100, signalStrength + healthVariation)));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [signalStrength]);
-
-  // Track viewing stats
-  useEffect(() => {
-    if (isPlaying) {
-      const statsInterval = setInterval(() => {
-        const stats = {
-          streamTitle: title,
-          senderName: source,
-          watchTime: currentTime,
-          signalStrength,
-          bufferHealth,
-          timestamp: new Date().toISOString()
-        };
-        
-        syncService.logViewingStats(stats);
-        onViewingStats?.(stats);
-      }, 30000); // Send stats every 30 seconds
-
-      return () => clearInterval(statsInterval);
-    }
-  }, [isPlaying, currentTime, title, source, signalStrength, bufferHealth, onViewingStats]);
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    if (!isPlaying) {
-      // Log ad impression when starting playback
-      const adData = {
-        streamTitle: title,
-        senderName: source,
-        timestamp: new Date().toISOString(),
-        adType: 'pre-roll' as const
-      };
-      
-      syncService.logAdImpression(adData);
-      onAdImpression?.(adData);
-    }
-  };
-
-  const toggleMute = () => setIsMuted(!isMuted);
-
-  const toggleFullscreen = () => {
-    if (!isFullscreen && playerRef.current) {
-      playerRef.current.requestFullscreen?.();
-    } else {
-      document.exitFullscreen?.();
-    }
-    setIsFullscreen(!isFullscreen);
-  };
-
-  const getSignalColor = (strength: number) => {
-    if (strength >= 80) return "text-green-400";
-    if (strength >= 60) return "text-yellow-400";
-    if (strength >= 40) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getBufferColor = (health: number) => {
-    if (health >= 80) return "bg-green-500";
-    if (health >= 60) return "bg-yellow-500";
-    if (health >= 40) return "bg-orange-500";
-    return "bg-red-500";
-  };
+  }, [fragments, streaming_url, assembled]);
 
   return (
-    <Card 
-      ref={playerRef}
-      className={`bg-card/95 backdrop-blur-lg border-border/50 shadow-mesh-glow overflow-hidden transition-all duration-300 ${
-        isFullscreen ? 'fixed inset-0 z-50 rounded-none' : ''
-      }`}
-    >
-      <CardContent className="p-0">
-        {/* Video Area */}
-        <div className="relative aspect-video bg-gradient-mesh-dark flex items-center justify-center">
-          {/* Actual video element */}
-          {videoSrc ? (
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              autoPlay={isPlaying}
-              muted={isMuted}
-              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-              onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-              onLoadedData={() => console.log('Video loaded successfully')}
-              onError={(e) => {
-                console.error('Video loading failed:', e);
-                setVideoSrc(null); // Reset on error
-              }}
-              crossOrigin="anonymous"
-              preload="metadata"
-              src={videoSrc}
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) : null}
+    <div className="bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-xl shadow-xl">
+      <h2 className="text-xl font-bold">🎬 {title || 'Unknown Title'}</h2>
+      <p className="text-sm">📡 Source: {source || 'MeshTV Network'}</p>
+      <p className="text-sm">🧬 Fragments: {fragments.length}</p>
+      
+      {videoSrc ? (
+        <video
+          className="rounded w-full mt-2"
+          controls
+          autoPlay={isPlaying}
+          src={videoSrc}
+          onError={(e) => {
+            console.error('Video playback failed:', e);
+            setVideoSrc(null);
+          }}
+        />
+      ) : (
+        <p className="text-sm italic">Assembling video... ({fragments.length} fragments)</p>
+      )}
+      
+      {/* Network Status */}
+      <div className="mt-3 text-sm">
+        <p>📡 {distance} — <strong>{signalStrength}% Signal</strong> — TTL: <strong>{ttl.toFixed(1)}</strong></p>
+        <p>🎞️ Buffer: <strong>{bufferHealth}%</strong></p>
+      </div>
 
-          {/* Fallback overlay when video is not available */}
-          {!videoSrc && (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">📺</div>
-                <p className="text-lg font-medium text-foreground">{title}</p>
-                <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
-                <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
-                {fragments.length === 0 ? (
-                  <p className="text-xs text-yellow-400 mt-2">Waiting for fragments...</p>
-                ) : (
-                  <p className="text-xs text-blue-400 mt-2">Assembling video... ({fragments.length} fragments)</p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Mesh Info Overlay */}
-          <div className="absolute top-4 left-4 flex gap-2">
-            <Badge variant="outline" className="bg-black/50 backdrop-blur-sm">
-              📡 {distance}
-            </Badge>
-            <Badge variant="outline" className={`bg-black/50 backdrop-blur-sm ${getSignalColor(signalStrength)}`}>
-              {signalStrength}% Signal
-            </Badge>
-            <Badge variant="outline" className="bg-black/50 backdrop-blur-sm">
-              TTL: {currentTTL.toFixed(1)}
-            </Badge>
-          </div>
-
-          {/* Buffer Health Bar */}
-          <div className="absolute top-4 right-4">
-            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2">
-              <div className="flex items-center gap-2 text-xs text-white">
-                <span>Buffer:</span>
-                <div className="w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full transition-all duration-300 ${getBufferColor(bufferHealth)}`}
-                    style={{ width: `${bufferHealth}%` }}
-                  />
-                </div>
-                <span>{bufferHealth.toFixed(0)}%</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Play/Pause Button Overlay */}
-          <Button
-            variant="mesh"
-            size="lg"
-            className="absolute inset-0 w-full h-full bg-transparent border-0 text-white/80 hover:text-white hover:bg-black/20 transition-all duration-300"
-            onClick={togglePlay}
-          >
-            {isPlaying ? (
-              <Pause className="w-16 h-16" />
-            ) : (
-              <Play className="w-16 h-16" />
-            )}
-          </Button>
+      {/* Metadata */}
+      {metadata && Object.keys(metadata).length > 0 && (
+        <div className="mt-3 text-sm">
+          <hr className="my-2" />
+          {metadata.description && <p>ℹ️ <strong>About</strong>: {metadata.description}</p>}
+          {metadata.category && <p>🎬 <strong>Category</strong>: {metadata.category}</p>}
+          {metadata.rating && <p>⭐ <strong>Rating</strong>: {metadata.rating}</p>}
+          {metadata.release && <p>📅 <strong>Release</strong>: {metadata.release}</p>}
+          {metadata.duration && <p>⏱️ <strong>Duration</strong>: {metadata.duration}</p>}
+          {metadata.studio && <p>🗂️ <strong>Source</strong>: {metadata.studio}</p>}
+          {metadata.size && <p>💾 <strong>File Size</strong>: {metadata.size}</p>}
         </div>
-
-        {/* Controls Bar */}
-        <div className="p-4 bg-card border-t border-border/50">
-          {/* Progress Bar */}
-          <div className="mb-4">
-            <Progress value={(currentTime / duration) * 100} className="h-2 mb-2" />
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{Math.floor(currentTime / 60)}:{(currentTime % 60).toString().padStart(2, '0')}</span>
-              <span>{Math.floor(duration / 60)}:{(duration % 60).toString().padStart(2, '0')}</span>
-            </div>
-          </div>
-
-          {/* Control Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={togglePlay}>
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              </Button>
-              <Button variant="ghost" size="sm" onClick={toggleMute}>
-                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                via {source} mesh
-              </span>
-              <Button variant="ghost" size="sm" onClick={toggleFullscreen}>
-                {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };
 
