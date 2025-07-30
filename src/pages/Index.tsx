@@ -17,6 +17,7 @@ import StarterPackGallery from "@/components/StarterPackGallery";
 import UploadContent from "@/components/UploadContent";
 import UploadInstructions from "@/components/UploadInstructions";
 import WebhookSettings from "@/components/WebhookSettings";
+import CapabilitiesSection from "@/components/CapabilitiesSection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -89,6 +90,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <Hero />
+
+      {/* Capabilities Section */}
+      <CapabilitiesSection />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">
