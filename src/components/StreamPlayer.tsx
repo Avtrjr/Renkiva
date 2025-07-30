@@ -39,6 +39,21 @@ const StreamPlayer = ({
   const [assembled, setAssembled] = useState(false);
   const [bufferHealth] = useState(93);
 
+  // Check if fragments contain actual video data or just mock data
+  const hasValidVideoData = (fragments: any[]) => {
+    if (!fragments || fragments.length === 0) return false;
+    
+    // Check if any fragment contains mock data
+    const hasMockData = fragments.some(fragment => 
+      typeof fragment.data === 'string' && 
+      (fragment.data.includes('MOCK_VIDEO_DATA') || 
+       fragment.data.includes('FAKE_SHOW_DATA') ||
+       fragment.data.length < 100) // Very small data is likely mock
+    );
+    
+    return !hasMockData;
+  };
+
   // Fragment assembly using the fragmenter utility
   const reassembleFragments = (fragments: any[]) => {
     if (!fragments || fragments.length === 0) return null;
@@ -70,20 +85,40 @@ const StreamPlayer = ({
   };
 
   useEffect(() => {
+    console.log('StreamPlayer: fragments updated', { 
+      fragmentCount: fragments.length, 
+      hasStreamingUrl: !!streaming_url,
+      hasValidData: hasValidVideoData(fragments)
+    });
+
+    // Priority 1: Use streaming_url if available
+    if (streaming_url) {
+      console.log('StreamPlayer: Using streaming URL:', streaming_url);
+      setVideoSrc(streaming_url);
+      setAssembled(true);
+      return;
+    }
+
+    // Priority 2: Use fragments only if they contain valid video data
     if (fragments && fragments.length > 0) {
       const totalExpected = fragments[0]?.total || fragments.length;
+      
       if (fragments.length === totalExpected && !assembled) {
-        const fullBuffer = reassembleFragments(fragments);
-        if (fullBuffer) {
-          const blob = new Blob([fullBuffer], { type: 'video/mp4' });
-          const url = URL.createObjectURL(blob);
-          setVideoSrc(url);
-          setAssembled(true);
+        if (hasValidVideoData(fragments)) {
+          console.log('StreamPlayer: Assembling valid video fragments');
+          const fullBuffer = reassembleFragments(fragments);
+          if (fullBuffer) {
+            const blob = new Blob([fullBuffer], { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            setVideoSrc(url);
+            setAssembled(true);
+          }
+        } else {
+          console.log('StreamPlayer: Fragments contain mock data, skipping assembly');
+          // Don't try to play mock data as video
+          setVideoSrc(null);
         }
       }
-    } else if (streaming_url) {
-      // Use direct streaming URL if no fragments
-      setVideoSrc(streaming_url);
     }
   }, [fragments, streaming_url, assembled]);
 
@@ -101,11 +136,28 @@ const StreamPlayer = ({
           src={videoSrc}
           onError={(e) => {
             console.error('Video playback failed:', e);
+            console.log('Failed video src:', videoSrc);
+            console.log('Fragment data types:', fragments.map(f => typeof f.data));
             setVideoSrc(null);
+            setAssembled(false);
           }}
+          onLoadStart={() => console.log('Video load started')}
+          onCanPlay={() => console.log('Video can play')}
         />
       ) : (
-        <p className="text-sm italic">Assembling video... ({fragments.length} fragments)</p>
+        <div className="rounded w-full mt-2 bg-gray-200 dark:bg-gray-800 aspect-video flex items-center justify-center">
+          <div className="text-center text-gray-600 dark:text-gray-400">
+            <div className="text-4xl mb-2">📺</div>
+            <p className="text-sm">
+              {fragments.length === 0 
+                ? "Waiting for stream fragments..." 
+                : hasValidVideoData(fragments)
+                  ? `Assembling video... (${fragments.length} fragments)`
+                  : "Demo mode - fragments contain mock data"
+              }
+            </p>
+          </div>
+        </div>
       )}
       
       {/* Network Status */}
