@@ -11,6 +11,8 @@ import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
 import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 import ContentLibrary from "@/components/ContentLibrary";
+import StarterPackGallery from "@/components/StarterPackGallery";
+
 import { useShows } from "@/hooks/useShows";
 import type { ContentItem } from "@/lib/contentProviderAPI";
 
@@ -32,6 +34,27 @@ const Index = () => {
       { id: 2, sequence: 2, size: 2048 },
       { id: 3, sequence: 3, size: 1536 }
     ]);
+  };
+
+  const handleStarterPackSelect = async (item: any) => {
+    try {
+      // For now, create mock fragments since the video files aren't actually present
+      const mockFragments = [
+        { id: 1, sequence: 1, size: 1024 * 1024 }, // 1MB chunks
+        { id: 2, sequence: 2, size: 1024 * 1024 },
+        { id: 3, sequence: 3, size: 1024 * 1024 }
+      ];
+      
+      setCurrentStream({ 
+        title: item.title, 
+        senderName: 'Starter Pack',
+        signalStrength: 100,
+        distance: '0m'
+      });
+      setFragments(mockFragments);
+    } catch (error) {
+      console.error('Error loading starter pack video:', error);
+    }
   };
 
   // Convert database shows to the format expected by StreamCard
@@ -82,6 +105,7 @@ const Index = () => {
             </p>
           </div>
           <ContentLibrary onPlayContent={handlePlayContent} />
+          <StarterPackGallery onSelect={handleStarterPackSelect} />
         </section>
 
         {/* Nearby Streams Section */}
