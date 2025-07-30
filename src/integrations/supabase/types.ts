@@ -14,6 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_assets: {
+        Row: {
+          created_at: string
+          file_size: number
+          filename: string
+          id: string
+          mime_type: string
+          status: string
+          storage_path: string
+          type: string
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          file_size: number
+          filename: string
+          id?: string
+          mime_type: string
+          status?: string
+          storage_path: string
+          type: string
+          updated_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          file_size?: number
+          filename?: string
+          id?: string
+          mime_type?: string
+          status?: string
+          storage_path?: string
+          type?: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
+      ad_impressions: {
+        Row: {
+          ad_asset_id: string
+          device_fingerprint: string | null
+          duration_seconds: number | null
+          id: string
+          viewed_at: string
+          viewer_node_id: string | null
+        }
+        Insert: {
+          ad_asset_id: string
+          device_fingerprint?: string | null
+          duration_seconds?: number | null
+          id?: string
+          viewed_at?: string
+          viewer_node_id?: string | null
+        }
+        Update: {
+          ad_asset_id?: string
+          device_fingerprint?: string | null
+          duration_seconds?: number | null
+          id?: string
+          viewed_at?: string
+          viewer_node_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ad_impressions_ad_asset_id_fkey"
+            columns: ["ad_asset_id"]
+            isOneToOne: false
+            referencedRelation: "ad_assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ad_impressions_viewer_node_id_fkey"
+            columns: ["viewer_node_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       broadcast_sessions: {
         Row: {
           broadcaster_node_id: string | null
@@ -404,7 +485,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_sponsor_stats: {
+        Args: { sponsor_user_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
