@@ -71,15 +71,18 @@ const Index = () => {
     }
   };
 
-  // Convert database shows to the format expected by StreamCard
-  const nearbyStreams = shows.map((show) => ({
-    title: show.title,
-    distance: `${Math.floor(Math.random() * 50 + 1)}m`, // Mock distance
-    senderName: `User${Math.floor(Math.random() * 1000)}`, // Mock sender
-    category: show.category,
-    viewerCount: Math.floor(Math.random() * 5), // Mock viewer count
-    signalStrength: Math.floor(Math.random() * 40 + 60) // Mock signal strength
-  }));
+  // Convert database shows to the format expected by StreamCard - only show streamable content
+  const nearbyStreams = shows
+    .filter(show => show.video_url) // Only show shows with actual streaming URLs
+    .map((show) => ({
+      title: show.title,
+      distance: `${Math.floor(Math.random() * 50 + 1)}m`, // Mock distance
+      senderName: `User${Math.floor(Math.random() * 1000)}`, // Mock sender
+      category: show.category,
+      viewerCount: Math.floor(Math.random() * 5), // Mock viewer count
+      signalStrength: Math.floor(Math.random() * 40 + 60), // Mock signal strength
+      streaming_url: show.video_url // Add the actual streaming URL
+    }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -225,7 +228,8 @@ const Index = () => {
               </div>
             ) : nearbyStreams.length === 0 ? (
               <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground">No shows available</p>
+                <p className="text-muted-foreground">No streamable content available in mesh network</p>
+                <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
               </div>
             ) : (
               nearbyStreams.map((stream, index) => (
@@ -237,6 +241,15 @@ const Index = () => {
                   category={stream.category}
                   viewerCount={stream.viewerCount}
                   signalStrength={stream.signalStrength}
+                  streaming_url={stream.streaming_url}
+                  onPlay={(streamData) => {
+                    setCurrentStream(streamData);
+                    setFragments([
+                      { id: 1, sequence: 1, size: 1024 },
+                      { id: 2, sequence: 2, size: 2048 },
+                      { id: 3, sequence: 3, size: 1536 }
+                    ]);
+                  }}
                 />
               ))
             )}
@@ -267,7 +280,10 @@ const Index = () => {
           <div className="xl:col-span-1">
             <NearbyStreamsList 
               onJoin={(stream) => {
-                setCurrentStream(stream);
+                setCurrentStream({
+                  ...stream,
+                  streaming_url: nearbyStreams.find(s => s.title === stream.title)?.streaming_url
+                });
                 setFragments([
                   { id: 1, sequence: 1, size: 1024 },
                   { id: 2, sequence: 2, size: 2048 },

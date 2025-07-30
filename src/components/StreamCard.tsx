@@ -9,6 +9,8 @@ interface StreamCardProps {
   category?: string;
   viewerCount?: number;
   signalStrength?: number;
+  streaming_url?: string;
+  onPlay?: (stream: any) => void;
 }
 
 const StreamCard = ({ 
@@ -17,7 +19,9 @@ const StreamCard = ({
   senderName, 
   category = "TV Show",
   viewerCount = 0,
-  signalStrength = 85 
+  signalStrength = 85,
+  streaming_url,
+  onPlay
 }: StreamCardProps) => {
   const getSignalIcon = (strength: number) => {
     if (strength >= 80) return "📶";
@@ -33,8 +37,22 @@ const StreamCard = ({
     return "text-red-400";
   };
 
+  const handlePlay = () => {
+    if (onPlay) {
+      onPlay({
+        title,
+        distance,
+        senderName,
+        category,
+        viewerCount,
+        signalStrength,
+        streaming_url
+      });
+    }
+  };
+
   return (
-    <Card className="group bg-card/80 backdrop-blur-lg border-border/50 shadow-clay hover:shadow-mesh-glow transition-clay cursor-pointer overflow-hidden">
+    <Card className="group bg-card/80 backdrop-blur-lg border-border/50 shadow-clay hover:shadow-mesh-glow transition-clay cursor-pointer overflow-hidden" onClick={handlePlay}>
       <CardContent className="p-6">
         {/* Header with Signal */}
         <div className="flex items-start justify-between mb-4">
@@ -75,8 +93,9 @@ const StreamCard = ({
           variant="mesh" 
           size="sm" 
           className="w-full group-hover:animate-pulse-mesh"
+          onClick={handlePlay}
         >
-          ▶️ Play Now
+          ▶️ {streaming_url ? 'Stream Now' : 'Play Now'}
         </Button>
 
         {/* Decorative Mesh Lines */}
