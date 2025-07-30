@@ -74,6 +74,41 @@ export type Database = {
           },
         ]
       }
+      content_events: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          show_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          show_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          show_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_events_show_id_fkey"
+            columns: ["show_id"]
+            isOneToOne: false
+            referencedRelation: "shows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fragment_receipts: {
         Row: {
           fragment_id: string | null
@@ -333,6 +368,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      webhook_settings: {
+        Row: {
+          created_at: string
+          enabled: boolean | null
+          events: string[] | null
+          id: string
+          updated_at: string
+          user_id: string
+          webhook_url: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean | null
+          events?: string[] | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          webhook_url: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean | null
+          events?: string[] | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          webhook_url?: string
+        }
+        Relationships: []
       }
     }
     Views: {

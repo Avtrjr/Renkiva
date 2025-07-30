@@ -56,7 +56,7 @@ const UploadContent = ({ onClose, onUploadComplete }: UploadContentProps) => {
         throw new Error('Could not find user profile');
       }
 
-      const { error: insertError } = await supabase
+      const { error: insertError, data: newShow } = await supabase
         .from('shows')
         .insert({
           title,
@@ -67,15 +67,35 @@ const UploadContent = ({ onClose, onUploadComplete }: UploadContentProps) => {
           duration_minutes: duration ? parseInt(duration) : null,
           is_public: true,
           created_by: profile.id
-        });
+        })
+        .select()
+        .single();
 
       if (insertError) {
         throw insertError;
       }
 
+      // Trigger webhook notification
+      if (newShow) {
+        try {
+          await supabase.functions.invoke('content-webhook', {
+            body: {
+              show_id: newShow.id,
+              title: newShow.title,
+              video_url: newShow.video_url,
+              action: 'created',
+              user_id: profile.id
+            }
+          });
+        } catch (webhookError) {
+          console.error('Webhook notification failed:', webhookError);
+          // Don't fail the upload if webhook fails
+        }
+      }
+
       toast({
         title: "Content Uploaded!",
-        description: `"${title}" has been added to the library.`,
+        description: `"${title}" has been added to the library and webhooks have been triggered.`,
         duration: 3000,
       });
 

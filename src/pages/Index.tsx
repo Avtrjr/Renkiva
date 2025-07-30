@@ -15,6 +15,7 @@ import ContentLibrary from "@/components/ContentLibrary";
 import StarterPackGallery from "@/components/StarterPackGallery";
 import UploadContent from "@/components/UploadContent";
 import UploadInstructions from "@/components/UploadInstructions";
+import WebhookSettings from "@/components/WebhookSettings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -130,9 +131,10 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="upload" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="upload">Upload Content</TabsTrigger>
                   <TabsTrigger value="instructions">How to Upload</TabsTrigger>
+                  <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="upload" className="mt-4">
@@ -177,6 +179,10 @@ const Index = () => {
                   <UploadInstructions 
                     onGetStarted={user ? () => setShowUploadDialog(true) : undefined}
                   />
+                </TabsContent>
+                
+                <TabsContent value="webhooks" className="mt-4">
+                  <WebhookSettings />
                 </TabsContent>
               </Tabs>
             </CardContent>
