@@ -4,35 +4,20 @@ import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
 import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
+import { useShows } from "@/hooks/useShows";
 
 const Index = () => {
-  // Mock data for nearby streams
-  const nearbyStreams = [
-    {
-      title: "The Office S2E1",
-      distance: "5m",
-      senderName: "Jasmine",
-      category: "Comedy",
-      viewerCount: 2,
-      signalStrength: 95
-    },
-    {
-      title: "Stranger Things S4E3",
-      distance: "12m",
-      senderName: "Alex",
-      category: "Sci-Fi",
-      viewerCount: 1,
-      signalStrength: 78
-    },
-    {
-      title: "Planet Earth Documentary",
-      distance: "8m",
-      senderName: "Morgan",
-      category: "Documentary",
-      viewerCount: 0,
-      signalStrength: 85
-    }
-  ];
+  const { shows, loading, error } = useShows();
+
+  // Convert database shows to the format expected by StreamCard
+  const nearbyStreams = shows.map((show) => ({
+    title: show.title,
+    distance: `${Math.floor(Math.random() * 50 + 1)}m`, // Mock distance
+    senderName: `User${Math.floor(Math.random() * 1000)}`, // Mock sender
+    category: show.category,
+    viewerCount: Math.floor(Math.random() * 5), // Mock viewer count
+    signalStrength: Math.floor(Math.random() * 40 + 60) // Mock signal strength
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -60,17 +45,31 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {nearbyStreams.map((stream, index) => (
-              <StreamCard
-                key={index}
-                title={stream.title}
-                distance={stream.distance}
-                senderName={stream.senderName}
-                category={stream.category}
-                viewerCount={stream.viewerCount}
-                signalStrength={stream.signalStrength}
-              />
-            ))}
+            {loading ? (
+              <div className="col-span-full text-center py-8">
+                <p className="text-muted-foreground">Loading shows...</p>
+              </div>
+            ) : error ? (
+              <div className="col-span-full text-center py-8">
+                <p className="text-destructive">Error: {error}</p>
+              </div>
+            ) : nearbyStreams.length === 0 ? (
+              <div className="col-span-full text-center py-8">
+                <p className="text-muted-foreground">No shows available</p>
+              </div>
+            ) : (
+              nearbyStreams.map((stream, index) => (
+                <StreamCard
+                  key={index}
+                  title={stream.title}
+                  distance={stream.distance}
+                  senderName={stream.senderName}
+                  category={stream.category}
+                  viewerCount={stream.viewerCount}
+                  signalStrength={stream.signalStrength}
+                />
+              ))
+            )}
           </div>
         </section>
 
