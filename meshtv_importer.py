@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-MeshTV Auto-Import Script
-Populates MeshTV with open-source movies and content from legitimate sources.
+MeshTV Auto-Import Script with Video Upload
+Downloads and uploads open-source movies to MeshTV platform.
 """
 
 import requests
@@ -12,7 +12,8 @@ from typing import List, Dict, Optional
 from urllib.parse import urljoin
 import logging
 from dataclasses import dataclass
-from supabase import create_client, Client
+import tempfile
+import shutil
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -32,7 +33,9 @@ class ContentItem:
 class MeshTVImporter:
     def __init__(self, supabase_url: str, supabase_key: str):
         """Initialize the importer with Supabase credentials."""
-        self.supabase: Client = create_client(supabase_url, supabase_key)
+        self.supabase_url = supabase_url
+        self.supabase_key = supabase_key
+        self.edge_function_url = f"{supabase_url}/functions/v1/movie-import"
         self.content_items: List[ContentItem] = []
         
     def scrape_internet_archive(self) -> List[ContentItem]:
@@ -219,49 +222,97 @@ class MeshTVImporter:
         logger.info(f"Added {len(curated_content)} curated items")
         return curated_content
     
-    def populate_database(self, content_items: List[ContentItem]) -> bool:
-        """Upload content items to Supabase database."""
-        logger.info(f"Uploading {len(content_items)} items to database...")
-        
+    def download_and_upload_video(self, content_item: ContentItem) -> bool:
+        """Download video and upload to MeshTV via edge function."""
         try:
-            # Prepare data for batch insert
-            insert_data = []
-            for item in content_items:
-                insert_data.append({
-                    'title': item.title[:255],  # Ensure title fits in database
-                    'description': item.description,
-                    'category': item.category,
-                    'duration_minutes': item.duration_minutes,
-                    'thumbnail_url': item.thumbnail_url,
-                    'video_url': item.video_url,
-                    'file_size_bytes': item.file_size_bytes,
-                    'is_public': True,
-                    'created_by': None  # Public content, no specific creator
-                })
+            logger.info(f"Processing: {content_item.title}")
             
-            # Batch insert with chunking for large datasets
-            chunk_size = 50
-            success_count = 0
-            
-            for i in range(0, len(insert_data), chunk_size):
-                chunk = insert_data[i:i + chunk_size]
+            # Download video to temporary file
+            with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_file:
+                logger.info(f"Downloading video from: {content_item.video_url}")
                 
-                response = self.supabase.table('shows').insert(chunk).execute()
+                response = requests.get(content_item.video_url, stream=True, timeout=60)
+                response.raise_for_status()
                 
-                if response.data:
-                    success_count += len(chunk)
-                    logger.info(f"Uploaded chunk {i//chunk_size + 1}: {len(chunk)} items")
-                else:
-                    logger.error(f"Failed to upload chunk {i//chunk_size + 1}")
+                # Download with progress
+                total_size = int(response.headers.get('content-length', 0))
+                downloaded = 0
                 
-                time.sleep(1)  # Rate limiting
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        temp_file.write(chunk)
+                        downloaded += len(chunk)
+                        if total_size > 0:
+                            progress = (downloaded / total_size) * 100
+                            logger.info(f"Download progress: {progress:.1f}%")
+                
+                temp_file_path = temp_file.name
             
-            logger.info(f"Successfully uploaded {success_count}/{len(content_items)} items")
-            return success_count == len(content_items)
+            # Prepare metadata for upload
+            metadata = {
+                'title': content_item.title,
+                'description': content_item.description,
+                'category': content_item.category,
+                'duration_minutes': content_item.duration_minutes,
+                'thumbnail_url': content_item.thumbnail_url,
+                'source': content_item.source
+            }
             
+            # Upload to edge function
+            logger.info(f"Uploading to MeshTV database...")
+            
+            headers = {
+                'Authorization': f'Bearer {self.supabase_key}',
+                'apikey': self.supabase_key
+            }
+            
+            with open(temp_file_path, 'rb') as video_file:
+                files = {
+                    'video': ('video.mp4', video_file, 'video/mp4'),
+                    'metadata': ('metadata', json.dumps(metadata), 'application/json')
+                }
+                
+                upload_response = requests.post(
+                    self.edge_function_url,
+                    files=files,
+                    headers=headers,
+                    timeout=300  # 5 minute timeout for upload
+                )
+            
+            # Clean up temp file
+            os.unlink(temp_file_path)
+            
+            if upload_response.status_code == 200:
+                result = upload_response.json()
+                logger.info(f"✅ Successfully uploaded: {content_item.title}")
+                return True
+            else:
+                logger.error(f"❌ Upload failed for {content_item.title}: {upload_response.text}")
+                return False
+                
         except Exception as e:
-            logger.error(f"Error uploading to database: {e}")
+            logger.error(f"❌ Error processing {content_item.title}: {e}")
             return False
+
+    def populate_database(self, content_items: List[ContentItem]) -> bool:
+        """Upload content items with video files to MeshTV."""
+        logger.info(f"Downloading and uploading {len(content_items)} movies...")
+        
+        success_count = 0
+        
+        for i, item in enumerate(content_items, 1):
+            logger.info(f"Processing item {i}/{len(content_items)}: {item.title}")
+            
+            if self.download_and_upload_video(item):
+                success_count += 1
+            
+            # Rate limiting between uploads
+            if i < len(content_items):
+                logger.info("Waiting 5 seconds before next upload...")
+                time.sleep(5)
+        
+        logger.info(f"Successfully uploaded {success_count}/{len(content_items)} movies")
+        return success_count > 0
     
     def run_import(self) -> bool:
         """Run the complete import process."""
