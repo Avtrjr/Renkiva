@@ -148,18 +148,40 @@ const Index = () => {
       {/* Capabilities Section */}
       <CapabilitiesSection />
 
-      {/* Featured Offline TV Demo - Compact */}
+      {/* Featured MeshTV Showcase */}
       <section className="container mx-auto px-6 py-8">        
-        <div className="max-w-2xl mx-auto">
-          <Card className="mesh-card border border-primary/30 shadow-cyber overflow-hidden hover:shadow-glow transition-all duration-300">
-            <CardContent className="p-4">
-              {/* Compact TV Screen */}
-              
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-2">
+              🎬 Experience MeshTV in Action
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Watch "Tears of Steel" - streaming without traditional internet infrastructure
+            </p>
+          </div>
+          
+          <Card className="mesh-card border border-primary/20 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden">
+            <CardContent className="p-3">
+              {/* Compact Video Player */}
+              <div className="aspect-video bg-background/80 rounded-lg overflow-hidden border border-border/50">
+                <StreamPlayer 
+                  title="Tears of Steel (Featured Demo)"
+                  source="MeshTV Demo Node"
+                  fragments={[
+                    { id: 1, sequence: 1, size: 1024 },
+                    { id: 2, sequence: 2, size: 2048 },
+                    { id: 3, sequence: 3, size: 1536 }
+                  ]}
+                  signalStrength={100}
+                  distance="0m"
+                  streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                />
+              </div>
               
               {/* Compact Info */}
               <div className="mt-3 text-center animate-fade-in">
-                <p className="text-xs text-muted-foreground">
-                  📺 <strong>Watch TV without Internet</strong> - Experience decentralized streaming in action
+                <p className="text-xs text-muted-foreground/80">
+                  🌐 <strong>Decentralized Streaming</strong> • No traditional internet required • Mesh network powered
                 </p>
               </div>
             </CardContent>
