@@ -35,16 +35,77 @@ const StreamPlayer = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100); // Mock duration
   const [bufferHealth, setBufferHealth] = useState(85);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<HTMLDivElement>(null);
 
   // Simulate TTL countdown
   const [currentTTL, setCurrentTTL] = useState(ttl);
+
+  // Fragment assembly and video source management
+  const reassembleFragments = (fragments: any[]) => {
+    if (!fragments || fragments.length === 0) return null;
+    
+    // Sort fragments by sequence number
+    const sorted = fragments.sort((a, b) => (a.sequence || a.id) - (b.sequence || b.id));
+    
+    // Create a buffer from fragments
+    const buffers = sorted.map(fragment => {
+      if (fragment.data instanceof Uint8Array) {
+        return fragment.data;
+      }
+      // Convert string data to Uint8Array if needed
+      return new Uint8Array(Buffer.from(fragment.data || 'MOCK_VIDEO_DATA', 'utf-8'));
+    });
+    
+    // Combine all buffers
+    const totalLength = buffers.reduce((sum, buffer) => sum + buffer.length, 0);
+    const combined = new Uint8Array(totalLength);
+    let offset = 0;
+    
+    buffers.forEach(buffer => {
+      combined.set(buffer, offset);
+      offset += buffer.length;
+    });
+    
+    return combined;
+  };
+
+  useEffect(() => {
+    if (fragments && fragments.length > 0) {
+      const totalExpected = fragments[0]?.total || fragments.length;
+      
+      // Only reassemble if we have all expected fragments
+      if (fragments.length >= totalExpected) {
+        const assembledBuffer = reassembleFragments(fragments);
+        if (assembledBuffer) {
+          // Create blob with appropriate MIME type
+          const blob = new Blob([assembledBuffer], { type: 'video/mp4' });
+          const videoURL = URL.createObjectURL(blob);
+          setVideoSrc(videoURL);
+          
+          // Cleanup previous URL
+          return () => {
+            if (videoSrc) {
+              URL.revokeObjectURL(videoSrc);
+            }
+          };
+        }
+      }
+    } else if (streaming_url) {
+      // Use direct streaming URL if no fragments
+      setVideoSrc(streaming_url);
+    }
+  }, [fragments, streaming_url]);
   
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTTL(prev => Math.max(0, prev - 0.1));
-      setCurrentTime(prev => prev + 1);
+      
+      // Update current time from video element if playing
+      if (videoRef.current && !isNaN(videoRef.current.currentTime)) {
+        setCurrentTime(videoRef.current.currentTime);
+      }
       
       // Simulate buffer health fluctuation based on signal strength
       const healthVariation = (Math.random() - 0.5) * 20;
@@ -127,35 +188,43 @@ const StreamPlayer = ({
         {/* Video Area */}
         <div className="relative aspect-video bg-gradient-mesh-dark flex items-center justify-center">
           {/* Actual video element */}
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            autoPlay={isPlaying}
-            muted={isMuted}
-            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-            onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-            onLoadedData={() => console.log('Video loaded successfully')}
-            onError={(e) => {
-              console.error('Video loading failed:', e);
-              // Show fallback content on error
-            }}
-            crossOrigin="anonymous"
-            preload="metadata"
-          >
-            <source src={streaming_url || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4" />
-            <p className="text-white">Your browser does not support the video tag.</p>
-          </video>
+          {videoSrc ? (
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              autoPlay={isPlaying}
+              muted={isMuted}
+              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+              onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+              onLoadedData={() => console.log('Video loaded successfully')}
+              onError={(e) => {
+                console.error('Video loading failed:', e);
+                setVideoSrc(null); // Reset on error
+              }}
+              crossOrigin="anonymous"
+              preload="metadata"
+              src={videoSrc}
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : null}
 
-          {/* Fallback overlay when video fails to load */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-4">📺</div>
-              <p className="text-lg font-medium text-foreground">{title}</p>
-              <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
-              <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
-              <p className="text-xs text-red-400 mt-2">Video temporarily unavailable</p>
+          {/* Fallback overlay when video is not available */}
+          {!videoSrc && (
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl mb-4">📺</div>
+                <p className="text-lg font-medium text-foreground">{title}</p>
+                <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
+                <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
+                {fragments.length === 0 ? (
+                  <p className="text-xs text-yellow-400 mt-2">Waiting for fragments...</p>
+                ) : (
+                  <p className="text-xs text-blue-400 mt-2">Assembling video... ({fragments.length} fragments)</p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Mesh Info Overlay */}
           <div className="absolute top-4 left-4 flex gap-2">

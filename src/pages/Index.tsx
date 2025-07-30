@@ -129,10 +129,17 @@ const Index = () => {
           {/* Enhanced Broadcast Controls */}
           <div className="xl:col-span-1">
             <BroadcastToggle 
-              onBroadcastStart={(title) => {
-                console.log(`Broadcasting: ${title}`);
-                // Mock broadcast start
-                setFragments([{ id: 1, size: 1024 }, { id: 2, size: 2048 }]);
+              onBroadcastStart={(title, fragments = []) => {
+                console.log(`Broadcasting: ${title}`, fragments);
+                if (fragments.length > 0) {
+                  setFragments(fragments);
+                  setCurrentStream({
+                    title,
+                    senderName: 'Your Device',
+                    signalStrength: 100,
+                    distance: '0m'
+                  });
+                }
               }}
               onMeshModeChange={(enabled) => {
                 console.log(`Mesh mode: ${enabled ? 'enabled' : 'disabled'}`);

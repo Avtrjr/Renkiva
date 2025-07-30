@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface BroadcastToggleProps {
   onFileUpload?: (file: File) => void;
-  onBroadcastStart?: (title: string) => void;
+  onBroadcastStart?: (title: string, fragments?: any[]) => void;
   onMeshModeChange?: (isEnabled: boolean) => void;
 }
 
@@ -25,6 +25,7 @@ const BroadcastToggle = ({
   const [connectedPeers, setConnectedPeers] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState("0 KB/s");
   const [dragActive, setDragActive] = useState(false);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -63,7 +64,7 @@ const BroadcastToggle = ({
     }
   };
 
-  const handleBroadcastToggle = (enabled: boolean) => {
+  const handleBroadcastToggle = async (enabled: boolean) => {
     if (!isMeshMode && enabled) {
       toast({
         title: "Enable Mesh Mode First",
@@ -85,7 +86,22 @@ const BroadcastToggle = ({
     setIsBroadcasting(enabled);
     
     if (enabled && title.trim()) {
-      onBroadcastStart?.(title.trim());
+      let fragments: any[] = [];
+      
+      // Fragment the video file if available
+      if (videoFile) {
+        try {
+          fragments = await fragmentPayload(videoFile);
+          toast({
+            title: "Video Fragmented",
+            description: `Created ${fragments.length} fragments for mesh distribution`,
+          });
+        } catch (error) {
+          console.error('Failed to fragment video:', error);
+        }
+      }
+      
+      onBroadcastStart?.(title.trim(), fragments);
       toast({
         title: "Broadcasting Started",
         description: `"${title}" is now live on the mesh network`,
@@ -120,16 +136,38 @@ const BroadcastToggle = ({
     }
   };
 
-  const handleFileUpload = (file: File) => {
+  const fragmentPayload = async (file: File) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const payload = new Uint8Array(arrayBuffer);
+    const MTU = 1024; // Fragment size
+    const fragments = [];
+    
+    for (let i = 0; i < payload.length; i += MTU) {
+      const chunk = payload.slice(i, i + MTU);
+      fragments.push({
+        id: Math.floor(i / MTU) + 1,
+        sequence: Math.floor(i / MTU) + 1,
+        data: chunk,
+        size: chunk.length,
+        total: Math.ceil(payload.length / MTU)
+      });
+    }
+    
+    return fragments;
+  };
+
+  const handleFileUpload = async (file: File) => {
     if (!file.type.startsWith('video/')) {
       toast({
         title: "Invalid File Type",
-        description: "Please upload a video file",
+        description: "Please upload a video file (MP4, WebM, etc.)",
         variant: "destructive"
       });
       return;
     }
 
+    setVideoFile(file);
+    
     // Simulate upload progress
     setUploadProgress(0);
     const interval = setInterval(() => {
@@ -235,7 +273,7 @@ const BroadcastToggle = ({
           <input
             ref={fileInputRef}
             type="file"
-            accept="video/*"
+            accept="video/mp4,video/webm,video/ogg"
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -254,8 +292,14 @@ const BroadcastToggle = ({
             </button>
           </p>
           <p className="text-xs text-muted-foreground">
-            MP4, WebM, AVI up to 500MB
+            MP4, WebM, OGG up to 500MB
           </p>
+          
+          {videoFile && (
+            <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-sm">
+              <p className="text-green-700">✅ {videoFile.name} ready to broadcast</p>
+            </div>
+          )}
 
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div className="mt-4">
