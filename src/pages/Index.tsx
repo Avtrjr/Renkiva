@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
+import { DiagnosticsOverlay } from "@/components/DiagnosticsOverlay";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
 import BroadcastToggle from "@/components/BroadcastToggle";
@@ -36,6 +37,7 @@ const Index = () => {
   const [fragments, setFragments] = useState<any[]>([]);
   const [showUpload, setShowUpload] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showDiagnostics, setShowDiagnostics] = useState(true);
 
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
@@ -88,6 +90,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Real-Time Diagnostics Overlay */}
+      <DiagnosticsOverlay 
+        isOpen={showDiagnostics} 
+        onToggle={() => setShowDiagnostics(!showDiagnostics)} 
+      />
+
       {/* Hero Section */}
       <Hero />
 
