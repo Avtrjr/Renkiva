@@ -1,7 +1,62 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { fetchAllContent } from "@/lib/contentProviderAPI";
 
 const Hero = () => {
+  const [isDiscovering, setIsDiscovering] = useState(false);
+  const { toast } = useToast();
+
+  const handleDiscoverShows = async () => {
+    setIsDiscovering(true);
+    try {
+      // Fetch all available content
+      const allContent = await fetchAllContent();
+      
+      // Upload to Supabase shows table
+      const showsToInsert = allContent.map(content => ({
+        title: content.title,
+        description: content.description,
+        category: content.category,
+        thumbnail_url: content.thumbnailUrl,
+        video_url: content.streaming_url,
+        duration_minutes: content.duration_minutes,
+        file_size_bytes: content.file_size_bytes,
+        is_public: true
+      }));
+
+      const { data, error } = await supabase
+        .from('shows')
+        .upsert(showsToInsert, { 
+          onConflict: 'title',
+          ignoreDuplicates: true 
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Content Discovery Complete!",
+        description: `Found and uploaded ${allContent.length} shows and movies to your library.`,
+        duration: 3000,
+      });
+
+    } catch (error) {
+      console.error('Error discovering content:', error);
+      toast({
+        title: "Discovery Failed",
+        description: "Failed to discover nearby content. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setIsDiscovering(false);
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-aurora-mesh bg-[length:400%_400%] animate-aurora overflow-hidden">
       {/* Floating Elements */}
@@ -38,8 +93,10 @@ const Hero = () => {
           variant="discover" 
           size="hero"
           className="mb-8 backdrop-blur-sm"
+          onClick={handleDiscoverShows}
+          disabled={isDiscovering}
         >
-          🔍 Discover Nearby Shows
+          {isDiscovering ? "🔍 Discovering..." : "🔍 Discover Nearby Shows"}
         </Button>
 
         {/* Feature Pills */}
