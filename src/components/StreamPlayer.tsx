@@ -134,26 +134,28 @@ const StreamPlayer = ({
             muted={isMuted}
             onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
             onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-            onLoadedData={() => console.log('Video loaded')}
-            onError={(e) => console.error('Video error:', e)}
+            onLoadedData={() => console.log('Video loaded successfully')}
+            onError={(e) => {
+              console.error('Video loading failed:', e);
+              // Show fallback content on error
+            }}
+            crossOrigin="anonymous"
+            preload="metadata"
           >
             <source src={streaming_url || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4" />
-            Your browser does not support the video tag.
+            <p className="text-white">Your browser does not support the video tag.</p>
           </video>
 
-          {/* Fallback overlay when no video */}
-          {!videoRef.current?.src && (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl mb-4">📺</div>
-                  <p className="text-lg font-medium text-foreground">{title}</p>
-                  <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
-                  <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
-                </div>
-              </div>
+          {/* Fallback overlay when video fails to load */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-6xl mb-4">📺</div>
+              <p className="text-lg font-medium text-foreground">{title}</p>
+              <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
+              <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
+              <p className="text-xs text-red-400 mt-2">Video temporarily unavailable</p>
             </div>
-          )}
+          </div>
 
           {/* Mesh Info Overlay */}
           <div className="absolute top-4 left-4 flex gap-2">
