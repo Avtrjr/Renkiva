@@ -228,10 +228,12 @@ export function AIContentHelper() {
   };
 
   const handleCreateClick = (suggestion: ContentSuggestion) => {
-    // For now, just show a message. Could be expanded to open upload flow
+    // Navigate to home page with upload section focused
+    navigate('/', { state: { scrollToUpload: true } });
+    
     toast({
       title: "Content Creation",
-      description: `Great idea! "${suggestion.title}" would be perfect for your mesh network.`,
+      description: `Let's create "${suggestion.title}"! Upload your content to start streaming.`,
     });
   };
 
