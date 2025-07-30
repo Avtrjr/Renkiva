@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
@@ -12,14 +13,20 @@ import MeshSimulation from "@/components/MeshSimulation";
 import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 import ContentLibrary from "@/components/ContentLibrary";
 import StarterPackGallery from "@/components/StarterPackGallery";
+import UploadContent from "@/components/UploadContent";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useShows } from "@/hooks/useShows";
+import { useAuth } from "@/hooks/useAuth";
 import type { ContentItem } from "@/lib/contentProviderAPI";
 
 const Index = () => {
   const { shows, loading, error } = useShows();
+  const { user } = useAuth();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
+  const [showUpload, setShowUpload] = useState(false);
 
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
@@ -93,6 +100,64 @@ const Index = () => {
           <MeshSimulation />
           <MeshStreamSimulation />
         </section>
+
+        {/* Content Upload Section */}
+        {user && (
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                📤 Upload Content
+              </h2>
+              <p className="text-muted-foreground">
+                Share your own videos and movies with the mesh network
+              </p>
+            </div>
+            
+            {showUpload ? (
+              <UploadContent 
+                onClose={() => setShowUpload(false)} 
+                onUploadComplete={() => {
+                  setShowUpload(false);
+                  // Refresh the shows list
+                  window.location.reload();
+                }}
+              />
+            ) : (
+              <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20">
+                <CardHeader>
+                  <CardTitle>Ready to Share Content?</CardTitle>
+                  <CardDescription>
+                    Upload your movies, shows, or videos to make them available on the mesh network
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button onClick={() => setShowUpload(true)} className="w-full">
+                    Upload New Content
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </section>
+        )}
+
+        {/* Sign Up Prompt for Non-Authenticated Users */}
+        {!user && (
+          <section>
+            <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 text-center">
+              <CardHeader>
+                <CardTitle>Join MeshTV to Upload Content</CardTitle>
+                <CardDescription>
+                  Create an account to upload your own movies and videos to the mesh network
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link to="/auth">
+                  <Button className="w-full">Sign Up / Sign In</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </section>
+        )}
 
         {/* Content Library Section */}
         <section>

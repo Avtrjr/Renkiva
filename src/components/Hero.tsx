@@ -4,10 +4,15 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllContent } from "@/lib/contentProviderAPI";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import UserMenu from "@/components/UserMenu";
 
 const Hero = () => {
   const [isDiscovering, setIsDiscovering] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleDiscoverShows = async () => {
     setIsDiscovering(true);
@@ -64,13 +69,27 @@ const Hero = () => {
       <div className="absolute top-32 right-20 w-6 h-6 bg-secondary rounded-full animate-float opacity-40"></div>
       <div className="absolute bottom-32 left-20 w-3 h-3 bg-primary-glow rounded-full animate-pulse-mesh opacity-50"></div>
       
-      {/* Offline Status Badge */}
-      <Badge 
-        variant="outline" 
-        className="absolute top-8 right-8 bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset"
-      >
-        📴 Offline Mode Active
-      </Badge>
+      {/* Auth Controls */}
+      <div className="absolute top-8 right-8 flex items-center gap-4">
+        <Badge 
+          variant="outline" 
+          className="bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset"
+        >
+          📴 Offline Mode Active
+        </Badge>
+        
+        {user ? (
+          <UserMenu user={user} />
+        ) : (
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/auth')}
+            className="bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset"
+          >
+            Sign In
+          </Button>
+        )}
+      </div>
 
       {/* Main Hero Content */}
       <div className="container mx-auto px-6 text-center z-10">
