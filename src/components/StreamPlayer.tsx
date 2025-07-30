@@ -128,7 +128,7 @@ const StreamPlayer = ({
       <p className="text-sm">📡 Source: {source || 'MeshTV Network'}</p>
       <p className="text-sm">🧬 Fragments: {fragments.length}</p>
       
-      {videoSrc ? (
+      {videoSrc && streaming_url ? (
         <video
           className="rounded w-full mt-2"
           controls
@@ -137,7 +137,6 @@ const StreamPlayer = ({
           onError={(e) => {
             console.error('Video playback failed:', e);
             console.log('Failed video src:', videoSrc);
-            console.log('Fragment data types:', fragments.map(f => typeof f.data));
             setVideoSrc(null);
             setAssembled(false);
           }}
