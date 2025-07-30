@@ -29,6 +29,8 @@ import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
 import { InviteOnlyMesh } from "@/components/InviteOnlyMesh";
 import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
 import { PrivateChannelManager } from "@/components/PrivateChannelManager";
+import { InstallWizard } from "@/components/InstallWizard";
+import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -94,6 +96,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Sponsorship Overlay */}
+      <SponsorshipOverlay />
+      
       {/* Real-Time Diagnostics Overlay */}
       <DiagnosticsOverlay 
         isOpen={showDiagnostics} 
@@ -215,6 +220,22 @@ const Index = () => {
         </section>
 
         
+        
+        {/* Install Wizard for New Users */}
+        {!user && (
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                🚀 Get Started with MeshTV
+              </h2>
+              <p className="text-muted-foreground">
+                Follow our setup wizard to configure MeshTV for optimal performance
+              </p>
+            </div>
+            <InstallWizard />
+          </section>
+        )}
+
         {/* AI & Private Channels Section */}
         {user && (
           <section>
