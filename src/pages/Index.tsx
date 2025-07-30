@@ -6,7 +6,7 @@ import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
 import BroadcastToggle from "@/components/BroadcastToggle";
 import NearbyStreamsList from "@/components/NearbyStreamsList";
-import AIContentHelper from "@/components/AIContentHelper";
+import { AIContentHelper } from "@/components/AIContentHelper";
 import AdTracker from "@/components/AdTracker";
 import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
@@ -28,6 +28,7 @@ import { Upload, Info } from "lucide-react";
 import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
 import { InviteOnlyMesh } from "@/components/InviteOnlyMesh";
 import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
+import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -212,6 +213,25 @@ const Index = () => {
             </CardContent>
           </Card>
         </section>
+
+        
+        {/* AI & Private Channels Section */}
+        {user && (
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                🤖 AI & Private Channels
+              </h2>
+              <p className="text-muted-foreground">
+                AI-powered content suggestions and encrypted invite-only mesh networks
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              <AIContentHelper />
+              <PrivateChannelManager />
+            </div>
+          </section>
+        )}
 
         {/* Upload Sync Dashboard */}
         {user && (
