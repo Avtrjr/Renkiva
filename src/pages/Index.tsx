@@ -31,6 +31,7 @@ import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
 import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 import { InstallWizard } from "@/components/InstallWizard";
 import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
+import { RoadRunnerAnimation } from "@/components/RoadRunnerAnimation";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -96,6 +97,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Road Runner Animation */}
+      <RoadRunnerAnimation />
+      
       {/* Sponsorship Overlay */}
       <SponsorshipOverlay />
       
