@@ -1,0 +1,67 @@
+{
+  "name": "MeshTV - Decentralized Streaming",
+  "short_name": "MeshTV",
+  "description": "Privacy-first peer-to-peer video streaming platform with offline mesh networking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#00D4FF",
+  "orientation": "any",
+  "scope": "/",
+  "categories": ["entertainment", "video", "social"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "MeshTV Desktop Interface"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "MeshTV Mobile Interface"
+    }
+  ],
+  "features": [
+    "cross-origin-isolated"
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Browse Streams",
+      "short_name": "Browse",
+      "description": "Discover nearby mesh streams",
+      "url": "/streams",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Upload Content",
+      "short_name": "Upload",
+      "description": "Share your content with the mesh",
+      "url": "/upload",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
