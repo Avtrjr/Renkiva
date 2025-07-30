@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import LibraryPage from "./pages/LibraryPage";
 import MeshTVDashboard from "./components/MeshTVDashboard";
+import MeshLibraryExplorer from "./components/MeshLibraryExplorer";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/dashboard" element={<MeshTVDashboard />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:genre" element={<LibraryPage />} />
+          <Route path="/mesh-library" element={<MeshLibraryExplorer />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

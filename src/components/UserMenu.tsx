@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { LogOut, Upload, User as UserIcon, Settings } from 'lucide-react';
+import { LogOut, Upload, User as UserIcon, Settings, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface UserMenuProps {
@@ -80,6 +80,18 @@ const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuItem>
           <Upload className="mr-2 h-4 w-4" />
           <span>Upload Content</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/library" className="flex items-center">
+            <Video className="mr-2 h-4 w-4" />
+            <span>Content Library</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/mesh-library" className="flex items-center">
+            <Video className="mr-2 h-4 w-4" />
+            <span>Public Domain Library</span>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
