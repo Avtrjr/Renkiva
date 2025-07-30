@@ -1,6 +1,6 @@
 import { useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Box, Torus } from '@react-three/drei';
+import { OrbitControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Floating Mesh Node Component
@@ -16,7 +16,8 @@ function MeshNode({ position, color }: { position: [number, number, number], col
   });
 
   return (
-    <Sphere ref={meshRef} position={position} args={[0.3, 16, 16]}>
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[0.3, 16, 16]} />
       <meshStandardMaterial 
         color={color} 
         emissive={color} 
@@ -24,7 +25,7 @@ function MeshNode({ position, color }: { position: [number, number, number], col
         transparent
         opacity={0.8}
       />
-    </Sphere>
+    </mesh>
   );
 }
 
@@ -41,14 +42,15 @@ function CentralHub() {
   });
 
   return (
-    <Torus ref={hubRef} args={[1, 0.3, 16, 32]} position={[0, 0, 0]}>
+    <mesh ref={hubRef} position={[0, 0, 0]}>
+      <torusGeometry args={[1, 0.3, 16, 32]} />
       <meshStandardMaterial 
         color="#8b5cf6" 
         emissive="#8b5cf6" 
         emissiveIntensity={0.4}
         wireframe
       />
-    </Torus>
+    </mesh>
   );
 }
 
