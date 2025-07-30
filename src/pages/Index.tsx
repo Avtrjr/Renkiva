@@ -142,8 +142,8 @@ const Index = () => {
               {/* Compact TV Screen */}
               <div className="relative aspect-[16/10] bg-black rounded-lg overflow-hidden border border-muted/20 group">
                 <img 
-                  src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=375&fit=crop"
-                  alt="Featured Movie - Matrix-style cyberpunk scene"
+                  src="https://image.tmdb.org/t/p/w500/pmMvgjiBhROiHTjsAYSUC2WZJoW.jpg"
+                  alt="Tears of Steel - Sci-fi short film"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 
@@ -152,7 +152,7 @@ const Index = () => {
                   className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-black/40"
                   onClick={() => {
                     setCurrentStream({
-                      title: "The Matrix: Mesh Network Edition",
+                      title: "Tears of Steel",
                       senderName: 'Featured Demo',
                       signalStrength: 100,
                       distance: '0m',
@@ -188,7 +188,7 @@ const Index = () => {
                 
                 {/* Title Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3">
-                  <h3 className="font-bold text-sm text-white mb-1 animate-fade-in">The Matrix: Mesh Network Edition</h3>
+                  <h3 className="font-bold text-sm text-white mb-1 animate-fade-in">Tears of Steel</h3>
                   <div className="flex items-center justify-between text-white/80 text-xs animate-fade-in">
                     <span>CyberNode_42 • 5m away</span>
                     <div className="flex items-center gap-1">
