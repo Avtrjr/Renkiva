@@ -66,13 +66,14 @@ function DataPacket({ startPos, endPos }: { startPos: [number, number, number], 
   });
 
   return (
-    <Box ref={packetRef} args={[0.1, 0.1, 0.1]}>
+    <mesh ref={packetRef}>
+      <boxGeometry args={[0.1, 0.1, 0.1]} />
       <meshStandardMaterial 
         color="#fbbf24" 
         emissive="#fbbf24" 
         emissiveIntensity={0.5}
       />
-    </Box>
+    </mesh>
   );
 }
 
