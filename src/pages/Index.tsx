@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { DiagnosticsOverlay } from "@/components/DiagnosticsOverlay";
+import { getTopOfflinePicks, VideoItem } from "@/services/meshTVService";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
 import BroadcastToggle from "@/components/BroadcastToggle";
@@ -47,6 +48,24 @@ const Index = () => {
   const [showUpload, setShowUpload] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showDiagnostics, setShowDiagnostics] = useState(true);
+  const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
+  const [loadingAi, setLoadingAi] = useState(false);
+
+  useEffect(() => {
+    const loadAiSuggestions = async () => {
+      setLoadingAi(true);
+      try {
+        const suggestions = await getTopOfflinePicks();
+        setAiSuggestions(suggestions);
+      } catch (error) {
+        console.error('Failed to load AI suggestions:', error);
+      } finally {
+        setLoadingAi(false);
+      }
+    };
+
+    loadAiSuggestions();
+  }, []);
 
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
@@ -114,6 +133,66 @@ const Index = () => {
 
       {/* Capabilities Section */}
       <CapabilitiesSection />
+
+      {/* AI-Curated Recommendations */}
+      <section className="container mx-auto px-6 py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
+            🤖 AI-Curated Top Picks
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Discover the best content from your mesh network with AI-powered recommendations
+          </p>
+        </div>
+        
+        {loadingAi ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, idx) => (
+              <Card key={idx} className="mesh-card animate-pulse">
+                <CardContent className="p-6">
+                  <div className="bg-muted/30 h-6 rounded mb-3"></div>
+                  <div className="bg-muted/30 h-4 rounded mb-3 w-3/4"></div>
+                  <div className="bg-muted/30 h-16 rounded"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {aiSuggestions.map((item, idx) => (
+              <Card 
+                key={idx} 
+                className="mesh-card hover:shadow-glow transition-all duration-300 cursor-pointer group"
+                onClick={() => {
+                  setCurrentStream({
+                    title: item.title,
+                    senderName: 'AI Recommendation',
+                    signalStrength: 100,
+                    distance: '0m'
+                  });
+                  setFragments([
+                    { id: 1, sequence: 1, size: 1024 },
+                    { id: 2, sequence: 2, size: 2048 },
+                    { id: 3, sequence: 3, size: 1536 }
+                  ]);
+                }}
+              >
+                <CardContent className="p-6">
+                  <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-primary mb-2 font-medium">
+                    {item.category} • {item.duration}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">

@@ -18,8 +18,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LightTheme />} />
-          <Route path="/dark" element={<Index />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/light" element={<LightTheme />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
