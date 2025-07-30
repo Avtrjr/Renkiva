@@ -126,13 +126,27 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
                 </p>
               </div>
 
-              <Button 
-                variant="mesh" 
-                size="sm" 
-                className="w-full group-hover:animate-pulse-mesh"
-              >
-                ▶️ Stream from Mesh
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  variant="mesh" 
+                  size="sm" 
+                  className="flex-1 group-hover:animate-pulse-mesh"
+                >
+                  ▶️ Stream from Mesh
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs px-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success('Marked as Favorite & Verified!');
+                    // TODO: Sync to mesh index via meshIndexService
+                  }}
+                >
+                  ⭐ Favorite
+                </Button>
+              </div>
 
               {/* Decorative Mesh Lines */}
               <div className="absolute top-0 right-0 w-16 h-16 opacity-5 overflow-hidden">
