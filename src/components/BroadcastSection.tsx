@@ -9,6 +9,14 @@ const BroadcastSection = () => {
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
+  const handleFileSelect = (files: FileList | null) => {
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      console.log("Selected files:", fileArray);
+      // Handle file selection logic here
+    }
+  };
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -66,9 +74,21 @@ const BroadcastSection = () => {
                 Supports MP4, MKV, AVI and more • Max 2GB per file
               </p>
             </div>
-            <Button variant="outline" size="sm">
-              📂 Browse Files
-            </Button>
+            <div className="relative">
+              <input
+                type="file"
+                multiple
+                accept="video/*,.mp4,.mkv,.avi,.mov,.wmv"
+                onChange={(e) => handleFileSelect(e.target.files)}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                id="file-upload"
+              />
+              <Button variant="outline" size="sm" asChild>
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  📂 Browse Files
+                </label>
+              </Button>
+            </div>
           </div>
 
           {/* Decorative Upload Icon */}
