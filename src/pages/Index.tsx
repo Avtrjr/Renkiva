@@ -156,7 +156,7 @@ const Index = () => {
               🎬 Experience MeshTV in Action
             </h2>
             <p className="text-sm text-muted-foreground">
-              Watch "Tears of Steel" - streaming without traditional internet infrastructure
+              Watch "Big Buck Bunny" - streaming without traditional internet infrastructure
             </p>
           </div>
           
@@ -165,7 +165,7 @@ const Index = () => {
               {/* Compact Video Player */}
               <div className="aspect-video bg-background/80 rounded-lg overflow-hidden border border-border/50">
                 <StreamPlayer 
-                  title="Tears of Steel (Featured Demo)"
+                  title="Big Buck Bunny (Featured Demo)"
                   source="MeshTV Demo Node"
                   fragments={[
                     { id: 1, sequence: 1, size: 1024 },
@@ -174,7 +174,7 @@ const Index = () => {
                   ]}
                   signalStrength={100}
                   distance="0m"
-                  streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                  streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                 />
               </div>
               
