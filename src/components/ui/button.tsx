@@ -13,14 +13,14 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-lg shadow-neon border border-destructive/20",
         outline:
-          "border border-primary/30 bg-card/50 text-foreground hover:bg-primary/10 hover:border-primary/60 rounded-lg shadow-glow backdrop-blur-sm",
+          "border-2 border-primary bg-primary/10 text-primary hover:bg-primary/20 hover:border-primary rounded-lg shadow-glow backdrop-blur-sm",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg shadow-neon border border-secondary/20 hover:shadow-pulse",
-        ghost: "hover:bg-primary/10 hover:text-primary rounded-lg transition-neon",
+          "bg-secondary/80 text-white hover:bg-secondary rounded-lg shadow-neon border-2 border-secondary/50 hover:shadow-pulse",
+        ghost: "hover:bg-primary/20 hover:text-primary rounded-lg transition-neon border border-primary/30",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary-glow transition-cyber",
-        cyber: "bg-gradient-cyber text-foreground hover:shadow-cyber rounded-lg border border-primary/30 animate-neon-pulse font-bold",
-        neon: "bg-gradient-neon text-foreground hover:shadow-neon rounded-lg border border-secondary/30 transition-glow",
-        mesh: "bg-gradient-mesh text-foreground hover:shadow-glow rounded-lg border border-accent/30",
+        cyber: "bg-primary/20 border-2 border-primary text-primary hover:bg-primary hover:text-black rounded-lg shadow-cyber font-bold",
+        neon: "bg-secondary/20 border-2 border-secondary text-secondary hover:bg-secondary hover:text-black rounded-lg shadow-neon",
+        mesh: "bg-accent/20 border-2 border-accent text-accent hover:bg-accent hover:text-black rounded-lg shadow-glow",
       },
       size: {
         default: "h-12 px-6 py-3",
