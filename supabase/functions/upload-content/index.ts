@@ -34,17 +34,22 @@ serve(async (req) => {
 
     // Parse request body
     const body = await req.json();
+    console.log('Request body:', body);
     const { title, description, category, video_url, thumbnail_url, duration_minutes, file_size_bytes } = body;
 
     // Get user record to get internal user ID, create if doesn't exist
+    console.log('Looking for user with auth_user_id:', user.id);
     let { data: userData, error: userError } = await supabase
       .from('users')
       .select('id')
       .eq('auth_user_id', user.id)
       .single();
 
+    console.log('User lookup result:', { userData, userError });
+
     if (userError || !userData) {
       // User doesn't exist in users table, create it
+      console.log('Creating new user record for:', user.id);
       const { data: newUser, error: createError } = await supabase
         .from('users')
         .insert({
@@ -56,12 +61,16 @@ serve(async (req) => {
         .select('id')
         .single();
 
+      console.log('User creation result:', { newUser, createError });
+
       if (createError) {
         throw new Error(`Failed to create user record: ${createError.message}`);
       }
       
       userData = newUser;
     }
+
+    console.log('Final userData:', userData);
 
     // Insert content into shows table
     const { data, error } = await supabase
