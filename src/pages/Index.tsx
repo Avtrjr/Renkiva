@@ -26,6 +26,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Upload, Info } from "lucide-react";
 import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
+import { InviteOnlyMesh } from "@/components/InviteOnlyMesh";
+import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -119,10 +121,15 @@ const Index = () => {
           </section>
         )}
         
-        {/* Mesh Network Simulation */}
+        {/* Enhanced Mesh Network Visualization */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <MeshSimulation />
+          <EnhancedMeshAnimation />
           <MeshStreamSimulation />
+        </section>
+
+        {/* Invite-Only Mesh Channels */}
+        <section>
+          <InviteOnlyMesh />
         </section>
 
         {/* Upload Content Section */}
