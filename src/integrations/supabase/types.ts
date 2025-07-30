@@ -14,7 +14,289 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      broadcast_sessions: {
+        Row: {
+          broadcaster_node_id: string | null
+          created_at: string
+          ended_at: string | null
+          fragments_sent: number | null
+          id: string
+          is_active: boolean | null
+          session_name: string | null
+          show_id: string | null
+          started_at: string | null
+          total_fragments: number | null
+          updated_at: string
+          viewer_count: number | null
+        }
+        Insert: {
+          broadcaster_node_id?: string | null
+          created_at?: string
+          ended_at?: string | null
+          fragments_sent?: number | null
+          id?: string
+          is_active?: boolean | null
+          session_name?: string | null
+          show_id?: string | null
+          started_at?: string | null
+          total_fragments?: number | null
+          updated_at?: string
+          viewer_count?: number | null
+        }
+        Update: {
+          broadcaster_node_id?: string | null
+          created_at?: string
+          ended_at?: string | null
+          fragments_sent?: number | null
+          id?: string
+          is_active?: boolean | null
+          session_name?: string | null
+          show_id?: string | null
+          started_at?: string | null
+          total_fragments?: number | null
+          updated_at?: string
+          viewer_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "broadcast_sessions_broadcaster_node_id_fkey"
+            columns: ["broadcaster_node_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broadcast_sessions_show_id_fkey"
+            columns: ["show_id"]
+            isOneToOne: false
+            referencedRelation: "shows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fragment_receipts: {
+        Row: {
+          fragment_id: string | null
+          id: string
+          received_at: string | null
+          receiver_node_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          fragment_id?: string | null
+          id?: string
+          received_at?: string | null
+          receiver_node_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          fragment_id?: string | null
+          id?: string
+          received_at?: string | null
+          receiver_node_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fragment_receipts_fragment_id_fkey"
+            columns: ["fragment_id"]
+            isOneToOne: false
+            referencedRelation: "video_fragments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fragment_receipts_receiver_node_id_fkey"
+            columns: ["receiver_node_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mesh_nodes: {
+        Row: {
+          created_at: string
+          device_fingerprint: string | null
+          id: string
+          is_active: boolean | null
+          last_seen: string | null
+          latitude: number | null
+          longitude: number | null
+          node_name: string
+          signal_strength: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_fingerprint?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_seen?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          node_name: string
+          signal_strength?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_fingerprint?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_seen?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          node_name?: string
+          signal_strength?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mesh_nodes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shows: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          duration_minutes: number | null
+          file_size_bytes: number | null
+          id: string
+          is_public: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_public?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          is_public?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shows_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          auth_user_id: string | null
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          auth_user_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          auth_user_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      video_fragments: {
+        Row: {
+          broadcast_session_id: string | null
+          checksum: string
+          created_at: string
+          fragment_size: number
+          id: string
+          sender_node_id: string | null
+          sequence_number: number
+          total_fragments: number
+          video_id: string
+        }
+        Insert: {
+          broadcast_session_id?: string | null
+          checksum: string
+          created_at?: string
+          fragment_size: number
+          id?: string
+          sender_node_id?: string | null
+          sequence_number: number
+          total_fragments: number
+          video_id: string
+        }
+        Update: {
+          broadcast_session_id?: string | null
+          checksum?: string
+          created_at?: string
+          fragment_size?: number
+          id?: string
+          sender_node_id?: string | null
+          sequence_number?: number
+          total_fragments?: number
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_fragments_broadcast_session_id_fkey"
+            columns: ["broadcast_session_id"]
+            isOneToOne: false
+            referencedRelation: "broadcast_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_fragments_sender_node_id_fkey"
+            columns: ["sender_node_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
