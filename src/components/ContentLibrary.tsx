@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,18 @@ interface ContentLibraryProps {
 }
 
 const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
+  const navigate = useNavigate();
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
   const [freeContent, setFreeContent] = useState<ContentItem[]>([]);
   const [filteredContent, setFilteredContent] = useState<ContentItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
+
+  const handlePlayContent = (content: ContentItem) => {
+    // Navigate to stream page instead of using callback
+    navigate(`/stream/${content.id}`);
+  };
 
   useEffect(() => {
     const loadContent = async () => {
@@ -206,7 +213,7 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                         <Button
                           size="sm"
                           variant={content.streaming_url ? "default" : "outline"}
-                          onClick={() => onPlayContent?.(content)}
+                          onClick={() => handlePlayContent(content)}
                           disabled={!content.streaming_url}
                           className="flex-1 text-xs"
                         >
