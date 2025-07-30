@@ -131,6 +131,128 @@ const Index = () => {
       {/* Hero Section */}
       <Hero />
 
+      {/* Featured Offline TV Demo */}
+      <section className="container mx-auto px-6 py-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
+            📺 Featured: Mesh TV Live Demo
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Experience decentralized streaming in action. No internet needed - watch high-quality content directly from your mesh network.
+          </p>
+        </div>
+        
+        <div className="max-w-4xl mx-auto">
+          <Card className="mesh-card border-2 border-primary/30 shadow-cyber overflow-hidden">
+            <CardContent className="p-0">
+              {/* TV Frame */}
+              <div className="relative bg-card/50 backdrop-blur-sm">
+                {/* TV Screen */}
+                <div className="relative aspect-video bg-black rounded-lg m-4 overflow-hidden border-2 border-muted/20">
+                  <img 
+                    src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=450&fit=crop"
+                    alt="Featured Movie - Matrix-style cyberpunk scene"
+                    className="w-full h-full object-cover"
+                  />
+                  
+                  {/* Play Overlay */}
+                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center group cursor-pointer"
+                       onClick={() => {
+                         setCurrentStream({
+                           title: "The Matrix: Mesh Network Edition",
+                           senderName: 'Featured Demo',
+                           signalStrength: 100,
+                           distance: '0m',
+                           streaming_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=450&fit=crop'
+                         });
+                         setFragments([
+                           { id: 1, sequence: 1, size: 2048 },
+                           { id: 2, sequence: 2, size: 2048 },
+                           { id: 3, sequence: 3, size: 2048 }
+                         ]);
+                       }}>
+                    <div className="bg-primary/20 backdrop-blur-sm border-2 border-primary rounded-full p-6 group-hover:bg-primary/30 transition-all duration-300 group-hover:scale-110">
+                      <div className="w-12 h-12 border-l-4 border-primary ml-2 rounded-sm"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Status Indicators */}
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <div className="bg-green-500/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      LIVE
+                    </div>
+                    <div className="bg-primary/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium">
+                      MESH NETWORK
+                    </div>
+                  </div>
+                  
+                  {/* Quality Indicator */}
+                  <div className="absolute top-4 right-4 bg-card/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium border border-primary/30">
+                    4K • No Internet Required
+                  </div>
+                  
+                  {/* Bottom Info Bar */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                    <div className="flex items-center justify-between text-white">
+                      <div>
+                        <h3 className="font-bold text-lg">The Matrix: Mesh Network Edition</h3>
+                        <p className="text-sm text-white/80">Shared by CyberNode_42 • 5m away • Signal: 98%</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1 text-sm">
+                          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                          <span>3 viewers</span>
+                        </div>
+                        <Button 
+                          variant="cyber" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentStream({
+                              title: "The Matrix: Mesh Network Edition",
+                              senderName: 'Featured Demo',
+                              signalStrength: 100,
+                              distance: '0m'
+                            });
+                            setFragments([
+                              { id: 1, sequence: 1, size: 2048 },
+                              { id: 2, sequence: 2, size: 2048 },
+                              { id: 3, sequence: 3, size: 2048 }
+                            ]);
+                          }}
+                        >
+                          Stream Now
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Feature Highlights */}
+                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/20">
+                    <div className="text-2xl mb-2">🔒</div>
+                    <h4 className="font-semibold text-primary mb-1">Encrypted Streaming</h4>
+                    <p className="text-xs text-muted-foreground">End-to-end encryption for private viewing</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-secondary/10 border border-secondary/20">
+                    <div className="text-2xl mb-2">📡</div>
+                    <h4 className="font-semibold text-secondary mb-1">Offline Network</h4>
+                    <p className="text-xs text-muted-foreground">No internet required - pure mesh technology</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg bg-accent/10 border border-accent/20">
+                    <div className="text-2xl mb-2">⚡</div>
+                    <h4 className="font-semibold text-accent mb-1">Real-time Sync</h4>
+                    <p className="text-xs text-muted-foreground">Synchronized viewing across all mesh nodes</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* Capabilities Section */}
       <CapabilitiesSection />
 
