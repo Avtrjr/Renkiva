@@ -120,16 +120,16 @@ const Hero = () => {
 
         {/* Feature Pills */}
         <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">
-          <Badge variant="secondary" className="bg-card/50 backdrop-blur-lg shadow-clay-inset px-4 py-2">
+          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
             📡 Mesh Network
           </Badge>
-          <Badge variant="secondary" className="bg-card/50 backdrop-blur-lg shadow-clay-inset px-4 py-2">
+          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
             🔐 Encrypted
           </Badge>
-          <Badge variant="secondary" className="bg-card/50 backdrop-blur-lg shadow-clay-inset px-4 py-2">
+          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
             📱 Bluetooth LE
           </Badge>
-          <Badge variant="secondary" className="bg-card/50 backdrop-blur-lg shadow-clay-inset px-4 py-2">
+          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
             ⚡ P2P Streaming
           </Badge>
         </div>
