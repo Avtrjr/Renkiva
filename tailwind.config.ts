@@ -57,19 +57,20 @@ export default {
 				}
 			},
 			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-elegant': 'var(--gradient-elegant)',
+				'gradient-cyber': 'var(--gradient-cyber)',
+				'gradient-neon': 'var(--gradient-neon)',
 				'gradient-mesh': 'var(--gradient-mesh)'
 			},
 			boxShadow: {
-				'elegant': 'var(--shadow-elegant)',
-				'inset': 'var(--shadow-inset)',
+				'cyber': 'var(--shadow-cyber)',
+				'neon': 'var(--shadow-neon)',
 				'glow': 'var(--shadow-glow)',
 				'pulse': 'var(--shadow-pulse)'
 			},
 			transitionTimingFunction: {
-				'elegant': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-				'refined': 'cubic-bezier(0.4, 0, 0.2, 1)'
+				'cyber': 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+				'neon': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'glow': 'cubic-bezier(0.23, 1, 0.32, 1)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -110,9 +111,11 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'aurora': 'aurora 8s ease-in-out infinite',
+				'cyber': 'aurora 8s ease-in-out infinite',
 				'pulse-mesh': 'pulse-mesh 3s ease-in-out infinite',
-				'float': 'float 6s ease-in-out infinite'
+				'float': 'float 6s ease-in-out infinite',
+				'mesh-rotate': 'mesh-rotate 10s linear infinite',
+				'neon-pulse': 'neon-pulse 2s ease-in-out infinite alternate'
 			}
 		}
 	},

@@ -109,7 +109,7 @@ const Hero = () => {
 
         {/* CTA Button */}
         <Button 
-          variant="discover" 
+          variant="cyber" 
           size="hero"
           className="mb-8 backdrop-blur-sm"
           onClick={handleDiscoverShows}

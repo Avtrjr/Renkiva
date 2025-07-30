@@ -28,6 +28,7 @@ import { Upload, Info } from "lucide-react";
 import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
 import { InviteOnlyMesh } from "@/components/InviteOnlyMesh";
 import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
+import { CyberpunkMeshNetwork } from "@/components/CyberpunkMeshNetwork";
 import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 import { InstallWizard } from "@/components/InstallWizard";
 import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
@@ -143,8 +144,22 @@ const Index = () => {
           <Scene3D />
         </section>
 
-        {/* Enhanced Mesh Network Visualization */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Cyberpunk Mesh Network Visualization */}
+        <section className="mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
+              🌐 Neural Mesh Network
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Experience the future of decentralized streaming with our cyberpunk-enhanced mesh network. 
+              Watch as data flows through encrypted channels with neon-lit pathways.
+            </p>
+          </div>
+          <CyberpunkMeshNetwork />
+        </section>
+
+        {/* Enhanced Mesh Network Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <EnhancedMeshAnimation />
           <MeshStreamSimulation />
         </section>
