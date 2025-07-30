@@ -38,6 +38,10 @@ const EasyUpload = ({ onUploadComplete }: EasyUploadProps) => {
     title: '',
     description: '',
     category: '',
+    tags: '',
+    license: 'Public Domain',
+    creator: '',
+    source_url: '',
     videoFile: null as File | null,
     thumbnailFile: null as File | null,
     duration: '',
@@ -168,6 +172,10 @@ const EasyUpload = ({ onUploadComplete }: EasyUploadProps) => {
         title: '',
         description: '',
         category: '',
+        tags: '',
+        license: 'Public Domain',
+        creator: '',
+        source_url: '',
         videoFile: null,
         thumbnailFile: null,
         duration: '',
@@ -301,14 +309,58 @@ const EasyUpload = ({ onUploadComplete }: EasyUploadProps) => {
               />
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="duration">Duration (minutes)</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  value={formData.duration}
+                  onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+                  placeholder="120"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="license">License</Label>
+                <Input
+                  id="license"
+                  value={formData.license}
+                  onChange={(e) => setFormData(prev => ({ ...prev, license: e.target.value }))}
+                  placeholder="Public Domain, CC-BY, etc."
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="creator">Creator (Optional)</Label>
+                <Input
+                  id="creator"
+                  value={formData.creator}
+                  onChange={(e) => setFormData(prev => ({ ...prev, creator: e.target.value }))}
+                  placeholder="Director, studio, etc."
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags</Label>
+                <Input
+                  id="tags"
+                  value={formData.tags}
+                  onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
+                  placeholder="action, adventure, classic"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="duration">Duration (minutes)</Label>
+              <Label htmlFor="source_url">Source URL (Optional)</Label>
               <Input
-                id="duration"
-                type="number"
-                value={formData.duration}
-                onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
-                placeholder="120"
+                id="source_url"
+                value={formData.source_url}
+                onChange={(e) => setFormData(prev => ({ ...prev, source_url: e.target.value }))}
+                placeholder="https://archive.org/details/..."
               />
             </div>
 
