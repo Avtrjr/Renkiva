@@ -50,7 +50,7 @@ const Index = () => {
   const [fragments, setFragments] = useState<any[]>([]);
   const [showUpload, setShowUpload] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [showDiagnostics, setShowDiagnostics] = useState(true);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
   const [loadingAi, setLoadingAi] = useState(false);
   useEffect(() => {
@@ -139,8 +139,6 @@ const Index = () => {
       {/* Sponsorship Overlay */}
       <SponsorshipOverlay />
       
-      {/* Real-Time Diagnostics Overlay */}
-      <DiagnosticsOverlay isOpen={showDiagnostics} onToggle={() => setShowDiagnostics(!showDiagnostics)} />
 
       {/* Featured MeshTV Showcase - Main Feature */}
       <section className="container mx-auto px-6 pt-8 pb-6">        
@@ -518,7 +516,7 @@ const Index = () => {
         </section>
 
         {/* Analytics & Settings Grid */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Ad Tracker Analytics */}
           <div className="lg:col-span-1">
             <AdTracker />
@@ -532,6 +530,11 @@ const Index = () => {
           {/* Fingerprint Card */}
           <div className="lg:col-span-1">
             <FingerprintCard />
+          </div>
+          
+          {/* Mesh Diagnostics */}
+          <div className="lg:col-span-1">
+            <DiagnosticsOverlay isOpen={false} onToggle={() => setShowDiagnostics(!showDiagnostics)} />
           </div>
         </section>
       </div>
