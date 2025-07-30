@@ -1,5 +1,11 @@
+import { useState } from "react";
 import Hero from "@/components/Hero";
 import StreamCard from "@/components/StreamCard";
+import StreamPlayer from "@/components/StreamPlayer";
+import BroadcastToggle from "@/components/BroadcastToggle";
+import NearbyStreamsList from "@/components/NearbyStreamsList";
+import AIContentHelper from "@/components/AIContentHelper";
+import AdTracker from "@/components/AdTracker";
 import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
@@ -8,6 +14,8 @@ import { useShows } from "@/hooks/useShows";
 
 const Index = () => {
   const { shows, loading, error } = useShows();
+  const [currentStream, setCurrentStream] = useState<any>(null);
+  const [fragments, setFragments] = useState<any[]>([]);
 
   // Convert database shows to the format expected by StreamCard
   const nearbyStreams = shows.map((show) => ({
@@ -26,6 +34,19 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">
+        
+        {/* Current Stream Player */}
+        {currentStream && (
+          <section>
+            <StreamPlayer
+              title={currentStream.title}
+              source={currentStream.senderName}
+              fragments={fragments}
+              signalStrength={currentStream.signalStrength}
+              distance={currentStream.distance}
+            />
+          </section>
+        )}
         
         {/* Mesh Network Simulation */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -73,14 +94,55 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Broadcasting & Settings Grid */}
+        {/* MeshTV Dashboard Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {/* Enhanced Broadcast Controls */}
+          <div className="xl:col-span-1">
+            <BroadcastToggle 
+              onBroadcastStart={(title) => {
+                console.log(`Broadcasting: ${title}`);
+                // Mock broadcast start
+                setFragments([{ id: 1, size: 1024 }, { id: 2, size: 2048 }]);
+              }}
+              onMeshModeChange={(enabled) => {
+                console.log(`Mesh mode: ${enabled ? 'enabled' : 'disabled'}`);
+              }}
+            />
+          </div>
+          
+          {/* Nearby Streams */}
+          <div className="xl:col-span-1">
+            <NearbyStreamsList 
+              onJoin={(stream) => {
+                setCurrentStream(stream);
+                setFragments([
+                  { id: 1, sequence: 1, size: 1024 },
+                  { id: 2, sequence: 2, size: 2048 },
+                  { id: 3, sequence: 3, size: 1536 }
+                ]);
+              }}
+            />
+          </div>
+          
+          {/* AI Content Helper */}
+          <div className="xl:col-span-1">
+            <AIContentHelper />
+          </div>
+        </section>
+
+        {/* Analytics & Settings Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Broadcast Section - Takes 2 columns */}
-          <div className="lg:col-span-2">
+          {/* Ad Tracker Analytics */}
+          <div className="lg:col-span-1">
+            <AdTracker />
+          </div>
+          
+          {/* Original Broadcast Section */}
+          <div className="lg:col-span-1">
             <BroadcastSection />
           </div>
           
-          {/* Fingerprint Card - Takes 1 column */}
+          {/* Fingerprint Card */}
           <div className="lg:col-span-1">
             <FingerprintCard />
           </div>
