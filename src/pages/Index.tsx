@@ -14,8 +14,13 @@ import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 import ContentLibrary from "@/components/ContentLibrary";
 import StarterPackGallery from "@/components/StarterPackGallery";
 import UploadContent from "@/components/UploadContent";
+import UploadInstructions from "@/components/UploadInstructions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Upload, Info } from "lucide-react";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -27,6 +32,7 @@ const Index = () => {
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
   const [showUpload, setShowUpload] = useState(false);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
 
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
@@ -101,63 +107,81 @@ const Index = () => {
           <MeshStreamSimulation />
         </section>
 
-        {/* Content Upload Section */}
-        {user && (
-          <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                📤 Upload Content
-              </h2>
-              <p className="text-muted-foreground">
-                Share your own videos and movies with the mesh network
-              </p>
-            </div>
-            
-            {showUpload ? (
-              <UploadContent 
-                onClose={() => setShowUpload(false)} 
-                onUploadComplete={() => {
-                  setShowUpload(false);
-                  // Refresh the shows list
-                  window.location.reload();
-                }}
-              />
-            ) : (
-              <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20">
-                <CardHeader>
-                  <CardTitle>Ready to Share Content?</CardTitle>
-                  <CardDescription>
-                    Upload your movies, shows, or videos to make them available on the mesh network
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => setShowUpload(true)} className="w-full">
-                    Upload New Content
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </section>
-        )}
-
-        {/* Sign Up Prompt for Non-Authenticated Users */}
-        {!user && (
-          <section>
-            <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 text-center">
-              <CardHeader>
-                <CardTitle>Join MeshTV to Upload Content</CardTitle>
-                <CardDescription>
-                  Create an account to upload your own movies and videos to the mesh network
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Link to="/auth">
-                  <Button className="w-full">Sign Up / Sign In</Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </section>
-        )}
+        {/* Upload Content Section */}
+        <section>
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              📤 Upload Content
+            </h2>
+            <p className="text-muted-foreground">
+              Share your own videos and movies with the mesh network
+            </p>
+          </div>
+          
+          <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-clay">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="w-5 h-5 text-primary" />
+                Upload Your Content
+              </CardTitle>
+              <CardDescription>
+                Share your movies and shows with the mesh network
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="upload" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="upload">Upload Content</TabsTrigger>
+                  <TabsTrigger value="instructions">How to Upload</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="upload" className="mt-4">
+                  {user ? (
+                    <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+                      <DialogTrigger asChild>
+                        <Button className="w-full" size="lg">
+                          <Upload className="w-4 h-4 mr-2" />
+                          Upload Movie or TV Show
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>Upload Content</DialogTitle>
+                        </DialogHeader>
+                        <UploadContent 
+                          onClose={() => setShowUploadDialog(false)}
+                          onUploadComplete={() => {
+                            setShowUploadDialog(false);
+                            // Refresh content library
+                            window.location.reload();
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <div className="space-y-4">
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription>
+                          Please sign in to upload your own content to the mesh network.
+                        </AlertDescription>
+                      </Alert>
+                      <Link to="/auth">
+                        <Button className="w-full">Sign Up / Sign In</Button>
+                      </Link>
+                    </div>
+                  )}
+                </TabsContent>
+                
+                <TabsContent value="instructions" className="mt-4">
+                  <UploadInstructions 
+                    onGetStarted={user ? () => setShowUploadDialog(true) : undefined}
+                  />
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Content Library Section */}
         <section>

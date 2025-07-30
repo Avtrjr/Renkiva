@@ -250,12 +250,50 @@ export async function fetchTrendingTV(): Promise<ContentItem[]> {
 
 export async function fetchAllContent(): Promise<ContentItem[]> {
   await new Promise(resolve => setTimeout(resolve, 500));
-  return legalContentLibrary;
+  
+  // Fetch user-uploaded content from Supabase
+  try {
+    const { supabase } = await import('@/integrations/supabase/client');
+    const { data: shows, error } = await supabase
+      .from('shows')
+      .select('*')
+      .eq('is_public', true)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching shows:', error);
+      return legalContentLibrary;
+    }
+
+    // Convert Supabase shows to ContentItem format
+    const supabaseContent: ContentItem[] = shows?.map(show => ({
+      id: show.id,
+      title: show.title,
+      description: show.description || '',
+      category: show.category || 'Other',
+      rating: 7.0, // Default rating for user content
+      releaseDate: show.created_at.split('T')[0],
+      thumbnailUrl: show.thumbnail_url || `https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=750&fit=crop&crop=center`,
+      backdropUrl: show.thumbnail_url || `https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1280&h=720&fit=crop&crop=center`,
+      media_type: show.category?.toLowerCase().includes('movie') ? 'movie' as const : 'tv' as const,
+      streaming_url: show.video_url || undefined,
+      is_legal: true,
+      source: 'User Upload',
+      duration_minutes: show.duration_minutes || undefined,
+      file_size_bytes: show.file_size_bytes || undefined
+    })) || [];
+
+    // Combine legal content with user uploads
+    return [...legalContentLibrary, ...supabaseContent];
+  } catch (error) {
+    console.error('Error connecting to Supabase:', error);
+    return legalContentLibrary;
+  }
 }
 
 export async function fetchFreeContent(): Promise<ContentItem[]> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return legalContentLibrary.filter(item => item.streaming_url && item.source === 'Public Domain');
+  const allContent = await fetchAllContent();
+  return allContent.filter(item => item.streaming_url);
 }
 
 export async function fetchContentById(id: string): Promise<ContentItem | null> {

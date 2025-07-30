@@ -191,23 +191,23 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                     >
                       {/* Compact aspect ratio for better grid fit */}
                       <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-t-lg">
-                        {!imageErrors.has(content.id) && getOptimizedImageUrl(content.thumbnailUrl, 'thumb') ? (
-                          <img 
-                            src={getOptimizedImageUrl(content.thumbnailUrl, 'thumb')!} 
-                            alt={content.title}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            loading="lazy"
-                            onError={() => handleImageError(content.id)}
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            {content.media_type === 'movie' ? (
-                              <Film className="w-8 h-8 text-primary/60" />
-                            ) : (
-                              <Tv className="w-8 h-8 text-primary/60" />
-                            )}
-                          </div>
-                        )}
+                         {!imageErrors.has(content.id) && content.thumbnailUrl ? (
+                           <img 
+                             src={content.thumbnailUrl}
+                             alt={content.title}
+                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                             loading="lazy"
+                             onError={() => handleImageError(content.id)}
+                           />
+                         ) : (
+                           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
+                             {content.media_type === 'movie' ? (
+                               <Film className="w-8 h-8 text-primary/60" />
+                             ) : (
+                               <Tv className="w-8 h-8 text-primary/60" />
+                             )}
+                           </div>
+                         )}
                         
                         {/* Overlay gradient for better text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
