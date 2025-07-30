@@ -57,19 +57,19 @@ export default {
 				}
 			},
 			backgroundImage: {
-				'aurora-1': 'var(--aurora-1)',
-				'aurora-2': 'var(--aurora-2)',
-				'aurora-mesh': 'var(--aurora-mesh)'
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-elegant': 'var(--gradient-elegant)',
+				'gradient-mesh': 'var(--gradient-mesh)'
 			},
 			boxShadow: {
-				'clay': 'var(--clay-shadow)',
-				'clay-inset': 'var(--clay-inset)',
-				'mesh-glow': 'var(--mesh-glow)',
-				'signal-pulse': 'var(--signal-pulse)'
+				'elegant': 'var(--shadow-elegant)',
+				'inset': 'var(--shadow-inset)',
+				'glow': 'var(--shadow-glow)',
+				'pulse': 'var(--shadow-pulse)'
 			},
 			transitionTimingFunction: {
-				'clay': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-				'aurora': 'cubic-bezier(0.4, 0, 0.2, 1)'
+				'elegant': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+				'refined': 'cubic-bezier(0.4, 0, 0.2, 1)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
