@@ -3,6 +3,7 @@ import StreamCard from "@/components/StreamCard";
 import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
+import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 
 const Index = () => {
   // Mock data for nearby streams
@@ -42,8 +43,9 @@ const Index = () => {
       <div className="container mx-auto px-6 py-12 space-y-12">
         
         {/* Mesh Network Simulation */}
-        <section>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <MeshSimulation />
+          <MeshStreamSimulation />
         </section>
 
         {/* Nearby Streams Section */}
