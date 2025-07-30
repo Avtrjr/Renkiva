@@ -32,6 +32,7 @@ import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 import { InstallWizard } from "@/components/InstallWizard";
 import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
 import { RoadRunnerAnimation } from "@/components/RoadRunnerAnimation";
+import { Scene3D } from "@/components/Scene3D";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -131,6 +132,19 @@ const Index = () => {
           </section>
         )}
         
+        {/* 3D Mesh Network Visualization */}
+        <section>
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              🌐 3D Mesh Network
+            </h2>
+            <p className="text-muted-foreground">
+              Interactive 3D visualization of the mesh network topology
+            </p>
+          </div>
+          <Scene3D />
+        </section>
+
         {/* Enhanced Mesh Network Visualization */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <EnhancedMeshAnimation />
