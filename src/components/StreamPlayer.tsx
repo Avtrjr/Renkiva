@@ -55,7 +55,8 @@ const StreamPlayer = ({
         return fragment.data;
       }
       // Convert string data to Uint8Array if needed
-      return new Uint8Array(Buffer.from(fragment.data || 'MOCK_VIDEO_DATA', 'utf-8'));
+      const encoder = new TextEncoder();
+      return encoder.encode(fragment.data || 'MOCK_VIDEO_DATA');
     });
     
     // Combine all buffers
