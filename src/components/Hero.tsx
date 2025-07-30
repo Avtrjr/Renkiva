@@ -134,16 +134,36 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Sponsor Section */}
+      {/* Enhanced Sponsor Section */}
       <div className="absolute bottom-8 left-8 right-8">
-        <div className="bg-card/20 backdrop-blur-lg border border-border/50 rounded-lg p-4 max-w-md">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-              💎
+        <div className="bg-gradient-to-r from-primary/10 to-secondary/10 backdrop-blur-lg border border-primary/30 rounded-xl p-6 shadow-glow hover:shadow-glow-intense transition-all duration-300 hover:scale-[1.02]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center shadow-lg">
+                💎
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-foreground">Sponsored by CyberStream</p>
+                <p className="text-sm text-muted-foreground">Ultra-fast mesh streaming solutions</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-foreground">Sponsored by CyberStream</p>
-              <p className="text-xs text-muted-foreground">Ultra-fast mesh streaming solutions</p>
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.open('https://cyberstream.com', '_blank')}
+                className="bg-primary/20 hover:bg-primary/30 border-primary/50 text-primary-foreground shadow-clay-inset hover:shadow-glow transition-all duration-300"
+              >
+                Visit Site
+              </Button>
+              <Button 
+                variant="cyber" 
+                size="sm"
+                onClick={() => window.open('mailto:sponsors@meshtv.com?subject=Sponsorship Inquiry', '_blank')}
+                className="shadow-glow hover:shadow-glow-intense"
+              >
+                Sponsor Here
+              </Button>
             </div>
           </div>
         </div>
