@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Play, Download, Plus, Film, Tv, Globe } from "lucide-react";
+import { Search, Play, Download, Plus, Film, Tv, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchAllContent, fetchFreeContent, searchContent, type ContentItem } from "@/lib/contentProviderAPI";
 
 interface ContentLibraryProps {
@@ -17,13 +17,38 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
   const [freeContent, setFreeContent] = useState<ContentItem[]>([]);
   const [filteredContent, setFilteredContent] = useState<ContentItem[]>([]);
+  const [displayedContent, setDisplayedContent] = useState<ContentItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  
+  const ITEMS_PER_PAGE = 50;
+  const totalPages = Math.ceil(filteredContent.length / ITEMS_PER_PAGE);
 
   const handlePlayContent = (content: ContentItem) => {
-    // Navigate to stream page instead of using callback
     navigate(`/stream/${content.id}`);
+  };
+
+  const handleImageError = (contentId: string) => {
+    setImageErrors(prev => new Set([...prev, contentId]));
+  };
+
+  const getOptimizedImageUrl = (url: string, size: 'thumb' | 'backdrop') => {
+    if (!url || url.includes('placeholder')) return null;
+    
+    // TMDB image optimization
+    if (url.includes('image.tmdb.org')) {
+      const baseUrl = 'https://image.tmdb.org/t/p/';
+      if (size === 'thumb') {
+        return url.replace(/\/w\d+/, '/w342'); // Optimized thumbnail size
+      } else {
+        return url.replace(/\/w\d+/, '/w780'); // Optimized backdrop size
+      }
+    }
+    
+    return url;
   };
 
   useEffect(() => {
@@ -70,7 +95,15 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
     };
 
     filterContent();
+    setCurrentPage(1); // Reset to first page when content changes
   }, [searchQuery, activeTab, allContent, freeContent]);
+
+  // Update displayed content based on pagination
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setDisplayedContent(filteredContent.slice(startIndex, endIndex));
+  }, [filteredContent, currentPage]);
 
   const getSourceIcon = (source: string) => {
     switch (source) {
@@ -147,94 +180,110 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredContent.map((content) => (
-                  <Card
-                    key={content.id}
-                    className="group hover:shadow-mesh-glow transition-all duration-300 bg-muted/20 border-border/30"
-                  >
-                    <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-t-lg">
-                      {content.thumbnailUrl && !content.thumbnailUrl.includes('placeholder') ? (
-                        <img 
-                          src={content.thumbnailUrl} 
-                          alt={content.title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
-                      ) : null}
-                      <div className={`absolute inset-0 flex items-center justify-center ${content.thumbnailUrl && !content.thumbnailUrl.includes('placeholder') ? 'hidden' : ''}`}>
-                        {content.media_type === 'movie' ? (
-                          <Film className="w-12 h-12 text-primary/60" />
+              <>
+                {/* Grid optimized for 50 items per page - 10 columns on large screens */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-10 gap-3">
+                  {displayedContent.map((content) => (
+                    <Card
+                      key={content.id}
+                      className="group hover:shadow-mesh-glow transition-all duration-300 bg-muted/20 border-border/30 cursor-pointer"
+                      onClick={() => handlePlayContent(content)}
+                    >
+                      {/* Compact aspect ratio for better grid fit */}
+                      <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-t-lg">
+                        {!imageErrors.has(content.id) && getOptimizedImageUrl(content.thumbnailUrl, 'thumb') ? (
+                          <img 
+                            src={getOptimizedImageUrl(content.thumbnailUrl, 'thumb')!} 
+                            alt={content.title}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy"
+                            onError={() => handleImageError(content.id)}
+                          />
                         ) : (
-                          <Tv className="w-12 h-12 text-primary/60" />
-                        )}
-                      </div>
-                      
-                      {/* Source Badge */}
-                      <div className="absolute top-2 left-2">
-                        <Badge className={`text-xs ${getSourceColor(content.source)}`}>
-                          <div className="flex items-center gap-1">
-                            {getSourceIcon(content.source)}
-                            {content.source}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            {content.media_type === 'movie' ? (
+                              <Film className="w-8 h-8 text-primary/60" />
+                            ) : (
+                              <Tv className="w-8 h-8 text-primary/60" />
+                            )}
                           </div>
-                        </Badge>
-                      </div>
-
-                      {/* Stream Available Badge */}
-                      {content.streaming_url && (
-                        <div className="absolute top-2 right-2">
-                          <Badge className="bg-green-500/20 text-green-700 border-green-300 text-xs">
-                            ▶ Available
+                        )}
+                        
+                        {/* Overlay gradient for better text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        
+                        {/* Compact badges */}
+                        <div className="absolute top-1 left-1">
+                          <Badge className={`text-xs px-1 py-0 ${getSourceColor(content.source)}`}>
+                            {getSourceIcon(content.source)}
                           </Badge>
                         </div>
-                      )}
-                    </div>
 
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-foreground mb-1 line-clamp-1">
-                        {content.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                        {content.description}
-                      </p>
-
-                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                        <span>{content.category}</span>
-                        <span>⭐ {content.rating}</span>
-                        {content.duration_minutes && (
-                          <span>{content.duration_minutes}min</span>
-                        )}
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant={content.streaming_url ? "default" : "outline"}
-                          onClick={() => handlePlayContent(content)}
-                          disabled={!content.streaming_url}
-                          className="flex-1 text-xs"
-                        >
-                          <Play className="w-3 h-3 mr-1" />
-                          {content.streaming_url ? 'Play' : 'No Stream'}
-                        </Button>
-                        
+                        {/* Stream indicator */}
                         {content.streaming_url && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            <Download className="w-3 h-3" />
-                          </Button>
+                          <div className="absolute top-1 right-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                          </div>
                         )}
+
+                        {/* Hover play button */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="bg-primary/90 rounded-full p-2">
+                            <Play className="w-4 h-4 text-primary-foreground" />
+                          </div>
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+
+                      {/* Compact content info */}
+                      <CardContent className="p-2">
+                        <h3 className="font-medium text-xs text-foreground mb-1 line-clamp-2 leading-tight">
+                          {content.title}
+                        </h3>
+                        
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span className="truncate">{content.category}</span>
+                          <span>⭐{content.rating}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                      >
+                        <ChevronLeft className="w-4 h-4 mr-1" />
+                        Previous
+                      </Button>
+                      
+                      <span className="text-sm text-muted-foreground">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </div>
+                    
+                    <div className="text-sm text-muted-foreground">
+                      Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredContent.length)} of {filteredContent.length} items
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </TabsContent>
         </Tabs>
