@@ -70,6 +70,22 @@ serve(async (req) => {
       userData = newUser;
     }
 
+    // Ensure profile exists (required by foreign key constraint)
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .upsert({
+        id: user.id,
+        username: user.user_metadata?.username || user.email?.split('@')[0] || 'user',
+        display_name: user.user_metadata?.display_name || user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+        avatar_url: user.user_metadata?.avatar_url
+      }, {
+        onConflict: 'id'
+      });
+
+    if (profileError) {
+      console.log('Profile upsert error:', profileError);
+    }
+
     console.log('Final userData:', userData);
 
     // Insert content into shows table
