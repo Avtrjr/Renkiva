@@ -147,7 +147,18 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                     className="group hover:shadow-mesh-glow transition-all duration-300 bg-muted/20 border-border/30"
                   >
                     <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-t-lg">
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      {content.thumbnailUrl && !content.thumbnailUrl.includes('placeholder') ? (
+                        <img 
+                          src={content.thumbnailUrl} 
+                          alt={content.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      <div className={`absolute inset-0 flex items-center justify-center ${content.thumbnailUrl && !content.thumbnailUrl.includes('placeholder') ? 'hidden' : ''}`}>
                         {content.media_type === 'movie' ? (
                           <Film className="w-12 h-12 text-primary/60" />
                         ) : (
