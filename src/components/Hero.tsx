@@ -17,43 +17,59 @@ const Hero = () => {
   const handleDiscoverShows = async () => {
     setIsDiscovering(true);
     try {
-      // Fetch all available content
-      const allContent = await fetchAllContent();
-      
-      // Upload to Supabase shows table
-      const showsToInsert = allContent.map(content => ({
-        title: content.title,
-        description: content.description,
-        category: content.category,
-        thumbnail_url: content.thumbnailUrl,
-        video_url: content.streaming_url,
-        duration_minutes: content.duration_minutes,
-        file_size_bytes: content.file_size_bytes,
-        is_public: true
-      }));
-
-      const { data, error } = await supabase
-        .from('shows')
-        .upsert(showsToInsert, { 
-          onConflict: 'title',
-          ignoreDuplicates: true 
-        });
+      // Use the new mesh network discovery function
+      const { data: nearbyContent, error } = await supabase
+        .rpc('discover_nearby_content');
 
       if (error) {
         throw error;
       }
 
+      // Also fetch and add any additional content from content provider API
+      const additionalContent = await fetchAllContent();
+      
+      // Filter out duplicates and combine
+      const existingIds = new Set(nearbyContent?.map(item => item.id) || []);
+      const newContent = additionalContent.filter(item => !existingIds.has(item.id));
+      
+      // Upload new content to Supabase shows table
+      if (newContent.length > 0) {
+        const showsToInsert = newContent.map(content => ({
+          title: content.title,
+          description: content.description,
+          category: content.category,
+          thumbnail_url: content.thumbnailUrl,
+          video_url: content.streaming_url,
+          duration_minutes: content.duration_minutes,
+          file_size_bytes: content.file_size_bytes,
+          is_public: true
+        }));
+
+        const { error: insertError } = await supabase
+          .from('shows')
+          .upsert(showsToInsert, { 
+            onConflict: 'title',
+            ignoreDuplicates: true 
+          });
+
+        if (insertError) {
+          console.error('Error inserting new content:', insertError);
+        }
+      }
+
+      const totalFound = (nearbyContent?.length || 0) + newContent.length;
+
       toast({
-        title: "Content Discovery Complete!",
-        description: `Found and uploaded ${allContent.length} shows and movies to your library.`,
-        duration: 3000,
+        title: "🔍 Mesh Discovery Complete!",
+        description: `Found ${totalFound} available shows from nearby mesh nodes and the network.`,
+        duration: 4000,
       });
 
     } catch (error) {
       console.error('Error discovering content:', error);
       toast({
         title: "Discovery Failed",
-        description: "Failed to discover nearby content. Please try again.",
+        description: "Failed to discover nearby content. Please check your connection and try again.",
         variant: "destructive",
         duration: 3000,
       });

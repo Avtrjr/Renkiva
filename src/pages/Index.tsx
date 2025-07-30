@@ -16,7 +16,7 @@ import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
 import ContentLibrary from "@/components/ContentLibrary";
 import CommunityLibrary from "@/components/CommunityLibrary";
 import StarterPackGallery from "@/components/StarterPackGallery";
-import UploadContent from "@/components/UploadContent";
+import UploadContentForm from "@/components/UploadContentForm";
 import UploadInstructions from "@/components/UploadInstructions";
 import WebhookSettings from "@/components/WebhookSettings";
 import CapabilitiesSection from "@/components/CapabilitiesSection";
@@ -32,7 +32,6 @@ import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
 import { CyberpunkMeshNetwork } from "@/components/CyberpunkMeshNetwork";
 import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 import { InstallWizard } from "@/components/InstallWizard";
-import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
 import { Scene3D } from "@/components/Scene3D";
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -48,9 +47,6 @@ const Index = () => {
   } = useAuth();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
-  const [showUpload, setShowUpload] = useState(false);
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
   const [loadingAi, setLoadingAi] = useState(false);
   useEffect(() => {
@@ -314,39 +310,15 @@ const Index = () => {
                   <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="upload" className="mt-4">
-                  {user ? <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
-                      <DialogTrigger asChild>
-                        <Button className="w-full" size="lg">
-                          <Upload className="w-4 h-4 mr-2" />
-                          Upload Movie or TV Show
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle>Upload Content</DialogTitle>
-                        </DialogHeader>
-                        <UploadContent onClose={() => setShowUploadDialog(false)} onUploadComplete={() => {
-                      setShowUploadDialog(false);
-                      // Refresh content library
-                      window.location.reload();
-                    }} />
-                      </DialogContent>
-                    </Dialog> : <div className="space-y-4">
-                      <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertDescription>
-                          Please sign in to upload your own content to the mesh network.
-                        </AlertDescription>
-                      </Alert>
-                      <Link to="/auth">
-                        <Button className="w-full">Sign Up / Sign In</Button>
-                      </Link>
-                    </div>}
+                <TabsContent value="upload" className="space-y-6">
+                  <UploadContentForm onUploadComplete={() => {
+                    // Refresh shows data when upload is complete
+                    window.location.reload();
+                  }} />
                 </TabsContent>
                 
                 <TabsContent value="instructions" className="mt-4">
-                  <UploadInstructions onGetStarted={user ? () => setShowUploadDialog(true) : undefined} />
+                  <UploadInstructions />
                 </TabsContent>
                 
                 <TabsContent value="webhooks" className="mt-4">
@@ -532,7 +504,7 @@ const Index = () => {
           
           {/* Mesh Diagnostics */}
           <div className="lg:col-span-1">
-            <DiagnosticsOverlay isOpen={false} onToggle={() => setShowDiagnostics(!showDiagnostics)} />
+            <DiagnosticsOverlay isOpen={false} onToggle={() => {}} />
           </div>
         </section>
       </div>

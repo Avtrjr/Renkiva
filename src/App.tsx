@@ -9,6 +9,7 @@ import StreamPage from "./pages/StreamPage";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import LibraryPage from "./pages/LibraryPage";
+import MeshTVDashboard from "./components/MeshTVDashboard";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/light" element={<LightTheme />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<MeshTVDashboard />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:genre" element={<LibraryPage />} />
           <Route path="/stream/:id" element={<StreamPage />} />

@@ -12,7 +12,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { LogOut, Upload, User as UserIcon } from 'lucide-react';
+import { LogOut, Upload, User as UserIcon, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface UserMenuProps {
   user: User;
@@ -66,6 +67,12 @@ const UserMenu = ({ user }: UserMenuProps) => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard" className="flex items-center">
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Dashboard</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <UserIcon className="mr-2 h-4 w-4" />
           <span>Profile</span>
