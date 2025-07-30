@@ -124,17 +124,34 @@ const StreamPlayer = ({
       <CardContent className="p-0">
         {/* Video Area */}
         <div className="relative aspect-video bg-gradient-mesh-dark flex items-center justify-center">
-          {/* Mock video display */}
+          {/* Actual video element */}
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            autoPlay={isPlaying}
+            muted={isMuted}
+            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+            onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+            onLoadedData={() => console.log('Video loaded')}
+            onError={(e) => console.error('Video error:', e)}
+          >
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+          {/* Fallback overlay when no video */}
+          {!videoRef.current?.src && (
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl mb-4">📺</div>
-                <p className="text-lg font-medium text-foreground">{title}</p>
-                <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
-                <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">📺</div>
+                  <p className="text-lg font-medium text-foreground">{title}</p>
+                  <p className="text-sm text-muted-foreground">📡 Source: {source}</p>
+                  <p className="text-xs text-muted-foreground">🧬 Fragments: {fragments.length}</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Mesh Info Overlay */}
           <div className="absolute top-4 left-4 flex gap-2">
