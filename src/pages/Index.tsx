@@ -33,16 +33,19 @@ import { CyberpunkMeshNetwork } from "@/components/CyberpunkMeshNetwork";
 import { PrivateChannelManager } from "@/components/PrivateChannelManager";
 import { InstallWizard } from "@/components/InstallWizard";
 import { SponsorshipOverlay } from "@/components/SponsorshipOverlay";
-
 import { Scene3D } from "@/components/Scene3D";
-
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
 import type { ContentItem } from "@/lib/contentProviderAPI";
-
 const Index = () => {
-  const { shows, loading, error } = useShows();
-  const { user } = useAuth();
+  const {
+    shows,
+    loading,
+    error
+  } = useShows();
+  const {
+    user
+  } = useAuth();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
   const [showUpload, setShowUpload] = useState(false);
@@ -50,7 +53,6 @@ const Index = () => {
   const [showDiagnostics, setShowDiagnostics] = useState(true);
   const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
   const [loadingAi, setLoadingAi] = useState(false);
-
   useEffect(() => {
     const loadAiSuggestions = async () => {
       setLoadingAi(true);
@@ -63,10 +65,8 @@ const Index = () => {
         setLoadingAi(false);
       }
     };
-
     loadAiSuggestions();
   }, []);
-
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
       title: content.title,
@@ -75,24 +75,40 @@ const Index = () => {
       distance: "5m",
       streaming_url: content.streaming_url
     });
-    setFragments([
-      { id: 1, sequence: 1, size: 1024 },
-      { id: 2, sequence: 2, size: 2048 },
-      { id: 3, sequence: 3, size: 1536 }
-    ]);
+    setFragments([{
+      id: 1,
+      sequence: 1,
+      size: 1024
+    }, {
+      id: 2,
+      sequence: 2,
+      size: 2048
+    }, {
+      id: 3,
+      sequence: 3,
+      size: 1536
+    }]);
   };
-
   const handleStarterPackSelect = async (item: any) => {
     try {
       // For now, create mock fragments since the video files aren't actually present
-      const mockFragments = [
-        { id: 1, sequence: 1, size: 1024 * 1024 }, // 1MB chunks
-        { id: 2, sequence: 2, size: 1024 * 1024 },
-        { id: 3, sequence: 3, size: 1024 * 1024 }
-      ];
-      
-      setCurrentStream({ 
-        title: item.title, 
+      const mockFragments = [{
+        id: 1,
+        sequence: 1,
+        size: 1024 * 1024
+      },
+      // 1MB chunks
+      {
+        id: 2,
+        sequence: 2,
+        size: 1024 * 1024
+      }, {
+        id: 3,
+        sequence: 3,
+        size: 1024 * 1024
+      }];
+      setCurrentStream({
+        title: item.title,
         senderName: 'Starter Pack',
         signalStrength: 100,
         distance: '0m'
@@ -104,29 +120,27 @@ const Index = () => {
   };
 
   // Convert database shows to the format expected by StreamCard - only show streamable content
-  const nearbyStreams = shows
-    .filter(show => show.video_url) // Only show shows with actual streaming URLs
-    .map((show) => ({
-      title: show.title,
-      distance: `${Math.floor(Math.random() * 50 + 1)}m`, // Mock distance
-      senderName: `User${Math.floor(Math.random() * 1000)}`, // Mock sender
-      category: show.category,
-      viewerCount: Math.floor(Math.random() * 5), // Mock viewer count
-      signalStrength: Math.floor(Math.random() * 40 + 60), // Mock signal strength
-      streaming_url: show.video_url // Add the actual streaming URL
-    }));
-
-  return (
-    <div className="min-h-screen bg-background">
+  const nearbyStreams = shows.filter(show => show.video_url) // Only show shows with actual streaming URLs
+  .map(show => ({
+    title: show.title,
+    distance: `${Math.floor(Math.random() * 50 + 1)}m`,
+    // Mock distance
+    senderName: `User${Math.floor(Math.random() * 1000)}`,
+    // Mock sender
+    category: show.category,
+    viewerCount: Math.floor(Math.random() * 5),
+    // Mock viewer count
+    signalStrength: Math.floor(Math.random() * 40 + 60),
+    // Mock signal strength
+    streaming_url: show.video_url // Add the actual streaming URL
+  }));
+  return <div className="min-h-screen bg-background">
       
       {/* Sponsorship Overlay */}
       <SponsorshipOverlay />
       
       {/* Real-Time Diagnostics Overlay */}
-      <DiagnosticsOverlay 
-        isOpen={showDiagnostics} 
-        onToggle={() => setShowDiagnostics(!showDiagnostics)} 
-      />
+      <DiagnosticsOverlay isOpen={showDiagnostics} onToggle={() => setShowDiagnostics(!showDiagnostics)} />
 
       {/* Hero Section */}
       <Hero />
@@ -140,65 +154,7 @@ const Index = () => {
           <Card className="mesh-card border border-primary/30 shadow-cyber overflow-hidden hover:shadow-glow transition-all duration-300">
             <CardContent className="p-4">
               {/* Compact TV Screen */}
-              <div className="relative aspect-[16/10] bg-black rounded-lg overflow-hidden border border-muted/20 group">
-                <img 
-                  src="https://image.tmdb.org/t/p/w500/pmMvgjiBhROiHTjsAYSUC2WZJoW.jpg"
-                  alt="Tears of Steel - Sci-fi short film"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                
-                {/* Play Overlay */}
-                <div 
-                  className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-black/40"
-                  onClick={() => {
-                    console.log('Play button clicked');
-                    setCurrentStream({
-                      title: "Tears of Steel",
-                      senderName: 'Featured Demo',
-                      signalStrength: 100,
-                      distance: '0m',
-                      streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
-                    });
-                    setFragments([
-                      { id: 1, sequence: 1, size: 2048 },
-                      { id: 2, sequence: 2, size: 2048 },
-                      { id: 3, sequence: 3, size: 2048 }
-                    ]);
-                  }}
-                >
-                  <div className="bg-primary/20 backdrop-blur-sm border border-primary rounded-full p-4 hover:bg-primary/40 hover:scale-110 transition-all duration-300 shadow-lg">
-                    <div className="w-8 h-8 border-l-[6px] border-primary ml-1"></div>
-                  </div>
-                </div>
-                
-                {/* Status Indicators */}
-                <div className="absolute top-2 left-2 flex gap-1">
-                  <div className="bg-green-500/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1 animate-fade-in">
-                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-                    LIVE
-                  </div>
-                  <div className="bg-primary/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium animate-fade-in">
-                    MESH
-                  </div>
-                </div>
-                
-                {/* Quality Badge */}
-                <div className="absolute top-2 right-2 bg-card/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium border border-primary/30 animate-fade-in">
-                  4K • No Internet
-                </div>
-                
-                {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3">
-                  <h3 className="font-bold text-sm text-white mb-1 animate-fade-in">Tears of Steel</h3>
-                  <div className="flex items-center justify-between text-white/80 text-xs animate-fade-in">
-                    <span>CyberNode_42 • 5m away</span>
-                    <div className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-                      <span>3 viewers</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
               
               {/* Compact Info */}
               <div className="mt-3 text-center animate-fade-in">
@@ -222,38 +178,36 @@ const Index = () => {
           </p>
         </div>
         
-        {loadingAi ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, idx) => (
-              <Card key={idx} className="mesh-card animate-pulse">
+        {loadingAi ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, idx) => <Card key={idx} className="mesh-card animate-pulse">
                 <CardContent className="p-6">
                   <div className="bg-muted/30 h-6 rounded mb-3"></div>
                   <div className="bg-muted/30 h-4 rounded mb-3 w-3/4"></div>
                   <div className="bg-muted/30 h-16 rounded"></div>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aiSuggestions.map((item, idx) => (
-              <Card 
-                key={idx} 
-                className="mesh-card hover:shadow-glow transition-all duration-300 cursor-pointer group"
-                onClick={() => {
-                  setCurrentStream({
-                    title: item.title,
-                    senderName: 'AI Recommendation',
-                    signalStrength: 100,
-                    distance: '0m'
-                  });
-                  setFragments([
-                    { id: 1, sequence: 1, size: 1024 },
-                    { id: 2, sequence: 2, size: 2048 },
-                    { id: 3, sequence: 3, size: 1536 }
-                  ]);
-                }}
-              >
+              </Card>)}
+          </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {aiSuggestions.map((item, idx) => <Card key={idx} className="mesh-card hover:shadow-glow transition-all duration-300 cursor-pointer group" onClick={() => {
+          setCurrentStream({
+            title: item.title,
+            senderName: 'AI Recommendation',
+            signalStrength: 100,
+            distance: '0m'
+          });
+          setFragments([{
+            id: 1,
+            sequence: 1,
+            size: 1024
+          }, {
+            id: 2,
+            sequence: 2,
+            size: 2048
+          }, {
+            id: 3,
+            sequence: 3,
+            size: 1536
+          }]);
+        }}>
                 <CardContent className="p-6">
                   <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
                     {item.title}
@@ -265,28 +219,17 @@ const Index = () => {
                     {item.description}
                   </p>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+              </Card>)}
+          </div>}
       </section>
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-12 space-y-12">
         
         {/* Current Stream Player */}
-        {currentStream && (
-          <section>
-            <StreamPlayer
-              title={currentStream.title}
-              source={currentStream.senderName}
-              fragments={fragments}
-              signalStrength={currentStream.signalStrength}
-              distance={currentStream.distance}
-              streaming_url={currentStream.streaming_url}
-            />
-          </section>
-        )}
+        {currentStream && <section>
+            <StreamPlayer title={currentStream.title} source={currentStream.senderName} fragments={fragments} signalStrength={currentStream.signalStrength} distance={currentStream.distance} streaming_url={currentStream.streaming_url} />
+          </section>}
         
         {/* 3D Mesh Network Visualization */}
         <section>
@@ -356,8 +299,7 @@ const Index = () => {
                 </TabsList>
                 
                 <TabsContent value="upload" className="mt-4">
-                  {user ? (
-                    <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+                  {user ? <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
                       <DialogTrigger asChild>
                         <Button className="w-full" size="lg">
                           <Upload className="w-4 h-4 mr-2" />
@@ -368,18 +310,13 @@ const Index = () => {
                         <DialogHeader>
                           <DialogTitle>Upload Content</DialogTitle>
                         </DialogHeader>
-                        <UploadContent 
-                          onClose={() => setShowUploadDialog(false)}
-                          onUploadComplete={() => {
-                            setShowUploadDialog(false);
-                            // Refresh content library
-                            window.location.reload();
-                          }}
-                        />
+                        <UploadContent onClose={() => setShowUploadDialog(false)} onUploadComplete={() => {
+                      setShowUploadDialog(false);
+                      // Refresh content library
+                      window.location.reload();
+                    }} />
                       </DialogContent>
-                    </Dialog>
-                  ) : (
-                    <div className="space-y-4">
+                    </Dialog> : <div className="space-y-4">
                       <Alert>
                         <Info className="h-4 w-4" />
                         <AlertDescription>
@@ -389,14 +326,11 @@ const Index = () => {
                       <Link to="/auth">
                         <Button className="w-full">Sign Up / Sign In</Button>
                       </Link>
-                    </div>
-                  )}
+                    </div>}
                 </TabsContent>
                 
                 <TabsContent value="instructions" className="mt-4">
-                  <UploadInstructions 
-                    onGetStarted={user ? () => setShowUploadDialog(true) : undefined}
-                  />
+                  <UploadInstructions onGetStarted={user ? () => setShowUploadDialog(true) : undefined} />
                 </TabsContent>
                 
                 <TabsContent value="webhooks" className="mt-4">
@@ -410,8 +344,7 @@ const Index = () => {
         
         
         {/* Install Wizard for New Users */}
-        {!user && (
-          <section>
+        {!user && <section>
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">
                 🚀 Get Started with MeshTV
@@ -421,12 +354,10 @@ const Index = () => {
               </p>
             </div>
             <InstallWizard />
-          </section>
-        )}
+          </section>}
 
         {/* AI & Private Channels Section */}
-        {user && (
-          <section>
+        {user && <section>
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">
                 🤖 AI & Private Channels
@@ -439,12 +370,10 @@ const Index = () => {
               <AIContentHelper />
               <PrivateChannelManager />
             </div>
-          </section>
-        )}
+          </section>}
 
         {/* Upload Sync Dashboard */}
-        {user && (
-          <section>
+        {user && <section>
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">
                 🔄 Upload Sync Dashboard
@@ -454,8 +383,7 @@ const Index = () => {
               </p>
             </div>
             <UploadSyncDashboard />
-          </section>
-        )}
+          </section>}
 
         {/* Content Library Section */}
         <section>
@@ -473,17 +401,15 @@ const Index = () => {
 
         {/* Community Library Section */}
         <section>
-          <CommunityLibrary 
-            onSelect={(upload) => {
-              setCurrentStream({
-                title: upload.title,
-                senderName: 'Community Upload',
-                signalStrength: 100,
-                distance: '0m'
-              });
-              setFragments(upload.fragments);
-            }}
-          />
+          <CommunityLibrary onSelect={upload => {
+          setCurrentStream({
+            title: upload.title,
+            senderName: 'Community Upload',
+            signalStrength: 100,
+            distance: '0m'
+          });
+          setFragments(upload.fragments);
+        }} />
         </section>
 
         {/* Nearby Streams Section */}
@@ -498,41 +424,29 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? (
-              <div className="col-span-full text-center py-8">
+            {loading ? <div className="col-span-full text-center py-8">
                 <p className="text-muted-foreground">Loading shows...</p>
-              </div>
-            ) : error ? (
-              <div className="col-span-full text-center py-8">
+              </div> : error ? <div className="col-span-full text-center py-8">
                 <p className="text-destructive">Error: {error}</p>
-              </div>
-            ) : nearbyStreams.length === 0 ? (
-              <div className="col-span-full text-center py-8">
+              </div> : nearbyStreams.length === 0 ? <div className="col-span-full text-center py-8">
                 <p className="text-muted-foreground">No streamable content available in mesh network</p>
                 <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
-              </div>
-            ) : (
-              nearbyStreams.map((stream, index) => (
-                <StreamCard
-                  key={index}
-                  title={stream.title}
-                  distance={stream.distance}
-                  senderName={stream.senderName}
-                  category={stream.category}
-                  viewerCount={stream.viewerCount}
-                  signalStrength={stream.signalStrength}
-                  streaming_url={stream.streaming_url}
-                  onPlay={(streamData) => {
-                    setCurrentStream(streamData);
-                    setFragments([
-                      { id: 1, sequence: 1, size: 1024 },
-                      { id: 2, sequence: 2, size: 2048 },
-                      { id: 3, sequence: 3, size: 1536 }
-                    ]);
-                  }}
-                />
-              ))
-            )}
+              </div> : nearbyStreams.map((stream, index) => <StreamCard key={index} title={stream.title} distance={stream.distance} senderName={stream.senderName} category={stream.category} viewerCount={stream.viewerCount} signalStrength={stream.signalStrength} streaming_url={stream.streaming_url} onPlay={streamData => {
+            setCurrentStream(streamData);
+            setFragments([{
+              id: 1,
+              sequence: 1,
+              size: 1024
+            }, {
+              id: 2,
+              sequence: 2,
+              size: 2048
+            }, {
+              id: 3,
+              sequence: 3,
+              size: 1536
+            }]);
+          }} />)}
           </div>
         </section>
 
@@ -540,37 +454,41 @@ const Index = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {/* Enhanced Broadcast Controls */}
           <div className="xl:col-span-1">
-            <BroadcastToggle 
-              onBroadcastStart={(data) => {
-                console.log(`Broadcasting: ${data.title}`, data.fragments);
-                if (data.fragments.length > 0) {
-                  setFragments(data.fragments);
-                  setCurrentStream({
-                    title: data.title,
-                    senderName: 'Your Device',
-                    signalStrength: 100,
-                    distance: '0m'
-                  });
-                }
-              }}
-            />
+            <BroadcastToggle onBroadcastStart={data => {
+            console.log(`Broadcasting: ${data.title}`, data.fragments);
+            if (data.fragments.length > 0) {
+              setFragments(data.fragments);
+              setCurrentStream({
+                title: data.title,
+                senderName: 'Your Device',
+                signalStrength: 100,
+                distance: '0m'
+              });
+            }
+          }} />
           </div>
           
           {/* Nearby Streams */}
           <div className="xl:col-span-1">
-            <NearbyStreamsList 
-              onJoin={(stream) => {
-                setCurrentStream({
-                  ...stream,
-                  streaming_url: nearbyStreams.find(s => s.title === stream.title)?.streaming_url
-                });
-                setFragments([
-                  { id: 1, sequence: 1, size: 1024 },
-                  { id: 2, sequence: 2, size: 2048 },
-                  { id: 3, sequence: 3, size: 1536 }
-                ]);
-              }}
-            />
+            <NearbyStreamsList onJoin={stream => {
+            setCurrentStream({
+              ...stream,
+              streaming_url: nearbyStreams.find(s => s.title === stream.title)?.streaming_url
+            });
+            setFragments([{
+              id: 1,
+              sequence: 1,
+              size: 1024
+            }, {
+              id: 2,
+              sequence: 2,
+              size: 2048
+            }, {
+              id: 3,
+              sequence: 3,
+              size: 1536
+            }]);
+          }} />
           </div>
           
           {/* AI Content Helper */}
@@ -597,8 +515,6 @@ const Index = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
