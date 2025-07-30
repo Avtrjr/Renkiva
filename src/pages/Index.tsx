@@ -137,60 +137,62 @@ const Index = () => {
       {/* Featured Offline TV Demo - Compact */}
       <section className="container mx-auto px-6 py-8">        
         <div className="max-w-2xl mx-auto">
-          <Card className="mesh-card border border-primary/30 shadow-cyber overflow-hidden">
+          <Card className="mesh-card border border-primary/30 shadow-cyber overflow-hidden hover:shadow-glow transition-all duration-300">
             <CardContent className="p-4">
               {/* Compact TV Screen */}
-              <div className="relative aspect-[16/10] bg-black rounded-lg overflow-hidden border border-muted/20">
+              <div className="relative aspect-[16/10] bg-black rounded-lg overflow-hidden border border-muted/20 group">
                 <img 
                   src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=375&fit=crop"
                   alt="Featured Movie - Matrix-style cyberpunk scene"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 
                 {/* Play Overlay */}
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center group cursor-pointer"
-                     onClick={() => {
-                       setCurrentStream({
-                         title: "The Matrix: Mesh Network Edition",
-                         senderName: 'Featured Demo',
-                         signalStrength: 100,
-                         distance: '0m',
-                         streaming_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=375&fit=crop'
-                       });
-                       setFragments([
-                         { id: 1, sequence: 1, size: 2048 },
-                         { id: 2, sequence: 2, size: 2048 },
-                         { id: 3, sequence: 3, size: 2048 }
-                       ]);
-                     }}>
-                  <div className="bg-primary/20 backdrop-blur-sm border border-primary rounded-full p-4 group-hover:bg-primary/30 transition-all duration-300 group-hover:scale-110">
-                    <div className="w-8 h-8 border-l-3 border-primary ml-1 rounded-sm"></div>
+                <div 
+                  className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-black/40"
+                  onClick={() => {
+                    setCurrentStream({
+                      title: "The Matrix: Mesh Network Edition",
+                      senderName: 'Featured Demo',
+                      signalStrength: 100,
+                      distance: '0m',
+                      streaming_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=375&fit=crop'
+                    });
+                    setFragments([
+                      { id: 1, sequence: 1, size: 2048 },
+                      { id: 2, sequence: 2, size: 2048 },
+                      { id: 3, sequence: 3, size: 2048 }
+                    ]);
+                  }}
+                >
+                  <div className="bg-primary/20 backdrop-blur-sm border border-primary rounded-full p-4 hover:bg-primary/40 hover:scale-110 transition-all duration-300 shadow-lg">
+                    <div className="w-8 h-8 border-l-[6px] border-primary ml-1"></div>
                   </div>
                 </div>
                 
                 {/* Status Indicators */}
                 <div className="absolute top-2 left-2 flex gap-1">
-                  <div className="bg-green-500/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1">
+                  <div className="bg-green-500/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1 animate-fade-in">
                     <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                     LIVE
                   </div>
-                  <div className="bg-primary/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium">
+                  <div className="bg-primary/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium animate-fade-in">
                     MESH
                   </div>
                 </div>
                 
                 {/* Quality Badge */}
-                <div className="absolute top-2 right-2 bg-card/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium border border-primary/30">
+                <div className="absolute top-2 right-2 bg-card/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium border border-primary/30 animate-fade-in">
                   4K • No Internet
                 </div>
                 
                 {/* Title Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3">
-                  <h3 className="font-bold text-sm text-white mb-1">The Matrix: Mesh Network Edition</h3>
-                  <div className="flex items-center justify-between text-white/80 text-xs">
+                  <h3 className="font-bold text-sm text-white mb-1 animate-fade-in">The Matrix: Mesh Network Edition</h3>
+                  <div className="flex items-center justify-between text-white/80 text-xs animate-fade-in">
                     <span>CyberNode_42 • 5m away</span>
                     <div className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                       <span>3 viewers</span>
                     </div>
                   </div>
@@ -198,7 +200,7 @@ const Index = () => {
               </div>
               
               {/* Compact Info */}
-              <div className="mt-3 text-center">
+              <div className="mt-3 text-center animate-fade-in">
                 <p className="text-xs text-muted-foreground">
                   📺 <strong>Watch TV without Internet</strong> - Experience decentralized streaming in action
                 </p>
