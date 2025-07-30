@@ -71,7 +71,7 @@ const Hero = () => {
       
       {/* Top Section with Auth and Main Content */}
       <div className="container mx-auto px-6 pt-8">
-        <div className="flex justify-between items-start mb-16">
+        <div className="flex justify-center items-center mb-16">
           {/* Left Side - Brand */}
           <div className="flex-1">
             <h1 className="text-6xl md:text-7xl font-bold bg-aurora-1 bg-clip-text text-transparent animate-aurora bg-[length:200%_200%]">
