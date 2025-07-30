@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -41,6 +42,7 @@ interface ContentSuggestion {
 }
 
 export function AIContentHelper() {
+  const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
   const [contentSuggestions, setContentSuggestions] = useState<ContentSuggestion[]>([]);
   const [userPrompt, setUserPrompt] = useState('');
@@ -208,6 +210,31 @@ export function AIContentHelper() {
     }
   };
 
+  const handleExploreClick = (rec: AIRecommendation) => {
+    const category = rec.metadata?.category?.toLowerCase();
+    
+    if (category) {
+      // Navigate to library with category filter
+      navigate(`/library?category=${encodeURIComponent(category)}`);
+    } else {
+      // Navigate to general library
+      navigate('/library');
+    }
+    
+    toast({
+      title: "Exploring Content",
+      description: `Browsing ${rec.metadata?.category || 'all'} content based on AI recommendation.`,
+    });
+  };
+
+  const handleCreateClick = (suggestion: ContentSuggestion) => {
+    // For now, just show a message. Could be expanded to open upload flow
+    toast({
+      title: "Content Creation",
+      description: `Great idea! "${suggestion.title}" would be perfect for your mesh network.`,
+    });
+  };
+
   return (
     <Card className="ai-helper-card">
       <CardHeader>
@@ -298,7 +325,12 @@ export function AIContentHelper() {
                      rec.type === 'user' ? '👤' : '📈'} {rec.type}
                   </Badge>
                   
-                  <Button size="sm" variant="ghost" className="text-xs h-6">
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="text-xs h-6"
+                    onClick={() => handleExploreClick(rec)}
+                  >
                     Explore
                   </Button>
                 </div>
@@ -342,7 +374,12 @@ export function AIContentHelper() {
                     </Badge>
                   </div>
                   
-                  <Button size="sm" variant="ghost" className="text-xs h-6">
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="text-xs h-6"
+                    onClick={() => handleCreateClick(suggestion)}
+                  >
                     Create
                   </Button>
                 </div>
