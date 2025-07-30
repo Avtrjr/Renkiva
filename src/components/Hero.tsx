@@ -63,77 +63,102 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-aurora-mesh bg-[length:400%_400%] animate-aurora overflow-hidden">
+    <section className="relative min-h-screen bg-aurora-mesh bg-[length:400%_400%] animate-aurora overflow-hidden">
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-4 h-4 bg-primary rounded-full animate-pulse-mesh opacity-60"></div>
       <div className="absolute top-32 right-20 w-6 h-6 bg-secondary rounded-full animate-float opacity-40"></div>
       <div className="absolute bottom-32 left-20 w-3 h-3 bg-primary-glow rounded-full animate-pulse-mesh opacity-50"></div>
       
-      {/* Auth Controls */}
-      <div className="absolute top-8 right-8 flex items-center gap-4">
-        <Badge 
-          variant="outline" 
-          className="bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset"
-        >
-          📴 Offline Mode Active
-        </Badge>
-        
-        {user ? (
-          <UserMenu user={user} />
-        ) : (
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/auth')}
-            className="bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset"
-          >
-            Sign In
-          </Button>
-        )}
+      {/* Top Section with Auth and Main Content */}
+      <div className="container mx-auto px-6 pt-8">
+        <div className="flex justify-between items-start mb-16">
+          {/* Left Side - Brand */}
+          <div className="flex-1">
+            <h1 className="text-6xl md:text-7xl font-bold bg-aurora-1 bg-clip-text text-transparent animate-aurora bg-[length:200%_200%]">
+              📺 MeshTV
+            </h1>
+          </div>
+          
+          {/* Right Side - Auth and Main CTA */}
+          <div className="flex flex-col items-end gap-6 min-w-[300px]">
+            {/* Auth Controls */}
+            <div className="flex items-center gap-4">
+              <Badge 
+                variant="outline" 
+                className="bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset"
+              >
+                📴 Offline Mode Active
+              </Badge>
+              
+              {user ? (
+                <UserMenu user={user} />
+              ) : (
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/auth')}
+                  className="bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset"
+                >
+                  Sign In
+                </Button>
+              )}
+            </div>
+            
+            {/* Main Content Section */}
+            <div className="text-right">
+              <h2 className="text-2xl md:text-3xl text-foreground font-light mb-4">
+                Watch TV without Internet
+              </h2>
+              <p className="text-lg text-muted-foreground/80 mb-6 max-w-md">
+                Stream shows directly from nearby devices using mesh networking. 
+                No internet, no problem.
+              </p>
+              
+              {/* Main CTA Button */}
+              <Button 
+                variant="cyber" 
+                size="hero"
+                className="mb-6 backdrop-blur-sm"
+                onClick={handleDiscoverShows}
+                disabled={isDiscovering}
+              >
+                {isDiscovering ? "🔍 Discovering..." : "🔍 Discover Nearby Shows"}
+              </Button>
+              
+              {/* Feature Pills */}
+              <div className="flex flex-wrap justify-end gap-2 max-w-md">
+                <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-4 py-2 text-sm font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
+                  📡 Mesh Network
+                </Badge>
+                <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-4 py-2 text-sm font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
+                  🔐 Encrypted
+                </Badge>
+                <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-4 py-2 text-sm font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
+                  📱 Bluetooth LE
+                </Badge>
+                <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-4 py-2 text-sm font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
+                  ⚡ P2P Streaming
+                </Badge>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Main Hero Content */}
-      <div className="container mx-auto px-6 text-center z-10">
-        {/* Main Title */}
-        <div className="mb-8">
-          <h1 className="text-7xl md:text-8xl font-bold mb-6 bg-aurora-1 bg-clip-text text-transparent animate-aurora bg-[length:200%_200%]">
-            📺 MeshTV
-          </h1>
-          <p className="text-2xl md:text-3xl text-muted-foreground font-light mb-4">
-            Watch TV without Internet
-          </p>
-          <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto">
-            Stream shows directly from nearby devices using mesh networking. 
-            No internet, no problem.
-          </p>
-        </div>
-
-        {/* CTA Button */}
-        <Button 
-          variant="cyber" 
-          size="hero"
-          className="mb-8 backdrop-blur-sm"
-          onClick={handleDiscoverShows}
-          disabled={isDiscovering}
-        >
-          {isDiscovering ? "🔍 Discovering..." : "🔍 Discover Nearby Shows"}
-        </Button>
-
-        {/* Feature Pills */}
-        <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">
-          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
-            📡 Mesh Network
-          </Badge>
-          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
-            🔐 Encrypted
-          </Badge>
-          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
-            📱 Bluetooth LE
-          </Badge>
-          <Badge variant="secondary" className="bg-primary/20 backdrop-blur-lg shadow-glow border border-primary/30 px-6 py-3 text-base font-medium hover:bg-primary/30 transition-all duration-300 hover:scale-105">
-            ⚡ P2P Streaming
-          </Badge>
+      {/* Sponsor Section */}
+      <div className="absolute bottom-8 left-8 right-8">
+        <div className="bg-card/20 backdrop-blur-lg border border-border/50 rounded-lg p-4 max-w-md">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+              💎
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">Sponsored by CyberStream</p>
+              <p className="text-xs text-muted-foreground">Ultra-fast mesh streaming solutions</p>
+            </div>
+          </div>
         </div>
       </div>
+
 
       {/* Decorative Mesh Visualization */}
       <div className="absolute inset-0 pointer-events-none opacity-10">

@@ -136,8 +136,6 @@ const Index = () => {
   }));
   return <div className="min-h-screen bg-background">
       
-      {/* Sponsorship Overlay */}
-      <SponsorshipOverlay />
       
 
       {/* Featured MeshTV Showcase - Main Feature */}
