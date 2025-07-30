@@ -15,9 +15,12 @@ import {
   AlertTriangle,
   X,
   Minimize2,
-  Maximize2
+  Maximize2,
+  Database,
+  Upload
 } from 'lucide-react';
 import { bleSimulation } from '@/services/bleSimulationService';
+import { uploadSyncService } from '@/services/uploadSyncService';
 
 interface DiagnosticsOverlayProps {
   isOpen?: boolean;
@@ -28,6 +31,7 @@ export function DiagnosticsOverlay({ isOpen = true, onToggle }: DiagnosticsOverl
   const [peers, setPeers] = useState(bleSimulation.getPeers());
   const [relayHistory, setRelayHistory] = useState(bleSimulation.getRelayHistory());
   const [stats, setStats] = useState(bleSimulation.getMeshStats());
+  const [syncStats, setSyncStats] = useState(uploadSyncService.getSyncStats());
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDiscovering, setIsDiscovering] = useState(false);
 
@@ -42,9 +46,14 @@ export function DiagnosticsOverlay({ isOpen = true, onToggle }: DiagnosticsOverl
       setStats(bleSimulation.getMeshStats());
     });
 
+    const unsubscribeSync = uploadSyncService.onSyncStatsChange((newSyncStats) => {
+      setSyncStats(newSyncStats);
+    });
+
     return () => {
       unsubscribePeers();
       unsubscribeRelays();
+      unsubscribeSync();
     };
   }, []);
 
@@ -155,6 +164,23 @@ export function DiagnosticsOverlay({ isOpen = true, onToggle }: DiagnosticsOverl
                   <Progress value={stats.relaySuccessRate} className="h-2" />
                   <span className="text-xs font-mono">{stats.relaySuccessRate}%</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Upload Sync Section */}
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground">Upload Queue</div>
+              <div className="flex items-center gap-2">
+                <Upload className="w-4 h-4 text-accent" />
+                <span className="font-mono text-lg">{syncStats.pendingUploads}</span>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground">Sync Status</div>
+              <div className="flex items-center gap-2">
+                <Database className="w-4 h-4 text-secondary" />
+                <span className="text-xs">{syncStats.isOnline ? 'Online' : 'Offline'}</span>
               </div>
             </div>
 

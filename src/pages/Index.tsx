@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Upload, Info } from "lucide-react";
+import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
 
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
@@ -204,6 +205,21 @@ const Index = () => {
             </CardContent>
           </Card>
         </section>
+
+        {/* Upload Sync Dashboard */}
+        {user && (
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-2">
+                🔄 Upload Sync Dashboard
+              </h2>
+              <p className="text-muted-foreground">
+                Monitor upload queue, sync status, and verified content
+              </p>
+            </div>
+            <UploadSyncDashboard />
+          </section>
+        )}
 
         {/* Content Library Section */}
         <section>
