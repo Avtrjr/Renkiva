@@ -30,8 +30,8 @@ export interface ReassemblyBuffer {
   lastUpdate: number;
 }
 
-// Maximum fragment size optimized for Bluetooth LE (MTU - headers)
-const MAX_FRAGMENT_SIZE = 244; // bytes
+// Maximum fragment size optimized for Bluetooth LE mesh
+const MAX_FRAGMENT_SIZE = 512; // bytes - optimized for reliability
 const FRAGMENT_TIMEOUT = 30000; // 30 seconds
 
 export class VideoFragmenter {
@@ -47,30 +47,9 @@ export class VideoFragmenter {
     sourceNodeId: string,
     priority: VideoPacket['priority'] = 'medium'
   ): VideoPacket {
-    const totalSize = videoData.length;
-    const totalFragments = Math.ceil(totalSize / MAX_FRAGMENT_SIZE);
-    const fragments: VideoFragment[] = [];
-
-    console.log(`📦 Fragmenting video ${videoId}: ${totalSize} bytes → ${totalFragments} fragments`);
-
-    for (let i = 0; i < totalFragments; i++) {
-      const start = i * MAX_FRAGMENT_SIZE;
-      const end = Math.min(start + MAX_FRAGMENT_SIZE, totalSize);
-      const fragmentData = videoData.slice(start, end);
-      
-      const fragment: VideoFragment = {
-        id: `${videoId}_frag_${i}`,
-        sequenceNumber: i,
-        totalFragments,
-        data: fragmentData,
-        checksum: this.calculateChecksum(fragmentData),
-        timestamp: Date.now(),
-        videoId,
-        fragmentSize: fragmentData.length
-      };
-
-      fragments.push(fragment);
-    }
+    const fragments = this.fragmentPayload(videoData, videoId);
+    
+    console.log(`📦 Fragmenting video ${videoId}: ${videoData.length} bytes → ${fragments.length} fragments`);
 
     return {
       id: `packet_${this.fragmentCounter++}`,
@@ -80,6 +59,34 @@ export class VideoFragmenter {
       priority,
       contentType: 'video/mp4'
     };
+  }
+
+  /**
+   * Core fragmentation logic - simple and efficient
+   */
+  private fragmentPayload(payload: Uint8Array, videoId: string): VideoFragment[] {
+    const fragments: VideoFragment[] = [];
+    const totalFragments = Math.ceil(payload.length / MAX_FRAGMENT_SIZE);
+    
+    for (let i = 0; i < payload.length; i += MAX_FRAGMENT_SIZE) {
+      const fragmentData = payload.slice(i, i + MAX_FRAGMENT_SIZE);
+      const sequenceNumber = Math.floor(i / MAX_FRAGMENT_SIZE);
+      
+      const fragment: VideoFragment = {
+        id: `${videoId}_frag_${sequenceNumber}`,
+        sequenceNumber,
+        totalFragments,
+        data: fragmentData,
+        checksum: this.calculateChecksum(fragmentData),
+        timestamp: Date.now(),
+        videoId,
+        fragmentSize: fragmentData.length
+      };
+      
+      fragments.push(fragment);
+    }
+    
+    return fragments;
   }
 
   /**
@@ -141,12 +148,19 @@ export class VideoFragmenter {
   }
 
   /**
-   * Reassemble fragments into complete video data
+   * Reassemble fragments into complete video data - optimized approach
    */
   private reassembleVideo(buffer: ReassemblyBuffer): Uint8Array {
-    const fragments = Array.from(buffer.fragments.values())
+    const sortedFragments = Array.from(buffer.fragments.values())
       .sort((a, b) => a.sequenceNumber - b.sequenceNumber);
 
+    return this.reassembleFragments(sortedFragments);
+  }
+
+  /**
+   * Core reassembly logic - simple and efficient
+   */
+  private reassembleFragments(fragments: VideoFragment[]): Uint8Array {
     const totalSize = fragments.reduce((sum, frag) => sum + frag.data.length, 0);
     const result = new Uint8Array(totalSize);
     
@@ -155,7 +169,7 @@ export class VideoFragmenter {
       result.set(fragment.data, offset);
       offset += fragment.data.length;
     }
-
+    
     return result;
   }
 
