@@ -23,7 +23,7 @@ interface TMDBTVShow {
   genre_ids: number[];
 }
 
-interface ContentItem {
+export interface ContentItem {
   id: string;
   title: string;
   description: string;
@@ -32,10 +32,66 @@ interface ContentItem {
   releaseDate: string;
   thumbnailUrl: string;
   backdropUrl: string;
+  media_type: 'movie' | 'tv' | 'live';
+  streaming_url?: string;
+  is_legal: boolean;
+  source: string;
+  duration_minutes?: number;
+  file_size_bytes?: number;
 }
 
-// Mock TMDB data for demonstration (replace with real API calls when API key is available)
-const mockTrendingMovies: ContentItem[] = [
+// Legal content library with free and public domain sources
+const legalContentLibrary: ContentItem[] = [
+  // Public Domain Movies with actual streaming URLs
+  {
+    id: "free_1",
+    title: "Big Buck Bunny",
+    description: "A large and lovable rabbit deals with three tiny bullies.",
+    category: "Animation",
+    rating: 7.2,
+    releaseDate: "2008-04-10",
+    thumbnailUrl: "/placeholder.svg",
+    backdropUrl: "/placeholder.svg",
+    media_type: 'movie',
+    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    is_legal: true,
+    source: 'Public Domain',
+    duration_minutes: 10,
+    file_size_bytes: 158000000
+  },
+  {
+    id: "free_2",
+    title: "Sintel",
+    description: "A woman searching for her pet dragon.",
+    category: "Animation",
+    rating: 8.1,
+    releaseDate: "2010-09-27",
+    thumbnailUrl: "/placeholder.svg",
+    backdropUrl: "/placeholder.svg",
+    media_type: 'movie',
+    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    is_legal: true,
+    source: 'Public Domain',
+    duration_minutes: 15,
+    file_size_bytes: 267000000
+  },
+  {
+    id: "free_3",
+    title: "Tears of Steel",
+    description: "A science fiction short film set in a post-apocalyptic world.",
+    category: "Sci-Fi",
+    rating: 7.8,
+    releaseDate: "2012-09-26",
+    thumbnailUrl: "/placeholder.svg",
+    backdropUrl: "/placeholder.svg",
+    media_type: 'movie',
+    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    is_legal: true,
+    source: 'Public Domain',
+    duration_minutes: 12,
+    file_size_bytes: 198000000
+  },
+  // TMDB Metadata (legal metadata, users would add their own legal streaming links)
   {
     id: "movie_1",
     title: "Planet Earth II", 
@@ -44,7 +100,11 @@ const mockTrendingMovies: ContentItem[] = [
     rating: 9.5,
     releaseDate: "2016-11-06",
     thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
+    backdropUrl: "/placeholder.svg",
+    media_type: 'tv',
+    is_legal: true,
+    source: 'TMDB',
+    duration_minutes: 50
   },
   {
     id: "movie_2",
@@ -54,21 +114,12 @@ const mockTrendingMovies: ContentItem[] = [
     rating: 9.0,
     releaseDate: "2008-07-18", 
     thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
+    backdropUrl: "/placeholder.svg",
+    media_type: 'movie',
+    is_legal: true,
+    source: 'TMDB',
+    duration_minutes: 152
   },
-  {
-    id: "movie_3",
-    title: "Inception",
-    description: "A thief who enters people's dreams to steal secrets gets a chance to erase his criminal record.",
-    category: "Sci-Fi",
-    rating: 8.8,
-    releaseDate: "2010-07-16",
-    thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
-  }
-];
-
-const mockTrendingTV: ContentItem[] = [
   {
     id: "tv_1",
     title: "Breaking Bad",
@@ -77,61 +128,60 @@ const mockTrendingTV: ContentItem[] = [
     rating: 9.5,
     releaseDate: "2008-01-20",
     thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
-  },
-  {
-    id: "tv_2", 
-    title: "The Office",
-    description: "A mockumentary sitcom about office employees in Scranton, Pennsylvania.",
-    category: "Comedy",
-    rating: 8.8,
-    releaseDate: "2005-03-24",
-    thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
-  },
-  {
-    id: "tv_3",
-    title: "Stranger Things",
-    description: "Kids in a small town uncover supernatural mysteries in the 1980s.",
-    category: "Sci-Fi",
-    rating: 8.7,
-    releaseDate: "2016-07-15",
-    thumbnailUrl: "/placeholder.svg",
-    backdropUrl: "/placeholder.svg"
+    backdropUrl: "/placeholder.svg",
+    media_type: 'tv',
+    is_legal: true,
+    source: 'TMDB',
+    duration_minutes: 47
   }
 ];
 
-// Mock implementation - replace with real TMDB API calls
+// Content library functions using legal sources
 export async function fetchTrendingMovies(): Promise<ContentItem[]> {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000));
-  return mockTrendingMovies;
+  return legalContentLibrary.filter(item => item.media_type === 'movie');
 }
 
 export async function fetchTrendingTV(): Promise<ContentItem[]> {
-  // Simulate API delay  
   await new Promise(resolve => setTimeout(resolve, 1000));
-  return mockTrendingTV;
+  return legalContentLibrary.filter(item => item.media_type === 'tv');
+}
+
+export async function fetchAllContent(): Promise<ContentItem[]> {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return legalContentLibrary;
+}
+
+export async function fetchFreeContent(): Promise<ContentItem[]> {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return legalContentLibrary.filter(item => item.streaming_url && item.source === 'Public Domain');
 }
 
 export async function fetchContentById(id: string): Promise<ContentItem | null> {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
-  
-  const allContent = [...mockTrendingMovies, ...mockTrendingTV];
-  return allContent.find(item => item.id === id) || null;
+  return legalContentLibrary.find(item => item.id === id) || null;
 }
 
 export async function searchContent(query: string): Promise<ContentItem[]> {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 800));
-  
-  const allContent = [...mockTrendingMovies, ...mockTrendingTV];
-  return allContent.filter(item => 
+  return legalContentLibrary.filter(item => 
     item.title.toLowerCase().includes(query.toLowerCase()) ||
     item.description.toLowerCase().includes(query.toLowerCase()) ||
     item.category.toLowerCase().includes(query.toLowerCase())
   );
+}
+
+export async function addUserContent(content: Omit<ContentItem, 'id' | 'is_legal' | 'source'>): Promise<ContentItem> {
+  // This would typically save to Supabase database
+  const newContent: ContentItem = {
+    ...content,
+    id: `user_${Date.now()}`,
+    is_legal: true, // User confirms this is their legal content
+    source: 'User Upload'
+  };
+  
+  legalContentLibrary.push(newContent);
+  return newContent;
 }
 
 // Real TMDB API implementation (commented out - requires API key)

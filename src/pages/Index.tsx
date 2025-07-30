@@ -10,12 +10,29 @@ import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
 import MeshSimulation from "@/components/MeshSimulation";
 import { MeshStreamSimulation } from "@/components/MeshStreamSimulation";
+import ContentLibrary from "@/components/ContentLibrary";
 import { useShows } from "@/hooks/useShows";
+import type { ContentItem } from "@/lib/contentProviderAPI";
 
 const Index = () => {
   const { shows, loading, error } = useShows();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
+
+  const handlePlayContent = (content: ContentItem) => {
+    setCurrentStream({
+      title: content.title,
+      senderName: `Mesh Node`,
+      signalStrength: 95,
+      distance: "5m",
+      streaming_url: content.streaming_url
+    });
+    setFragments([
+      { id: 1, sequence: 1, size: 1024 },
+      { id: 2, sequence: 2, size: 2048 },
+      { id: 3, sequence: 3, size: 1536 }
+    ]);
+  };
 
   // Convert database shows to the format expected by StreamCard
   const nearbyStreams = shows.map((show) => ({
@@ -52,6 +69,19 @@ const Index = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <MeshSimulation />
           <MeshStreamSimulation />
+        </section>
+
+        {/* Content Library Section */}
+        <section>
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              🎬 Content Library
+            </h2>
+            <p className="text-muted-foreground">
+              Browse and stream legal content including public domain movies and TV metadata
+            </p>
+          </div>
+          <ContentLibrary onPlayContent={handlePlayContent} />
         </section>
 
         {/* Nearby Streams Section */}

@@ -13,6 +13,7 @@ interface StreamPlayerProps {
   ttl?: number;
   signalStrength?: number;
   distance?: string;
+  streaming_url?: string;
   onAdImpression?: (adData: any) => void;
   onViewingStats?: (stats: any) => void;
 }
@@ -24,6 +25,7 @@ const StreamPlayer = ({
   ttl = 5,
   signalStrength = 85,
   distance = "Unknown",
+  streaming_url,
   onAdImpression,
   onViewingStats
 }: StreamPlayerProps) => {
@@ -135,7 +137,7 @@ const StreamPlayer = ({
             onLoadedData={() => console.log('Video loaded')}
             onError={(e) => console.error('Video error:', e)}
           >
-            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+            <source src={streaming_url || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
 
