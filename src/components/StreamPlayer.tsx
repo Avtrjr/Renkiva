@@ -128,7 +128,7 @@ const StreamPlayer = ({
       <p className="text-sm">📡 Source: {source || 'MeshTV Network'}</p>
       <p className="text-sm">🧬 Fragments: {fragments.length}</p>
       
-      {videoSrc && streaming_url ? (
+      {videoSrc ? (
         <video
           className="rounded w-full mt-2"
           controls

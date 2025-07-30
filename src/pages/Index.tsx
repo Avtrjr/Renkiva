@@ -156,7 +156,7 @@ const Index = () => {
                       senderName: 'Featured Demo',
                       signalStrength: 100,
                       distance: '0m',
-                      streaming_url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=375&fit=crop'
+                      streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
                     });
                     setFragments([
                       { id: 1, sequence: 1, size: 2048 },
@@ -282,6 +282,7 @@ const Index = () => {
               fragments={fragments}
               signalStrength={currentStream.signalStrength}
               distance={currentStream.distance}
+              streaming_url={currentStream.streaming_url}
             />
           </section>
         )}
