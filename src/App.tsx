@@ -11,6 +11,8 @@ import Auth from "./pages/Auth";
 import LibraryPage from "./pages/LibraryPage";
 import MeshTVDashboard from "./components/MeshTVDashboard";
 import MeshLibraryExplorer from "./components/MeshLibraryExplorer";
+import MeshTVApp from "./components/MeshTVApp";
+import MeshNetworkDashboard from "./components/MeshNetworkDashboard";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:genre" element={<LibraryPage />} />
           <Route path="/mesh-library" element={<MeshLibraryExplorer />} />
+          <Route path="/meshtv" element={<MeshTVApp />} />
+          <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -144,9 +144,21 @@ const Index = () => {
             <p className="text-lg text-muted-foreground mb-2">
               Experience decentralized streaming without traditional internet infrastructure
             </p>
-            <p className="text-sm text-muted-foreground/80">
+            <p className="text-sm text-muted-foreground/80 mb-4">
               Watch "Big Buck Bunny" streaming through our mesh network
             </p>
+            <div className="flex gap-4 justify-center">
+              <Link to="/meshtv">
+                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                  🚀 Launch MeshTV App
+                </Button>
+              </Link>
+              <Link to="/mesh-network">
+                <Button size="lg" variant="outline">
+                  📡 Network Dashboard
+                </Button>
+              </Link>
+            </div>
           </div>
           
           <Card className="mesh-card border border-primary/20 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden">
