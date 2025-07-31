@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
-import { DiagnosticsOverlay } from "@/components/DiagnosticsOverlay";
+import DiagnosticsOverlay from "@/components/DiagnosticsOverlay";
 import { getTopOfflinePicks, VideoItem } from "@/services/meshTVService";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
@@ -521,7 +521,7 @@ const Index = () => {
           
           {/* Mesh Diagnostics */}
           <div className="lg:col-span-1">
-            <DiagnosticsOverlay isOpen={false} onToggle={() => {}} />
+            <DiagnosticsOverlay />
           </div>
         </section>
       </div>
