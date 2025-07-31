@@ -158,6 +158,11 @@ const Index = () => {
                   📡 Network Dashboard
                 </Button>
               </Link>
+              <Link to="/mass-import">
+                <Button size="lg" variant="outline">
+                  📥 Mass Import Movies
+                </Button>
+              </Link>
             </div>
           </div>
           
