@@ -163,6 +163,11 @@ const Index = () => {
                   📥 Mass Import Movies
                 </Button>
               </Link>
+              <Link to="/storage">
+                <Button size="lg" variant="outline">
+                  💾 Storage Dashboard
+                </Button>
+              </Link>
             </div>
           </div>
           

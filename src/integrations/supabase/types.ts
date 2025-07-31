@@ -369,6 +369,30 @@ export type Database = {
           },
         ]
       }
+      storage_usage: {
+        Row: {
+          bucket_name: string
+          id: string
+          last_updated: string
+          total_files: number | null
+          total_size_bytes: number | null
+        }
+        Insert: {
+          bucket_name: string
+          id?: string
+          last_updated?: string
+          total_files?: number | null
+          total_size_bytes?: number | null
+        }
+        Update: {
+          bucket_name?: string
+          id?: string
+          last_updated?: string
+          total_files?: number | null
+          total_size_bytes?: number | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           auth_user_id: string | null
@@ -485,6 +509,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_storage_usage: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          bucket_name: string
+          file_count: number
+          total_size: number
+        }[]
+      }
       discover_nearby_content: {
         Args: Record<PropertyKey, never>
         Returns: {

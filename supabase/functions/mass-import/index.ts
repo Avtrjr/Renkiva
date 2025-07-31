@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
           // Step 4: Upload to Supabase Storage
           console.log(`📤 Uploading ${filename}...`);
           const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('movies')
+            .from('meshtv-library')
             .upload(filename, videoBlob, {
               contentType: 'video/mp4',
               upsert: true
@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
           
           // Step 5: Get public URL
           const { data: urlData } = supabase.storage
-            .from('movies')
+            .from('meshtv-library')
             .getPublicUrl(filename);
           
           // Step 6: Insert metadata into shows table

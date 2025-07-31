@@ -14,6 +14,7 @@ import MeshLibraryExplorer from "./components/MeshLibraryExplorer";
 import MeshTVApp from "./components/MeshTVApp";
 import MeshNetworkDashboard from "./components/MeshNetworkDashboard";
 import { MassImportDashboard } from "./components/MassImportDashboard";
+import { StorageDashboard } from "./components/StorageDashboard";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/meshtv" element={<MeshTVApp />} />
         <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
         <Route path="/mass-import" element={<MassImportDashboard />} />
+        <Route path="/storage" element={<StorageDashboard />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
