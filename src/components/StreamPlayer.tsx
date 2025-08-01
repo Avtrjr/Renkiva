@@ -88,6 +88,7 @@ const StreamPlayer = ({
     console.log('StreamPlayer: fragments updated', { 
       fragmentCount: fragments.length, 
       hasStreamingUrl: !!streaming_url,
+      streamingUrl: streaming_url,
       hasValidData: hasValidVideoData(fragments)
     });
 
@@ -119,6 +120,11 @@ const StreamPlayer = ({
           setVideoSrc(null);
         }
       }
+    } else {
+      // No streaming URL and no fragments - show waiting state
+      console.log('StreamPlayer: No video source available');
+      setVideoSrc(null);
+      setAssembled(false);
     }
   }, [fragments, streaming_url, assembled]);
 
@@ -132,29 +138,59 @@ const StreamPlayer = ({
         <video
           className="rounded w-full mt-2"
           controls
-          autoPlay={isPlaying}
+          autoPlay={false}
+          crossOrigin="anonymous"
+          playsInline
           src={videoSrc}
           onError={(e) => {
             console.error('Video playback failed:', e);
             console.log('Failed video src:', videoSrc);
+            console.log('Video error details:', e.currentTarget.error);
+            
+            // Try to provide fallback or better error info
+            const error = e.currentTarget.error;
+            if (error) {
+              console.log('Error code:', error.code);
+              console.log('Error message:', error.message);
+            }
+            
             setVideoSrc(null);
             setAssembled(false);
           }}
           onLoadStart={() => console.log('Video load started')}
           onCanPlay={() => console.log('Video can play')}
+          onLoadedMetadata={() => console.log('Video metadata loaded')}
+          onLoadedData={() => console.log('Video data loaded')}
         />
       ) : (
         <div className="rounded w-full mt-2 bg-gray-200 dark:bg-gray-800 aspect-video flex items-center justify-center">
           <div className="text-center text-gray-600 dark:text-gray-400">
             <div className="text-4xl mb-2">📺</div>
             <p className="text-sm">
-              {fragments.length === 0 
-                ? "Waiting for stream fragments..." 
-                : hasValidVideoData(fragments)
-                  ? `Assembling video... (${fragments.length} fragments)`
-                  : "Demo mode - fragments contain mock data"
+              {!streaming_url && fragments.length === 0 
+                ? "No video source available" 
+                : streaming_url
+                  ? "Video failed to load. This may be due to CORS restrictions or server issues."
+                  : fragments.length === 0 
+                    ? "Waiting for stream fragments..." 
+                    : hasValidVideoData(fragments)
+                      ? `Assembling video... (${fragments.length} fragments)`
+                      : "Demo mode - fragments contain mock data"
               }
             </p>
+            {streaming_url && (
+              <p className="text-xs mt-2 text-gray-500">
+                Source: {streaming_url.length > 50 ? streaming_url.substring(0, 50) + '...' : streaming_url}
+              </p>
+            )}
+            {streaming_url && (
+              <button 
+                onClick={() => window.open(streaming_url, '_blank')}
+                className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+              >
+                Open Video in New Tab
+              </button>
+            )}
           </div>
         </div>
       )}
