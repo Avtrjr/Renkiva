@@ -25,7 +25,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Upload, Info } from "lucide-react";
+import { Upload, Info, Presentation } from "lucide-react";
 import { UploadSyncDashboard } from "@/components/UploadSyncDashboard";
 import { InviteOnlyMesh } from "@/components/InviteOnlyMesh";
 import { EnhancedMeshAnimation } from "@/components/EnhancedMeshAnimation";
@@ -166,6 +166,12 @@ const Index = () => {
               <Link to="/storage">
                 <Button size="lg" variant="outline">
                   💾 Storage Dashboard
+                </Button>
+              </Link>
+              <Link to="/pitch">
+                <Button size="lg" variant="outline">
+                  <Presentation className="mr-2 h-4 w-4" />
+                  Pitch Deck
                 </Button>
               </Link>
             </div>
