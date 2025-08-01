@@ -42,7 +42,7 @@ export interface ContentItem {
 
 // Expanded legal content library with free and public domain sources
 const legalContentLibrary: ContentItem[] = [
-  // Public Domain Movies with streaming URLs
+  // Working Blender Foundation Movies
   {
     id: "free_1",
     title: "Big Buck Bunny",
@@ -91,56 +91,23 @@ const legalContentLibrary: ContentItem[] = [
     duration_minutes: 12,
     file_size_bytes: 198000000
   },
-  // Internet Archive Public Domain Films
   {
-    id: "archive_1",
-    title: "Night of the Living Dead",
-    description: "Classic 1968 zombie horror film by George A. Romero. Public domain masterpiece.",
-    category: "Horror",
-    rating: 7.9,
-    releaseDate: "1968-10-01",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/inNUOa9WZGdyRXQlt7eqmHtWOlM.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/1R6cvRtZgsYCkh8UFuWFN33xBP4.jpg",
+    id: "cc_1",
+    title: "Elephants Dream",
+    description: "The world's first open movie, created entirely using open source software.",
+    category: "Animation",
+    rating: 7.1,
+    releaseDate: "2006-03-24",
+    thumbnailUrl: "https://image.tmdb.org/t/p/w500/elephants_dream_poster.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/elephants_dream_backdrop.jpg",
     media_type: 'movie',
-    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    streaming_url: 'https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4',
     is_legal: true,
-    source: 'Internet Archive',
-    duration_minutes: 96,
-    file_size_bytes: 950000000
+    source: 'Blender Foundation',
+    duration_minutes: 11,
+    file_size_bytes: 180000000
   },
-  {
-    id: "archive_2",
-    title: "Plan 9 from Outer Space",
-    description: "Ed Wood's infamous 1957 B-movie about aliens resurrecting the dead. So bad it's good!",
-    category: "Sci-Fi",
-    rating: 6.5,
-    releaseDate: "1957-07-22",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/9gbqh1LpXGZLCIhJ2Xg5QkKAYSW.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/9gbqh1LpXGZLCIhJ2Xg5QkKAYSW.jpg",
-    media_type: 'movie',
-    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
-    is_legal: true,
-    source: 'Internet Archive',
-    duration_minutes: 79,
-    file_size_bytes: 780000000
-  },
-  {
-    id: "archive_3",
-    title: "Metropolis",
-    description: "Fritz Lang's 1927 silent sci-fi masterpiece. Restored public domain version.",
-    category: "Sci-Fi",
-    rating: 8.3,
-    releaseDate: "1927-02-06",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/ou7DoceKmfSJ2PcEvQ9lm40l3fG.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/ou7DoceKmfSJ2PcEvQ9lm40l3fG.jpg",
-    media_type: 'movie',
-    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-    is_legal: true,
-    source: 'Internet Archive',
-    duration_minutes: 148,
-    file_size_bytes: 1400000000
-  },
-  // Classic TV Shows (Public Domain)
+  // Working Archive.org TV Shows
   {
     id: "tv_archive_1",
     title: "The Twilight Zone",
@@ -170,70 +137,6 @@ const legalContentLibrary: ContentItem[] = [
     is_legal: true,
     source: 'Internet Archive',
     duration_minutes: 6
-  },
-  // More free content (Educational/Documentary)
-  {
-    id: "doc_1",
-    title: "Cosmos: A Personal Voyage",
-    description: "Carl Sagan's groundbreaking documentary series about the universe.",
-    category: "Documentary",
-    rating: 9.3,
-    releaseDate: "1980-09-28",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/1zlw7eoGXiINQlLtyDq9HUUs1Va.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/1zlw7eoGXiINQlLtyDq9HUUs1Va.jpg",
-    media_type: 'tv',
-    streaming_url: null,
-    is_legal: true,
-    source: 'PBS',
-    duration_minutes: 60
-  },
-  {
-    id: "doc_2",
-    title: "Planet Earth",
-    description: "BBC's stunning nature documentary series narrated by David Attenborough.",
-    category: "Documentary",
-    rating: 9.4,
-    releaseDate: "2006-03-05",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/lZucJuuPzot5ufJFrUQ4HAa0Lps.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/lZucJuuPzot5ufJFrUQ4HAa0Lps.jpg",
-    media_type: 'tv',
-    streaming_url: null,
-    is_legal: true,
-    source: 'BBC',
-    duration_minutes: 50
-  },
-  // Creative Commons Films
-  {
-    id: "cc_1",
-    title: "Elephants Dream",
-    description: "The world's first open movie, created entirely using open source software.",
-    category: "Animation",
-    rating: 7.1,
-    releaseDate: "2006-03-24",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/elephants_dream_poster.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/elephants_dream_backdrop.jpg",
-    media_type: 'movie',
-    streaming_url: 'https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4',
-    is_legal: true,
-    source: 'Blender Foundation',
-    duration_minutes: 11,
-    file_size_bytes: 180000000
-  },
-  {
-    id: "cc_2",
-    title: "Big Buck Bunny",
-    description: "Peach Open Movie Project by the Blender Foundation.",
-    category: "Animation",
-    rating: 7.2,
-    releaseDate: "2008-05-30",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/uVEFQvFMcElhLHyuGiGgaQgEZtE.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/uVEFQvFMcElhLHyuGiGgaQgEZtE.jpg",
-    media_type: 'movie',
-    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    is_legal: true,
-    source: 'Blender Foundation',
-    duration_minutes: 10,
-    file_size_bytes: 158000000
   }
 ];
 
