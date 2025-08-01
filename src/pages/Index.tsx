@@ -272,7 +272,7 @@ const Index = () => {
                     
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
                       <StreamPlayer 
-                        title="Big Buck Bunny (Featured Demo)"
+                        title="Tears of Steel (Featured Demo)"
                         source="MeshTV Demo Node"
                         fragments={[
                           { id: 1, sequence: 1, size: 1024 },
@@ -281,13 +281,13 @@ const Index = () => {
                         ]}
                         signalStrength={100}
                         distance="0m"
-                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
                       />
                       
                       {/* Overlay Info */}
                       <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                         <div className="bg-black/80 rounded-lg p-3 backdrop-blur-sm">
-                          <p className="text-white font-medium">Big Buck Bunny</p>
+                          <p className="text-white font-medium">Tears of Steel</p>
                           <p className="text-white/80 text-sm">Creative Commons • Blender Foundation</p>
                         </div>
                       </div>

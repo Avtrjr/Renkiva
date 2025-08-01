@@ -156,6 +156,7 @@ const StreamPlayer = ({
             key={videoSrc} // Force re-render when source changes
             className="rounded w-full mt-2"
             controls
+            autoPlay
             preload="metadata"
             crossOrigin="anonymous"
             playsInline
