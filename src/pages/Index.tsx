@@ -21,6 +21,7 @@ import UploadInstructions from "@/components/UploadInstructions";
 import WebhookSettings from "@/components/WebhookSettings";
 import CapabilitiesSection from "@/components/CapabilitiesSection";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -130,74 +131,235 @@ const Index = () => {
     // Mock signal strength
     streaming_url: show.video_url // Add the actual streaming URL
   }));
-  return <div className="min-h-screen bg-background">
-      
-      
-
-      {/* Featured MeshTV Showcase - Main Feature */}
-      <section className="container mx-auto px-6 pt-8 pb-6">        
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-3">
-              🎬 MeshTV Demo Node
-            </h1>
-            <p className="text-lg text-muted-foreground mb-2">
-              Experience decentralized streaming without traditional internet infrastructure
-            </p>
-            <p className="text-sm text-muted-foreground/80 mb-4">
-              Watch "Big Buck Bunny" streaming through our mesh network
-            </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Button size="lg" className="bg-gradient-cyber hover:shadow-cyber">
-                📺 Upload. Share. Stream. Offline.
-              </Button>
-              <Link to="/creator">
-                <Button size="lg" variant="outline" className="mesh-button">
-                  🎥 Start Sharing
-                </Button>
-              </Link>
-              <Link to="/sponsor">
-                <Button size="lg" variant="outline" className="mesh-button">
-                  🎯 Sponsor Campaign
-                </Button>
-              </Link>
-              <Link to="/library">
-                <Button size="lg" variant="outline" className="mesh-button">
-                  📚 Browse Offline Library
-                </Button>
-              </Link>
-            </div>
-          </div>
+  return <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Mesh Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
+        
+        {/* Animated mesh lines */}
+        <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 800">
+          <defs>
+            <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{stopColor: "hsl(var(--primary))", stopOpacity: 0.3}} />
+              <stop offset="50%" style={{stopColor: "hsl(var(--accent))", stopOpacity: 0.2}} />
+              <stop offset="100%" style={{stopColor: "hsl(var(--secondary))", stopOpacity: 0.1}} />
+            </linearGradient>
+          </defs>
           
-          <Card className="mesh-card border border-primary/20 bg-card/50 backdrop-blur-sm shadow-xl overflow-hidden">
-            <CardContent className="p-4">
-              <div className="aspect-video bg-background/80 rounded-lg overflow-hidden border border-border/50">
-                <StreamPlayer 
-                  title="Big Buck Bunny (Featured Demo)"
-                  source="MeshTV Demo Node"
-                  fragments={[
-                    { id: 1, sequence: 1, size: 1024 },
-                    { id: 2, sequence: 2, size: 2048 },
-                    { id: 3, sequence: 3, size: 1536 }
-                  ]}
-                  signalStrength={100}
-                  distance="0m"
-                  streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+          {/* Network nodes */}
+          {[...Array(12)].map((_, i) => {
+            const x = (i % 4) * 300 + 150;
+            const y = Math.floor(i / 4) * 200 + 100;
+            return (
+              <g key={i}>
+                <circle 
+                  cx={x} 
+                  cy={y} 
+                  r="4" 
+                  fill="hsl(var(--primary))"
+                  className="animate-pulse"
+                  style={{animationDelay: `${i * 0.2}s`}}
                 />
+                
+                {/* Connecting lines */}
+                {i < 8 && (
+                  <line 
+                    x1={x} 
+                    y1={y} 
+                    x2={x + 300} 
+                    y2={y}
+                    stroke="url(#meshGradient)" 
+                    strokeWidth="1"
+                    className="animate-pulse"
+                    style={{animationDelay: `${i * 0.3}s`}}
+                  />
+                )}
+                {i % 4 !== 3 && i < 8 && (
+                  <line 
+                    x1={x} 
+                    y1={y} 
+                    x2={x} 
+                    y2={y + 200}
+                    stroke="url(#meshGradient)" 
+                    strokeWidth="1"
+                    className="animate-pulse"
+                    style={{animationDelay: `${i * 0.4}s`}}
+                  />
+                )}
+              </g>
+            );
+          })}
+        </svg>
+        
+        {/* Floating particles */}
+        <div className="absolute inset-0">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-primary/40 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 0.5}s`,
+                animationDuration: `${3 + Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Content with z-index to be above background */}
+      <div className="relative z-10">
+        {/* Dynamic Hero Section with Live Preview */}
+        <section className="container mx-auto px-6 pt-12 pb-8">        
+          <div className="max-w-6xl mx-auto">
+            {/* Hero Title */}
+            <div className="text-center mb-8">
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">
+                Upload. Share. Stream. Offline.
+              </h1>
+              <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+                Experience decentralized streaming without traditional internet infrastructure
+              </p>
+              
+              {/* Call-to-Action Buttons */}
+              <div className="flex gap-4 justify-center flex-wrap mb-8 animate-fade-in" style={{animationDelay: '0.4s'}}>
+                <Link to="/creator">
+                  <Button size="lg" className="bg-gradient-neon hover:shadow-glow text-lg px-8">
+                    🎥 Start Sharing
+                  </Button>
+                </Link>
+                <Link to="/sponsor">
+                  <Button size="lg" variant="outline" className="mesh-button border-primary/50 hover:border-primary text-lg px-8">
+                    🎯 Sponsor Campaign
+                  </Button>
+                </Link>
+                <Link to="/library">
+                  <Button size="lg" variant="outline" className="mesh-button border-secondary/50 hover:border-secondary text-lg px-8">
+                    📚 Browse Library
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Featured "Now Playing" TV Preview */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+              {/* Main Video Player */}
+              <div className="lg:col-span-2">
+                <Card className="mesh-card border border-primary/30 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden animate-scale-in">
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
+                        <p className="text-sm text-muted-foreground">Live from Mesh Network</p>
+                      </div>
+                      <Badge className="bg-red-500/20 text-red-400 border-red-500/30 animate-pulse">
+                        LIVE
+                      </Badge>
+                    </div>
+                    
+                    <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
+                      <StreamPlayer 
+                        title="Big Buck Bunny (Featured Demo)"
+                        source="MeshTV Demo Node"
+                        fragments={[
+                          { id: 1, sequence: 1, size: 1024 },
+                          { id: 2, sequence: 2, size: 2048 },
+                          { id: 3, sequence: 3, size: 1536 }
+                        ]}
+                        signalStrength={100}
+                        distance="0m"
+                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                      />
+                      
+                      {/* Overlay Info */}
+                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-black/80 rounded-lg p-3 backdrop-blur-sm">
+                          <p className="text-white font-medium">Big Buck Bunny</p>
+                          <p className="text-white/80 text-sm">Creative Commons • Blender Foundation</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 text-center">
+                      <p className="text-sm text-muted-foreground/80 flex items-center justify-center gap-2">
+                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <strong>Zero Internet Required</strong> • Mesh Network Powered
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
               
-              <div className="mt-4 text-center animate-fade-in">
-                <p className="text-sm text-muted-foreground/80">
-                  🌐 <strong>Live Demo</strong> • Mesh Network Powered • Zero Traditional Internet
-                </p>
+              {/* Live Stats & Quick Actions */}
+              <div className="space-y-6">
+                {/* Network Stats */}
+                <Card className="mesh-card border-secondary/30 animate-fade-in" style={{animationDelay: '0.6s'}}>
+                  <CardContent className="p-4">
+                    <h4 className="font-bold text-secondary mb-3">📊 Live Network Stats</h4>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Active Nodes:</span>
+                        <span className="font-medium text-green-400">12</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Data Streaming:</span>
+                        <span className="font-medium text-blue-400">2.4 MB/s</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Coverage:</span>
+                        <span className="font-medium text-purple-400">500m radius</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Viewers:</span>
+                        <span className="font-medium text-primary">8 concurrent</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Quick Preview Actions */}
+                <Card className="mesh-card border-accent/30 animate-fade-in" style={{animationDelay: '0.8s'}}>
+                  <CardContent className="p-4">
+                    <h4 className="font-bold text-accent mb-3">⚡ Quick Actions</h4>
+                    <div className="space-y-2">
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                        📱 Join as Viewer
+                      </Button>
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                        🔗 Share Network
+                      </Button>
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                        📡 Boost Signal
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Currently Trending */}
+                <Card className="mesh-card border-yellow-500/30 animate-fade-in" style={{animationDelay: '1.0s'}}>
+                  <CardContent className="p-4">
+                    <h4 className="font-bold text-yellow-400 mb-3">🔥 Trending Offline</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1 h-1 bg-yellow-400 rounded-full"></span>
+                        <span className="text-muted-foreground">Tears of Steel</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1 h-1 bg-yellow-400 rounded-full"></span>
+                        <span className="text-muted-foreground">Sintel</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-1 h-1 bg-yellow-400 rounded-full"></span>
+                        <span className="text-muted-foreground">Cosmos Laundromat</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Hero Section */}
-      <Hero />
+            </div>
+          </div>
+        </section>
 
       {/* Capabilities Section */}
       <CapabilitiesSection />
@@ -528,6 +690,7 @@ const Index = () => {
           </div>
         </section>
       </div>
-    </div>;
+    </div>
+  </div>;
 };
 export default Index;
