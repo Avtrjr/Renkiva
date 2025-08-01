@@ -40,8 +40,9 @@ const App = () => (
         <Route path="/mass-import" element={<MassImportDashboard />} />
         <Route path="/storage" element={<StorageDashboard />} />
           <Route path="/pitch" element={<PitchDeck />} />
-          <Route path="/creator" element={<CreatorOnboarding />} />
-          <Route path="/sponsor" element={<SponsorOnboarding />} />
+        <Route path="/creator" element={<CreatorOnboarding />} />
+        <Route path="/sponsor" element={<SponsorOnboarding />} />
+        <Route path="/library" element={<LibraryPage />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

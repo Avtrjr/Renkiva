@@ -147,41 +147,23 @@ const Index = () => {
             <p className="text-sm text-muted-foreground/80 mb-4">
               Watch "Big Buck Bunny" streaming through our mesh network
             </p>
-            <div className="flex gap-4 justify-center">
-              <Link to="/meshtv">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  🚀 Launch MeshTV App
-                </Button>
-              </Link>
-              <Link to="/mesh-network">
-                <Button size="lg" variant="outline">
-                  📡 Network Dashboard
-                </Button>
-              </Link>
-              <Link to="/mass-import">
-                <Button size="lg" variant="outline">
-                  📥 Mass Import Movies
-                </Button>
-              </Link>
-              <Link to="/storage">
-                <Button size="lg" variant="outline">
-                  💾 Storage Dashboard
-                </Button>
-              </Link>
-              <Link to="/pitch">
-                <Button size="lg" variant="outline">
-                  <Presentation className="mr-2 h-4 w-4" />
-                  Pitch Deck
-                </Button>
-              </Link>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <Button size="lg" className="bg-gradient-cyber hover:shadow-cyber">
+                📺 Upload. Share. Stream. Offline.
+              </Button>
               <Link to="/creator">
-                <Button size="lg" variant="outline">
-                  📹 Creator Upload
+                <Button size="lg" variant="outline" className="mesh-button">
+                  🎥 Start Sharing
                 </Button>
               </Link>
               <Link to="/sponsor">
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="mesh-button">
                   🎯 Sponsor Campaign
+                </Button>
+              </Link>
+              <Link to="/library">
+                <Button size="lg" variant="outline" className="mesh-button">
+                  📚 Browse Offline Library
                 </Button>
               </Link>
             </div>

@@ -6,61 +6,59 @@
 
 @layer base {
   :root {
-    /* Cyberpunk Dark Foundation */
-    --background: 220 40% 2%;
+    /* Ultra-Dark Background Foundation */
+    --background: 260 50% 1%;
     --foreground: 180 100% 95%;
 
-    /* Neon Glass Cards */
-    --card: 220 35% 6%;
+    /* Deep Purple + Glassmorphic Cards */
+    --card: 260 45% 3%;
     --card-foreground: 180 100% 95%;
     --card-glow: 180 100% 70%;
 
-    --popover: 220 35% 6%;
+    --popover: 260 45% 3%;
     --popover-foreground: 180 100% 95%;
 
-    /* Electric Cyan Primary - More Masculine Steel Blue */
-    --primary: 210 100% 45%;
-    --primary-foreground: 220 40% 2%;
-    --primary-glow: 210 95% 65%;
+    /* Electric Cyan Primary Accent */
+    --primary: 180 100% 50%;
+    --primary-foreground: 260 50% 1%;
+    --primary-glow: 180 95% 65%;
 
-    /* Neon Purple Secondary - Darker Masculine Purple */
-    --secondary: 270 80% 45%;
-    --secondary-foreground: 220 40% 2%;
-    --secondary-glow: 270 85% 65%;
+    /* Deep Purple Secondary */
+    --secondary: 280 85% 35%;
+    --secondary-foreground: 180 100% 95%;
+    --secondary-glow: 280 90% 55%;
 
-    /* Electric Pink Accent */
-    --accent: 320 100% 55%;
-    --accent-foreground: 220 40% 2%;
+    /* Bright Cyan Accent */
+    --accent: 180 100% 60%;
+    --accent-foreground: 260 50% 1%;
 
-    /* Cyberpunk UI Elements */
-    --muted: 220 20% 12%;
-    --muted-foreground: 180 20% 75%;
+    /* Ultra-Dark UI Elements */
+    --muted: 260 30% 8%;
+    --muted-foreground: 180 30% 75%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 180 100% 95%;
-    --border: 180 50% 15%;
-    --input: 220 35% 8%;
+    --border: 280 60% 20%;
+    --input: 260 45% 5%;
     --ring: 180 100% 50%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Cyberpunk Neon Gradients */
+    /* Deep Purple + Cyan Gradients */
     --gradient-cyber: linear-gradient(135deg, 
       hsl(180 100% 50%) 0%, 
-      hsl(280 100% 60%) 25%, 
-      hsl(320 100% 55%) 50%, 
-      hsl(180 100% 70%) 75%, 
-      hsl(180 100% 50%) 100%);
+      hsl(280 85% 35%) 35%, 
+      hsl(260 90% 25%) 65%, 
+      hsl(180 100% 60%) 100%);
       
     --gradient-neon: linear-gradient(225deg, 
-      hsl(280 100% 60%) 0%, 
-      hsl(320 100% 55%) 33%, 
-      hsl(180 100% 70%) 66%, 
-      hsl(180 100% 50%) 100%);
+      hsl(280 85% 35%) 0%, 
+      hsl(260 90% 25%) 40%, 
+      hsl(180 100% 50%) 80%, 
+      hsl(180 100% 60%) 100%);
       
     --gradient-mesh: conic-gradient(from 0deg at 50% 50%, 
       hsl(180 100% 50%) 0deg, 
-      hsl(280 100% 60%) 90deg,
-      hsl(320 100% 55%) 180deg, 
-      hsl(280 100% 60%) 270deg,
+      hsl(280 85% 35%) 120deg,
+      hsl(260 90% 25%) 240deg, 
       hsl(180 100% 50%) 360deg);
 
     /* Cyberpunk Neon Shadows */
