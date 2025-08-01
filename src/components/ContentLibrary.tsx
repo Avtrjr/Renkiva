@@ -28,10 +28,12 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
   const totalPages = Math.ceil(filteredContent.length / ITEMS_PER_PAGE);
 
   const handlePlayContent = (content: ContentItem) => {
+    console.log('Playing content:', content.title, 'URL:', content.streaming_url);
     navigate(`/stream/${content.id}`);
   };
 
   const handleImageError = (contentId: string) => {
+    console.log('ContentLibrary: Image failed to load for content:', contentId);
     setImageErrors(prev => new Set([...prev, contentId]));
   };
 
@@ -59,6 +61,11 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
           fetchAllContent(),
           fetchFreeContent()
         ]);
+        console.log('ContentLibrary: Loaded content', { 
+          allCount: all.length, 
+          freeCount: free.length,
+          sampleThumbnails: all.slice(0, 3).map(c => ({ title: c.title, thumbnail: c.thumbnailUrl }))
+        });
         setAllContent(all);
         setFreeContent(free);
         setFilteredContent(all);
@@ -191,23 +198,27 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                     >
                       {/* Compact aspect ratio for better grid fit */}
                       <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden rounded-t-lg">
-                         {!imageErrors.has(content.id) && content.thumbnailUrl ? (
-                           <img 
-                             src={content.thumbnailUrl}
-                             alt={content.title}
-                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                             loading="lazy"
-                             onError={() => handleImageError(content.id)}
-                           />
-                         ) : (
-                           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
-                             {content.media_type === 'movie' ? (
-                               <Film className="w-8 h-8 text-primary/60" />
-                             ) : (
-                               <Tv className="w-8 h-8 text-primary/60" />
-                             )}
-                           </div>
-                         )}
+                         {!imageErrors.has(content.id) && content.thumbnailUrl && !content.thumbnailUrl.includes('placeholder') ? (
+                            <img 
+                              src={getOptimizedImageUrl(content.thumbnailUrl, 'thumb') || content.thumbnailUrl}
+                              alt={content.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              loading="lazy"
+                              onError={() => handleImageError(content.id)}
+                              onLoad={() => console.log('ContentLibrary: Image loaded successfully for:', content.title)}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
+                              {content.media_type === 'movie' ? (
+                                <Film className="w-8 h-8 text-primary/60" />
+                              ) : (
+                                <Tv className="w-8 h-8 text-primary/60" />
+                              )}
+                              <div className="absolute bottom-1 left-1 text-xs text-muted-foreground/60">
+                                {imageErrors.has(content.id) ? 'Image failed' : 'No image'}
+                              </div>
+                            </div>
+                          )}
                         
                         {/* Overlay gradient for better text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -222,7 +233,7 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                         {/* Stream indicator */}
                         {content.streaming_url && (
                           <div className="absolute top-1 right-1">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" title="Available for streaming" />
                           </div>
                         )}
 
