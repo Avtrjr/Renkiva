@@ -48,7 +48,10 @@ const Index = () => {
   const {
     user
   } = useAuth();
-  const { shouldShowLegalModal, acceptLegal } = useLegalAgreement();
+  const {
+    shouldShowLegalModal,
+    acceptLegal
+  } = useLegalAgreement();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
   const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
@@ -136,14 +139,10 @@ const Index = () => {
   }));
   return <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Legal Agreement Modal */}
-      <LegalAgreementModal 
-        open={shouldShowLegalModal || false}
-        onAccept={acceptLegal}
-        onDecline={() => {
-          // Could redirect to landing page or show a message
-          console.log('User declined legal terms');
-        }}
-      />
+      <LegalAgreementModal open={shouldShowLegalModal || false} onAccept={acceptLegal} onDecline={() => {
+      // Could redirect to landing page or show a message
+      console.log('User declined legal terms');
+    }} />
       {/* Animated Mesh Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
@@ -152,71 +151,49 @@ const Index = () => {
         <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 800">
           <defs>
             <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{stopColor: "hsl(var(--primary))", stopOpacity: 0.3}} />
-              <stop offset="50%" style={{stopColor: "hsl(var(--accent))", stopOpacity: 0.2}} />
-              <stop offset="100%" style={{stopColor: "hsl(var(--secondary))", stopOpacity: 0.1}} />
+              <stop offset="0%" style={{
+              stopColor: "hsl(var(--primary))",
+              stopOpacity: 0.3
+            }} />
+              <stop offset="50%" style={{
+              stopColor: "hsl(var(--accent))",
+              stopOpacity: 0.2
+            }} />
+              <stop offset="100%" style={{
+              stopColor: "hsl(var(--secondary))",
+              stopOpacity: 0.1
+            }} />
             </linearGradient>
           </defs>
           
           {/* Network nodes */}
           {[...Array(12)].map((_, i) => {
-            const x = (i % 4) * 300 + 150;
-            const y = Math.floor(i / 4) * 200 + 100;
-            return (
-              <g key={i}>
-                <circle 
-                  cx={x} 
-                  cy={y} 
-                  r="4" 
-                  fill="hsl(var(--primary))"
-                  className="animate-pulse"
-                  style={{animationDelay: `${i * 0.2}s`}}
-                />
+          const x = i % 4 * 300 + 150;
+          const y = Math.floor(i / 4) * 200 + 100;
+          return <g key={i}>
+                <circle cx={x} cy={y} r="4" fill="hsl(var(--primary))" className="animate-pulse" style={{
+              animationDelay: `${i * 0.2}s`
+            }} />
                 
                 {/* Connecting lines */}
-                {i < 8 && (
-                  <line 
-                    x1={x} 
-                    y1={y} 
-                    x2={x + 300} 
-                    y2={y}
-                    stroke="url(#meshGradient)" 
-                    strokeWidth="1"
-                    className="animate-pulse"
-                    style={{animationDelay: `${i * 0.3}s`}}
-                  />
-                )}
-                {i % 4 !== 3 && i < 8 && (
-                  <line 
-                    x1={x} 
-                    y1={y} 
-                    x2={x} 
-                    y2={y + 200}
-                    stroke="url(#meshGradient)" 
-                    strokeWidth="1"
-                    className="animate-pulse"
-                    style={{animationDelay: `${i * 0.4}s`}}
-                  />
-                )}
-              </g>
-            );
-          })}
+                {i < 8 && <line x1={x} y1={y} x2={x + 300} y2={y} stroke="url(#meshGradient)" strokeWidth="1" className="animate-pulse" style={{
+              animationDelay: `${i * 0.3}s`
+            }} />}
+                {i % 4 !== 3 && i < 8 && <line x1={x} y1={y} x2={x} y2={y + 200} stroke="url(#meshGradient)" strokeWidth="1" className="animate-pulse" style={{
+              animationDelay: `${i * 0.4}s`
+            }} />}
+              </g>;
+        })}
         </svg>
         
         {/* Floating particles */}
         <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-primary/40 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
-              }}
-            />
-          ))}
+          {[...Array(8)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-primary/40 rounded-full animate-float" style={{
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDelay: `${i * 0.5}s`,
+          animationDuration: `${3 + Math.random() * 2}s`
+        }} />)}
         </div>
       </div>
 
@@ -230,12 +207,16 @@ const Index = () => {
               <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">
                 Upload. Share. Stream. Offline.
               </h1>
-              <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+              <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
+              animationDelay: '0.2s'
+            }}>
                 Experience decentralized streaming without traditional internet infrastructure
               </p>
               
               {/* Call-to-Action Buttons */}
-              <div className="flex gap-4 justify-center flex-wrap mb-8 animate-fade-in" style={{animationDelay: '0.4s'}}>
+              <div className="flex gap-4 justify-center flex-wrap mb-8 animate-fade-in" style={{
+              animationDelay: '0.4s'
+            }}>
                 <Link to="/creator">
                   <Button size="lg" className="bg-gradient-neon hover:shadow-glow text-lg px-8">
                     🎥 Start Sharing
@@ -271,26 +252,22 @@ const Index = () => {
                     </div>
                     
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
-                      <StreamPlayer 
-                        title="Tears of Steel (Featured Demo)"
-                        source="MeshTV Demo Node"
-                        fragments={[
-                          { id: 1, sequence: 1, size: 1024 },
-                          { id: 2, sequence: 2, size: 2048 },
-                          { id: 3, sequence: 3, size: 1536 }
-                        ]}
-                        signalStrength={100}
-                        distance="0m"
-                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-                      />
+                      <StreamPlayer title="Tears of Steel (Featured Demo)" source="MeshTV Demo Node" fragments={[{
+                      id: 1,
+                      sequence: 1,
+                      size: 1024
+                    }, {
+                      id: 2,
+                      sequence: 2,
+                      size: 2048
+                    }, {
+                      id: 3,
+                      sequence: 3,
+                      size: 1536
+                    }]} signalStrength={100} distance="0m" streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" />
                       
                       {/* Overlay Info */}
-                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="bg-black/80 rounded-lg p-3 backdrop-blur-sm">
-                          <p className="text-white font-medium">Tears of Steel</p>
-                          <p className="text-white/80 text-sm">Creative Commons • Blender Foundation</p>
-                        </div>
-                      </div>
+                      
                     </div>
                     
                     <div className="mt-4 text-center">
@@ -306,7 +283,9 @@ const Index = () => {
               {/* Live Stats & Quick Actions */}
               <div className="space-y-6">
                 {/* Network Stats */}
-                <Card className="mesh-card border-secondary/30 animate-fade-in" style={{animationDelay: '0.6s'}}>
+                <Card className="mesh-card border-secondary/30 animate-fade-in" style={{
+                animationDelay: '0.6s'
+              }}>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-secondary mb-3">📊 Live Network Stats</h4>
                     <div className="space-y-3 text-sm">
@@ -331,7 +310,9 @@ const Index = () => {
                 </Card>
                 
                 {/* Quick Preview Actions */}
-                <Card className="mesh-card border-accent/30 animate-fade-in" style={{animationDelay: '0.8s'}}>
+                <Card className="mesh-card border-accent/30 animate-fade-in" style={{
+                animationDelay: '0.8s'
+              }}>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-accent mb-3">⚡ Quick Actions</h4>
                     <div className="space-y-2">
@@ -349,7 +330,9 @@ const Index = () => {
                 </Card>
                 
                 {/* Currently Trending */}
-                <Card className="mesh-card border-yellow-500/30 animate-fade-in" style={{animationDelay: '1.0s'}}>
+                <Card className="mesh-card border-yellow-500/30 animate-fade-in" style={{
+                animationDelay: '1.0s'
+              }}>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-yellow-400 mb-3">🔥 Trending Offline</h4>
                     <div className="space-y-2 text-sm">
@@ -398,26 +381,26 @@ const Index = () => {
               </Card>)}
           </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {aiSuggestions.map((item, idx) => <Card key={idx} className="mesh-card hover:shadow-glow transition-all duration-300 cursor-pointer group" onClick={() => {
-          setCurrentStream({
-            title: item.title,
-            senderName: 'AI Recommendation',
-            signalStrength: 100,
-            distance: '0m'
-          });
-          setFragments([{
-            id: 1,
-            sequence: 1,
-            size: 1024
-          }, {
-            id: 2,
-            sequence: 2,
-            size: 2048
-          }, {
-            id: 3,
-            sequence: 3,
-            size: 1536
-          }]);
-        }}>
+            setCurrentStream({
+              title: item.title,
+              senderName: 'AI Recommendation',
+              signalStrength: 100,
+              distance: '0m'
+            });
+            setFragments([{
+              id: 1,
+              sequence: 1,
+              size: 1024
+            }, {
+              id: 2,
+              sequence: 2,
+              size: 2048
+            }, {
+              id: 3,
+              sequence: 3,
+              size: 1536
+            }]);
+          }}>
                 <CardContent className="p-6">
                   <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
                     {item.title}
@@ -584,14 +567,14 @@ const Index = () => {
         {/* Community Library Section */}
         <section>
           <CommunityLibrary onSelect={upload => {
-          setCurrentStream({
-            title: upload.title,
-            senderName: 'Community Upload',
-            signalStrength: 100,
-            distance: '0m'
-          });
-          setFragments(upload.fragments);
-        }} />
+            setCurrentStream({
+              title: upload.title,
+              senderName: 'Community Upload',
+              signalStrength: 100,
+              distance: '0m'
+            });
+            setFragments(upload.fragments);
+          }} />
         </section>
 
         {/* Nearby Streams Section */}
@@ -614,21 +597,21 @@ const Index = () => {
                 <p className="text-muted-foreground">No streamable content available in mesh network</p>
                 <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
               </div> : nearbyStreams.map((stream, index) => <StreamCard key={index} title={stream.title} distance={stream.distance} senderName={stream.senderName} category={stream.category} viewerCount={stream.viewerCount} signalStrength={stream.signalStrength} streaming_url={stream.streaming_url} onPlay={streamData => {
-            setCurrentStream(streamData);
-            setFragments([{
-              id: 1,
-              sequence: 1,
-              size: 1024
-            }, {
-              id: 2,
-              sequence: 2,
-              size: 2048
-            }, {
-              id: 3,
-              sequence: 3,
-              size: 1536
-            }]);
-          }} />)}
+              setCurrentStream(streamData);
+              setFragments([{
+                id: 1,
+                sequence: 1,
+                size: 1024
+              }, {
+                id: 2,
+                sequence: 2,
+                size: 2048
+              }, {
+                id: 3,
+                sequence: 3,
+                size: 1536
+              }]);
+            }} />)}
           </div>
         </section>
 
@@ -637,40 +620,40 @@ const Index = () => {
           {/* Enhanced Broadcast Controls */}
           <div className="xl:col-span-1">
             <BroadcastToggle onBroadcastStart={data => {
-            console.log(`Broadcasting: ${data.title}`, data.fragments);
-            if (data.fragments.length > 0) {
-              setFragments(data.fragments);
-              setCurrentStream({
-                title: data.title,
-                senderName: 'Your Device',
-                signalStrength: 100,
-                distance: '0m'
-              });
-            }
-          }} />
+              console.log(`Broadcasting: ${data.title}`, data.fragments);
+              if (data.fragments.length > 0) {
+                setFragments(data.fragments);
+                setCurrentStream({
+                  title: data.title,
+                  senderName: 'Your Device',
+                  signalStrength: 100,
+                  distance: '0m'
+                });
+              }
+            }} />
           </div>
           
           {/* Nearby Streams */}
           <div className="xl:col-span-1">
             <NearbyStreamsList onJoin={stream => {
-            setCurrentStream({
-              ...stream,
-              streaming_url: nearbyStreams.find(s => s.title === stream.title)?.streaming_url
-            });
-            setFragments([{
-              id: 1,
-              sequence: 1,
-              size: 1024
-            }, {
-              id: 2,
-              sequence: 2,
-              size: 2048
-            }, {
-              id: 3,
-              sequence: 3,
-              size: 1536
-            }]);
-          }} />
+              setCurrentStream({
+                ...stream,
+                streaming_url: nearbyStreams.find(s => s.title === stream.title)?.streaming_url
+              });
+              setFragments([{
+                id: 1,
+                sequence: 1,
+                size: 1024
+              }, {
+                id: 2,
+                sequence: 2,
+                size: 2048
+              }, {
+                id: 3,
+                sequence: 3,
+                size: 1536
+              }]);
+            }} />
           </div>
           
           {/* AI Content Helper */}
@@ -705,21 +688,11 @@ const Index = () => {
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-border/30 text-center">
           <div className="text-sm text-muted-foreground space-x-3">
-            <a 
-              href="/legal/terms-of-use" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
-            >
+            <a href="/legal/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               Terms of Use
             </a>
             <span>•</span>
-            <a 
-              href="/legal/privacy-policy" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
-            >
+            <a href="/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               Privacy Policy
             </a>
           </div>
