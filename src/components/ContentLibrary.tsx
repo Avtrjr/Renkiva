@@ -37,8 +37,27 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
     setImageErrors(prev => new Set([...prev, contentId]));
   };
 
+  const getPlaceholderImage = (category: string, mediaType: string) => {
+    const baseUrl = 'https://images.unsplash.com';
+    const params = 'w=500&h=750&fit=crop&crop=center';
+    
+    // Category-specific placeholders
+    const placeholders = {
+      'Animation': `${baseUrl}/photo-1535268647677-300dbf3d78d1?${params}`, // cat
+      'Horror': `${baseUrl}/photo-1472396961693-142e6e269027?${params}`, // deer in forest
+      'Sci-Fi': `${baseUrl}/photo-1461749280684-dccba630e2f6?${params}`, // monitor/tech
+      'Documentary': `${baseUrl}/photo-1523712999610-f77fbcfc3843?${params}`, // forest sunbeam
+      'Drama': `${baseUrl}/photo-1526374965328-7f61d4dc18c5?${params}`, // matrix movie still
+      'Comedy': `${baseUrl}/photo-1465146344425-f00d5f5c8f07?${params}`, // orange flowers
+      'Action': `${baseUrl}/photo-1500375592092-40eb2168fd21?${params}`, // ocean wave
+      'Adventure': `${baseUrl}/photo-1506744038136-46273834b3fb?${params}`, // water and trees
+    };
+    
+    return placeholders[category] || placeholders['Drama'];
+  };
+
   const getOptimizedImageUrl = (url: string, size: 'thumb' | 'backdrop') => {
-    if (!url || url.includes('placeholder')) return null;
+    if (!url || url.includes('placeholder') || url.includes('unsplash.com')) return url;
     
     // TMDB image optimization
     if (url.includes('image.tmdb.org')) {
@@ -208,17 +227,31 @@ const ContentLibrary = ({ onPlayContent }: ContentLibraryProps) => {
                               onLoad={() => console.log('ContentLibrary: Image loaded successfully for:', content.title)}
                             />
                           ) : (
-                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
-                              {content.media_type === 'movie' ? (
-                                <Film className="w-8 h-8 text-primary/60" />
-                              ) : (
-                                <Tv className="w-8 h-8 text-primary/60" />
-                              )}
-                              <div className="absolute bottom-1 left-1 text-xs text-muted-foreground/60">
-                                {imageErrors.has(content.id) ? 'Image failed' : 'No image'}
-                              </div>
-                            </div>
+                            <img 
+                              src={getPlaceholderImage(content.category, content.media_type)}
+                              alt={content.title}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-80"
+                              loading="lazy"
+                              onError={() => {
+                                // Final fallback to icon
+                                const img = document.querySelector(`[alt="${content.title}"]`) as HTMLImageElement;
+                                if (img) {
+                                  img.style.display = 'none';
+                                }
+                              }}
+                            />
                           )}
+                         
+                         {/* Icon fallback overlay when image fails */}
+                         {imageErrors.has(content.id) && (
+                           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
+                             {content.media_type === 'movie' ? (
+                               <Film className="w-8 h-8 text-primary/60" />
+                             ) : (
+                               <Tv className="w-8 h-8 text-primary/60" />
+                             )}
+                           </div>
+                         )}
                         
                         {/* Overlay gradient for better text readability */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
