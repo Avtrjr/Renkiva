@@ -41,10 +41,16 @@ function MovieCard({ movie, onPlay }: MovieCardProps) {
     <Card className="mesh-card group hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden">
       <CardContent className="p-0 relative">
         <div className="aspect-[2/3] bg-gradient-cyber relative overflow-hidden">
-          {/* Thumbnail */}
-          <div className="absolute inset-0 bg-muted/30 flex items-center justify-center">
-            <Play className="w-8 h-8 text-primary opacity-60" />
-          </div>
+          {/* Thumbnail with placeholder */}
+          <img 
+            src={`https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&h=450&fit=crop&crop=center`}
+            alt={movie.title}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCIgdmlld0JveD0iMCAwIDMwMCA0NTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDUwIiBmaWxsPSIjMUYyMDI4Ii8+CjxwYXRoIGQ9Ik0xNTAgMjI1TDE4MCAyMDBMMTUwIDE3NUwxMjAgMjAwTDE1MCAyMjVaIiBmaWxsPSIjNkY3MkZGIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMjYwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOEI4Qzk5IiBmb250LXNpemU9IjE0Ij5Ob3QgQXZhaWxhYmxlPC90ZXh0Pgo8L3N2Zz4K';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           
           {/* Overlay on hover */}
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
