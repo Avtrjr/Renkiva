@@ -92,11 +92,28 @@ const StreamPlayer = ({
       hasValidData: hasValidVideoData(fragments)
     });
 
+    // Reset video source when streaming_url changes
+    if (streaming_url !== videoSrc) {
+      setVideoSrc(null);
+      setAssembled(false);
+    }
+
     // Priority 1: Use streaming_url if available
     if (streaming_url) {
-      console.log('StreamPlayer: Using streaming URL:', streaming_url);
-      setVideoSrc(streaming_url);
-      setAssembled(true);
+      console.log('StreamPlayer: Setting video source to:', streaming_url);
+      
+      // Test if the URL is accessible by creating a test request
+      fetch(streaming_url, { method: 'HEAD', mode: 'no-cors' })
+        .then(() => {
+          console.log('StreamPlayer: URL appears accessible');
+          setVideoSrc(streaming_url);
+          setAssembled(true);
+        })
+        .catch((error) => {
+          console.log('StreamPlayer: URL test failed, but setting anyway:', error);
+          setVideoSrc(streaming_url);
+          setAssembled(true);
+        });
       return;
     }
 
@@ -116,7 +133,6 @@ const StreamPlayer = ({
           }
         } else {
           console.log('StreamPlayer: Fragments contain mock data, skipping assembly');
-          // Don't try to play mock data as video
           setVideoSrc(null);
         }
       }
@@ -126,7 +142,7 @@ const StreamPlayer = ({
       setVideoSrc(null);
       setAssembled(false);
     }
-  }, [fragments, streaming_url, assembled]);
+  }, [fragments, streaming_url]);
 
   return (
     <div className="space-y-2">{/* Removed the gradient background window */}
@@ -135,33 +151,69 @@ const StreamPlayer = ({
       <p className="text-sm">🧬 Fragments: {fragments.length}</p>
       
       {videoSrc ? (
-        <video
-          className="rounded w-full mt-2"
-          controls
-          autoPlay={false}
-          crossOrigin="anonymous"
-          playsInline
-          src={videoSrc}
-          onError={(e) => {
-            console.error('Video playback failed:', e);
-            console.log('Failed video src:', videoSrc);
-            console.log('Video error details:', e.currentTarget.error);
-            
-            // Try to provide fallback or better error info
-            const error = e.currentTarget.error;
-            if (error) {
-              console.log('Error code:', error.code);
-              console.log('Error message:', error.message);
-            }
-            
-            setVideoSrc(null);
-            setAssembled(false);
-          }}
-          onLoadStart={() => console.log('Video load started')}
-          onCanPlay={() => console.log('Video can play')}
-          onLoadedMetadata={() => console.log('Video metadata loaded')}
-          onLoadedData={() => console.log('Video data loaded')}
-        />
+        <div>
+          <video
+            key={videoSrc} // Force re-render when source changes
+            className="rounded w-full mt-2"
+            controls
+            preload="metadata"
+            crossOrigin="anonymous"
+            playsInline
+            src={videoSrc}
+            onError={(e) => {
+              console.error('Video playback failed:', e);
+              console.log('Failed video src:', videoSrc);
+              const error = e.currentTarget.error;
+              if (error) {
+                console.log('Error code:', error.code);
+                console.log('Error message:', error.message);
+                
+                // Provide user-friendly error messages
+                let errorMsg = "Unknown error";
+                switch (error.code) {
+                  case 1: errorMsg = "Video loading aborted"; break;
+                  case 2: errorMsg = "Network error"; break;
+                  case 3: errorMsg = "Video decoding failed"; break;
+                  case 4: errorMsg = "Video format not supported"; break;
+                }
+                console.log('User-friendly error:', errorMsg);
+              }
+              
+              // Don't immediately clear videoSrc to show error state
+            }}
+            onLoadStart={() => console.log('Video load started')}
+            onCanPlay={() => console.log('Video can play')}
+            onLoadedMetadata={() => console.log('Video metadata loaded')}
+            onLoadedData={() => console.log('Video data loaded')}
+            onPlay={() => console.log('Video started playing')}
+          />
+          
+          {/* Alternative iframe fallback */}
+          <div className="mt-2">
+            <p className="text-xs text-gray-500 mb-2">If video doesn't play above, try these alternatives:</p>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => window.open(videoSrc, '_blank')}
+                className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+              >
+                Open in New Tab
+              </button>
+              
+              <button 
+                onClick={() => {
+                  // Try to download the video
+                  const a = document.createElement('a');
+                  a.href = videoSrc;
+                  a.download = 'video.mp4';
+                  a.click();
+                }}
+                className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600"
+              >
+                Download Video
+              </button>
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="rounded w-full mt-2 bg-gray-200 dark:bg-gray-800 aspect-video flex items-center justify-center">
           <div className="text-center text-gray-600 dark:text-gray-400">
@@ -170,7 +222,7 @@ const StreamPlayer = ({
               {!streaming_url && fragments.length === 0 
                 ? "No video source available" 
                 : streaming_url
-                  ? "Video failed to load. This may be due to CORS restrictions or server issues."
+                  ? "Loading video stream..."
                   : fragments.length === 0 
                     ? "Waiting for stream fragments..." 
                     : hasValidVideoData(fragments)
@@ -179,17 +231,17 @@ const StreamPlayer = ({
               }
             </p>
             {streaming_url && (
-              <p className="text-xs mt-2 text-gray-500">
-                Source: {streaming_url.length > 50 ? streaming_url.substring(0, 50) + '...' : streaming_url}
-              </p>
-            )}
-            {streaming_url && (
-              <button 
-                onClick={() => window.open(streaming_url, '_blank')}
-                className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-              >
-                Open Video in New Tab
-              </button>
+              <>
+                <p className="text-xs mt-2 text-gray-500">
+                  Source: {streaming_url.length > 50 ? streaming_url.substring(0, 50) + '...' : streaming_url}
+                </p>
+                <button 
+                  onClick={() => window.open(streaming_url, '_blank')}
+                  className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                >
+                  Open Video in New Tab
+                </button>
+              </>
             )}
           </div>
         </div>
