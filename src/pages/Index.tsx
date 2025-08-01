@@ -36,6 +36,8 @@ import { InstallWizard } from "@/components/InstallWizard";
 import { Scene3D } from "@/components/Scene3D";
 import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
+import { useLegalAgreement } from "@/hooks/useLegalAgreement";
+import { LegalAgreementModal } from "@/components/LegalAgreementModal";
 import type { ContentItem } from "@/lib/contentProviderAPI";
 const Index = () => {
   const {
@@ -46,6 +48,7 @@ const Index = () => {
   const {
     user
   } = useAuth();
+  const { shouldShowLegalModal, acceptLegal } = useLegalAgreement();
   const [currentStream, setCurrentStream] = useState<any>(null);
   const [fragments, setFragments] = useState<any[]>([]);
   const [aiSuggestions, setAiSuggestions] = useState<VideoItem[]>([]);
@@ -132,6 +135,15 @@ const Index = () => {
     streaming_url: show.video_url // Add the actual streaming URL
   }));
   return <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Legal Agreement Modal */}
+      <LegalAgreementModal 
+        open={shouldShowLegalModal || false}
+        onAccept={acceptLegal}
+        onDecline={() => {
+          // Could redirect to landing page or show a message
+          console.log('User declined legal terms');
+        }}
+      />
       {/* Animated Mesh Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
@@ -689,6 +701,32 @@ const Index = () => {
             <DiagnosticsOverlay />
           </div>
         </section>
+        
+        {/* Footer */}
+        <footer className="mt-16 pt-8 border-t border-border/30 text-center">
+          <div className="text-sm text-muted-foreground space-x-3">
+            <a 
+              href="/legal/terms-of-use" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Terms of Use
+            </a>
+            <span>•</span>
+            <a 
+              href="/legal/privacy-policy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </a>
+          </div>
+          <p className="text-xs text-muted-foreground/60 mt-2">
+            MeshTV - Decentralized. Private. Offline.
+          </p>
+        </footer>
       </div>
     </div>
   </div>;

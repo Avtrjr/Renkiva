@@ -18,6 +18,8 @@ import { StorageDashboard } from "./components/StorageDashboard";
 import { PitchDeck } from "./components/PitchDeck";
 import { CreatorOnboarding } from "./components/CreatorOnboarding";
 import { SponsorOnboarding } from "./components/SponsorOnboarding";
+import TermsOfUse from "./pages/TermsOfUse";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +46,8 @@ const App = () => (
         <Route path="/sponsor" element={<SponsorOnboarding />} />
         <Route path="/library" element={<LibraryPage />} />
           <Route path="/stream/:id" element={<StreamPage />} />
+          <Route path="/legal/terms-of-use" element={<TermsOfUse />} />
+          <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
