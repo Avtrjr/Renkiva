@@ -270,11 +270,14 @@ export function CreatorOnboarding() {
                       }}
                       className="hidden"
                     />
-                    <Label htmlFor="video-upload" className="cursor-pointer">
-                      <Button variant="outline" disabled={uploading}>
-                        {uploading ? 'Uploading...' : 'Choose Video'}
-                      </Button>
-                    </Label>
+                    <Button 
+                      type="button"
+                      variant="outline" 
+                      disabled={uploading}
+                      onClick={() => document.getElementById('video-upload')?.click()}
+                    >
+                      {uploading ? 'Uploading...' : 'Choose Video'}
+                    </Button>
                     {metadata.videoUrl && (
                       <p className="text-sm text-green-600 mt-2">Video uploaded ✓</p>
                     )}
@@ -295,11 +298,14 @@ export function CreatorOnboarding() {
                       }}
                       className="hidden"
                     />
-                    <Label htmlFor="thumbnail-upload" className="cursor-pointer">
-                      <Button variant="outline" disabled={uploading}>
-                        {uploading ? 'Uploading...' : 'Choose Thumbnail'}
-                      </Button>
-                    </Label>
+                    <Button 
+                      type="button"
+                      variant="outline" 
+                      disabled={uploading}
+                      onClick={() => document.getElementById('thumbnail-upload')?.click()}
+                    >
+                      {uploading ? 'Uploading...' : 'Choose Thumbnail'}
+                    </Button>
                     {metadata.thumbnailUrl && (
                       <p className="text-sm text-green-600 mt-2">Thumbnail uploaded ✓</p>
                     )}
