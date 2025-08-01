@@ -16,6 +16,8 @@ import MeshNetworkDashboard from "./components/MeshNetworkDashboard";
 import { MassImportDashboard } from "./components/MassImportDashboard";
 import { StorageDashboard } from "./components/StorageDashboard";
 import { PitchDeck } from "./components/PitchDeck";
+import { CreatorOnboarding } from "./components/CreatorOnboarding";
+import { SponsorOnboarding } from "./components/SponsorOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -37,7 +39,9 @@ const App = () => (
         <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
         <Route path="/mass-import" element={<MassImportDashboard />} />
         <Route path="/storage" element={<StorageDashboard />} />
-        <Route path="/pitch" element={<PitchDeck />} />
+          <Route path="/pitch" element={<PitchDeck />} />
+          <Route path="/creator" element={<CreatorOnboarding />} />
+          <Route path="/sponsor" element={<SponsorOnboarding />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

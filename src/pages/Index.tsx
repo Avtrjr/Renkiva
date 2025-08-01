@@ -174,6 +174,16 @@ const Index = () => {
                   Pitch Deck
                 </Button>
               </Link>
+              <Link to="/creator">
+                <Button size="lg" variant="outline">
+                  📹 Creator Upload
+                </Button>
+              </Link>
+              <Link to="/sponsor">
+                <Button size="lg" variant="outline">
+                  🎯 Sponsor Campaign
+                </Button>
+              </Link>
             </div>
           </div>
           

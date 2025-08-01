@@ -53,6 +53,65 @@ export type Database = {
         }
         Relationships: []
       }
+      ad_campaigns: {
+        Row: {
+          ad_banner_url: string | null
+          ad_video_url: string | null
+          budget_allocated: number
+          campaign_name: string
+          cost_per_impression: number | null
+          created_at: string
+          format: string
+          id: string
+          runtime_seconds: number | null
+          sponsor_id: string
+          status: string | null
+          target_category: string | null
+          target_videos: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          ad_banner_url?: string | null
+          ad_video_url?: string | null
+          budget_allocated: number
+          campaign_name: string
+          cost_per_impression?: number | null
+          created_at?: string
+          format: string
+          id?: string
+          runtime_seconds?: number | null
+          sponsor_id: string
+          status?: string | null
+          target_category?: string | null
+          target_videos?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          ad_banner_url?: string | null
+          ad_video_url?: string | null
+          budget_allocated?: number
+          campaign_name?: string
+          cost_per_impression?: number | null
+          created_at?: string
+          format?: string
+          id?: string
+          runtime_seconds?: number | null
+          sponsor_id?: string
+          status?: string | null
+          target_category?: string | null
+          target_videos?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ad_campaigns_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ad_impressions: {
         Row: {
           ad_asset_id: string
@@ -190,6 +249,53 @@ export type Database = {
           },
         ]
       }
+      creators: {
+        Row: {
+          bio: string | null
+          created_at: string
+          creator_name: string
+          id: string
+          license_type: string | null
+          logo_url: string | null
+          revenue_enabled: boolean | null
+          updated_at: string
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          creator_name: string
+          id?: string
+          license_type?: string | null
+          logo_url?: string | null
+          revenue_enabled?: boolean | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          creator_name?: string
+          id?: string
+          license_type?: string | null
+          logo_url?: string | null
+          revenue_enabled?: boolean | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fragment_receipts: {
         Row: {
           fragment_id: string | null
@@ -225,6 +331,59 @@ export type Database = {
             columns: ["receiver_node_id"]
             isOneToOne: false
             referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mesh_bundles: {
+        Row: {
+          ad_campaign_ids: string[] | null
+          bundle_name: string
+          bundle_size_mb: number | null
+          bundle_url: string | null
+          created_at: string
+          geographic_focus: string | null
+          id: string
+          sponsor_id: string | null
+          status: string | null
+          ttl_hours: number | null
+          updated_at: string
+          video_ids: string[]
+        }
+        Insert: {
+          ad_campaign_ids?: string[] | null
+          bundle_name: string
+          bundle_size_mb?: number | null
+          bundle_url?: string | null
+          created_at?: string
+          geographic_focus?: string | null
+          id?: string
+          sponsor_id?: string | null
+          status?: string | null
+          ttl_hours?: number | null
+          updated_at?: string
+          video_ids: string[]
+        }
+        Update: {
+          ad_campaign_ids?: string[] | null
+          bundle_name?: string
+          bundle_size_mb?: number | null
+          bundle_url?: string | null
+          created_at?: string
+          geographic_focus?: string | null
+          id?: string
+          sponsor_id?: string | null
+          status?: string | null
+          ttl_hours?: number | null
+          updated_at?: string
+          video_ids?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mesh_bundles_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "sponsors"
             referencedColumns: ["id"]
           },
         ]
@@ -369,6 +528,50 @@ export type Database = {
           },
         ]
       }
+      sponsors: {
+        Row: {
+          budget_remaining: number | null
+          budget_total: number | null
+          company_name: string
+          contact_email: string | null
+          created_at: string
+          id: string
+          logo_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_remaining?: number | null
+          budget_total?: number | null
+          company_name: string
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_remaining?: number | null
+          budget_total?: number | null
+          company_name?: string
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsors_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       storage_usage: {
         Row: {
           bucket_name: string
@@ -470,6 +673,131 @@ export type Database = {
             columns: ["sender_node_id"]
             isOneToOne: false
             referencedRelation: "mesh_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      videos: {
+        Row: {
+          access_token: string | null
+          category: string | null
+          created_at: string
+          creator_id: string | null
+          description: string | null
+          distribution_type: string | null
+          duration_minutes: number | null
+          file_size_bytes: number | null
+          id: string
+          license_type: string | null
+          revenue_enabled: boolean | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          verified_creator_content: boolean | null
+          video_url: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          category?: string | null
+          created_at?: string
+          creator_id?: string | null
+          description?: string | null
+          distribution_type?: string | null
+          duration_minutes?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          license_type?: string | null
+          revenue_enabled?: boolean | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          verified_creator_content?: boolean | null
+          video_url?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          category?: string | null
+          created_at?: string
+          creator_id?: string | null
+          description?: string | null
+          distribution_type?: string | null
+          duration_minutes?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          license_type?: string | null
+          revenue_enabled?: boolean | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          verified_creator_content?: boolean | null
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "creators"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      view_stats: {
+        Row: {
+          ad_campaign_id: string | null
+          ad_watched_duration_seconds: number | null
+          device_fingerprint: string | null
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          offline_synced: boolean | null
+          video_id: string | null
+          viewed_at: string
+          viewer_node_id: string | null
+          watched_duration_seconds: number | null
+        }
+        Insert: {
+          ad_campaign_id?: string | null
+          ad_watched_duration_seconds?: number | null
+          device_fingerprint?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          offline_synced?: boolean | null
+          video_id?: string | null
+          viewed_at?: string
+          viewer_node_id?: string | null
+          watched_duration_seconds?: number | null
+        }
+        Update: {
+          ad_campaign_id?: string | null
+          ad_watched_duration_seconds?: number | null
+          device_fingerprint?: string | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          offline_synced?: boolean | null
+          video_id?: string | null
+          viewed_at?: string
+          viewer_node_id?: string | null
+          watched_duration_seconds?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "view_stats_ad_campaign_id_fkey"
+            columns: ["ad_campaign_id"]
+            isOneToOne: false
+            referencedRelation: "ad_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "view_stats_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
             referencedColumns: ["id"]
           },
         ]
