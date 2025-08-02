@@ -315,13 +315,13 @@ const Index = () => {
                   <CardContent className="p-4">
                     <h4 className="font-bold text-accent mb-3">⚡ Quick Actions</h4>
                     <div className="space-y-2">
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
                         📱 Join as Viewer
                       </Button>
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
                         🔗 Share Network
                       </Button>
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button">
+                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
                         📡 Boost Signal
                       </Button>
                     </div>
