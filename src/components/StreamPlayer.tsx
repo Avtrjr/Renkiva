@@ -478,15 +478,15 @@ export default function StreamPlayer({
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Signal Strength</span>
-                  <div className="flex items-center gap-2">
-                    <div className="w-12 bg-secondary rounded-full h-2">
+                  <span className="text-xs sm:text-sm text-muted-foreground">Signal</span>
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-8 sm:w-12 bg-secondary rounded-full h-2">
                       <div 
                         className="bg-primary h-2 rounded-full transition-all duration-300" 
                         style={{ width: `${signalStrength}%` }}
                       />
                     </div>
-                    <span className="text-sm font-medium">{signalStrength}%</span>
+                    <span className="text-xs sm:text-sm font-medium">{signalStrength}%</span>
                   </div>
                 </div>
               </div>
