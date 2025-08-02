@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Download, ThumbsUp, ThumbsDown, Share, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Download, ThumbsUp, ThumbsDown, Share, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 
-const demoVideo = '/assets/Tears_of_Steel.mp4';
+const demoVideo = 'https://meshtv.network/demo/tears-of-steel.mp4';
 
 const features = [
-  { icon: '🔐', title: 'Privacy-First', description: 'Nothing stored online by default' },
-  { icon: '📶', title: 'Fully Offline', description: 'Works peer-to-peer via Bluetooth' },
-  { icon: '🤖', title: 'AI Smart Sharing', description: 'Auto-tags, learns your favorites' },
-  { icon: '🧩', title: 'Decentralized Network', description: 'No central servers – just people' },
-  { icon: '🎁', title: 'Starter Packs', description: 'Bundled free movies & shows' },
-  { icon: '🌍', title: 'Global Mesh Sync', description: 'Syncs when devices connect later' }
+  { icon: '🔐', title: 'Privacy-First', description: 'Nothing stored online by default — your content stays local.' },
+  { icon: '📶', title: 'Fully Offline', description: 'Connect peer-to-peer over Bluetooth — no Wi-Fi required.' },
+  { icon: '🤖', title: 'AI Smart Sharing', description: 'Automatically tags and organizes content for you.' },
+  { icon: '🧩', title: 'Decentralized Mesh', description: 'No servers, no middlemen — just users sharing media.' },
+  { icon: '🎁', title: 'Starter Packs', description: 'Includes preloaded free shows and movies to get started fast.' },
+  { icon: '🌍', title: 'Global Sync', description: 'When you come online, updates sync automatically.' }
 ];
 
-const nearbyStreams = [
-  { title: 'Mesh Classics Collection', viewers: 12, distance: '50m', category: 'Movies' },
-  { title: 'Local News Mesh', viewers: 8, distance: '120m', category: 'News' },
-  { title: 'Community Gaming', viewers: 24, distance: '200m', category: 'Gaming' },
-  { title: 'Tech Talks Offline', viewers: 6, distance: '300m', category: 'Education' },
-  { title: 'Music Sessions Live', viewers: 15, distance: '450m', category: 'Music' }
+const streamingContent = [
+  { title: 'Tears of Steel', image: '/media/mesh-thumbnail-1.jpg' },
+  { title: 'Big Buck Bunny', image: '/media/mesh-thumbnail-2.jpg' }
 ];
+
+const howItWorksSteps = [
+  { icon: '📱', title: 'Your Phone' },
+  { icon: '📡', title: 'Broadcast via Bluetooth' },
+  { icon: '🧑‍🤝‍🧑', title: 'Nearby Devices Relay' },
+  { icon: '🌐', title: 'Mesh Network Builds' },
+  { icon: '☁️', title: 'Optional Cloud Sync' }
+];
+
+const navItems = ['Explore Library', 'How It Works', 'Become a Sponsor', 'Download'];
 
 export default function LandingPage() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -44,17 +50,47 @@ export default function LandingPage() {
   };
 
   const nextStream = () => {
-    setCurrentStreamIndex((prev) => (prev + 1) % nearbyStreams.length);
+    setCurrentStreamIndex((prev) => (prev + 1) % streamingContent.length);
   };
 
   const prevStream = () => {
-    setCurrentStreamIndex((prev) => (prev - 1 + nearbyStreams.length) % nearbyStreams.length);
+    setCurrentStreamIndex((prev) => (prev - 1 + streamingContent.length) % streamingContent.length);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background text-foreground">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/30">
+        <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+          <div className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            Mesh TV Network
+          </div>
+          
+          <nav className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => (
+              <button
+                key={item}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => scrollToSection(item.toLowerCase().replace(' ', '-'))}
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
+
+          <Button className="shadow-mesh-glow">
+            Start Sharing
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center p-8">
+      <section className="relative min-h-screen flex items-center justify-center p-8 pt-24">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
         <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -69,16 +105,16 @@ export default function LandingPage() {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="text-lg px-8 py-4 shadow-mesh-glow">
-                🚀 Start Sharing
+                Start Sharing
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="text-lg px-8 py-4"
-                onClick={() => scrollToSection('library')}
+                onClick={() => scrollToSection('explore-library')}
               >
-                📚 Explore Library
+                Explore Library
               </Button>
             </div>
           </div>
@@ -113,10 +149,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Streaming Now Near You Carousel */}
-      <section id="library" className="py-20 px-8">
+      {/* Streaming Near You Carousel */}
+      <section id="explore-library" className="py-20 px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16 text-foreground">📡 Streaming Now Near You</h2>
+          <h2 className="text-4xl font-bold text-center mb-16 text-foreground">Streaming Near You</h2>
           
           <div className="relative">
             <Card className="bg-card/80 backdrop-blur-lg border-border/30 shadow-mesh-glow">
@@ -126,13 +162,11 @@ export default function LandingPage() {
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
                   
-                  <div className="text-center space-y-2">
-                    <h3 className="text-2xl font-semibold">{nearbyStreams[currentStreamIndex].title}</h3>
-                    <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                      <Badge variant="secondary">{nearbyStreams[currentStreamIndex].category}</Badge>
-                      <span>👥 {nearbyStreams[currentStreamIndex].viewers} viewers</span>
-                      <span>📍 {nearbyStreams[currentStreamIndex].distance} away</span>
+                  <div className="text-center space-y-4">
+                    <div className="w-32 h-20 mx-auto bg-muted/50 rounded-lg flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Thumbnail</span>
                     </div>
+                    <h3 className="text-2xl font-semibold">{streamingContent[currentStreamIndex].title}</h3>
                   </div>
                   
                   <Button variant="ghost" size="icon" onClick={nextStream}>
@@ -146,12 +180,10 @@ export default function LandingPage() {
                     Download
                   </Button>
                   <Button variant="outline" size="sm">
-                    <ThumbsUp className="h-4 w-4 mr-2" />
-                    Like
+                    <ThumbsUp className="h-4 w-4" />
                   </Button>
                   <Button variant="outline" size="sm">
-                    <ThumbsDown className="h-4 w-4 mr-2" />
-                    Pass
+                    <ThumbsDown className="h-4 w-4" />
                   </Button>
                   <Button variant="outline" size="sm">
                     <Share className="h-4 w-4 mr-2" />
@@ -165,43 +197,24 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-8 bg-muted/10">
+      <section id="how-it-works" className="py-20 px-8 bg-muted/10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16 text-foreground">How It Works</h2>
           
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 text-center">
-            <div className="space-y-2">
-              <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center text-2xl">📱</div>
-              <p className="font-medium">Your Phone</p>
-            </div>
-            
-            <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 lg:rotate-0" />
-            
-            <div className="space-y-2">
-              <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center text-2xl">📱</div>
-              <p className="font-medium">Nearby Phone</p>
-            </div>
-            
-            <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 lg:rotate-0" />
-            
-            <div className="space-y-2">
-              <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center text-2xl">👥</div>
-              <p className="font-medium">Local Group</p>
-            </div>
-            
-            <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 lg:rotate-0" />
-            
-            <div className="space-y-2">
-              <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center text-2xl">🌐</div>
-              <p className="font-medium">Community Mesh</p>
-            </div>
-            
-            <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 lg:rotate-0" />
-            
-            <div className="space-y-2">
-              <div className="w-16 h-16 mx-auto bg-secondary/20 rounded-full flex items-center justify-center text-2xl">☁️</div>
-              <p className="font-medium">Optional Cloud Sync</p>
-            </div>
+            {howItWorksSteps.map((step, idx) => (
+              <React.Fragment key={idx}>
+                <div className="space-y-2">
+                  <div className="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center text-2xl">
+                    {step.icon}
+                  </div>
+                  <p className="font-medium">{step.title}</p>
+                </div>
+                {idx < howItWorksSteps.length - 1 && (
+                  <ArrowRight className="h-6 w-6 text-muted-foreground rotate-90 lg:rotate-0" />
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
@@ -209,12 +222,13 @@ export default function LandingPage() {
       {/* Call to Action Footer */}
       <footer className="py-20 px-8 bg-gradient-to-r from-primary/5 to-secondary/5">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl font-bold text-foreground">📬 Join the Movement. Decentralize the Screen.</h2>
+          <h2 className="text-4xl font-bold text-foreground">Join the Movement. Decentralize the Screen.</h2>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button variant="outline" size="lg">🤝 Become a Sponsor</Button>
-            <Button variant="outline" size="lg">🎬 Add My Movie</Button>
-            <Button size="lg" className="shadow-mesh-glow">📱 Download the App</Button>
+            <Button variant="outline" size="lg">Terms of Use</Button>
+            <Button variant="outline" size="lg">Privacy Policy</Button>
+            <Button variant="outline" size="lg">Add My Movie</Button>
+            <Button size="lg" className="shadow-mesh-glow">Sponsor MeshTV</Button>
           </div>
         </div>
       </footer>
