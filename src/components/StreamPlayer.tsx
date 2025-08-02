@@ -233,8 +233,8 @@ export default function StreamPlayer({
   }, []);
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8">
+    <div className="min-h-screen bg-background p-4 lg:p-8">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-4 lg:gap-8 items-start">
         {/* Main Video Player */}
         <div className="lg:col-span-3 space-y-4">
           <h1 className="text-2xl font-bold text-foreground">{title}</h1>
