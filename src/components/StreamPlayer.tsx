@@ -257,9 +257,9 @@ export default function StreamPlayer({
             />
             
             {/* Custom Controls Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-4">
               {/* Progress Bar */}
-              <div className="mb-4">
+              <div className="mb-2 sm:mb-3">
                 <Slider
                   value={[currentTime]}
                   max={duration || 100}
@@ -273,24 +273,25 @@ export default function StreamPlayer({
                 </div>
               </div>
               
-              {/* Control Buttons */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              {/* Control Buttons - Responsive Layout */}
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:justify-between">
+                {/* Left Controls */}
+                <div className="flex items-center gap-1 sm:gap-2 order-2 sm:order-1">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={togglePlayPause}
-                    className="text-white hover:bg-white/20 h-7 w-7"
+                    className="text-white hover:bg-white/20 h-6 w-6 sm:h-7 sm:w-7"
                   >
                     {isPlaying ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
                   </Button>
                   
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={toggleMute}
-                      className="text-white hover:bg-white/20 h-7 w-7"
+                      className="text-white hover:bg-white/20 h-6 w-6 sm:h-7 sm:w-7"
                     >
                       {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
                     </Button>
@@ -299,33 +300,41 @@ export default function StreamPlayer({
                       max={1}
                       step={0.1}
                       onValueChange={handleVolumeChange}
-                      className="w-16"
+                      className="w-12 sm:w-16"
                     />
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  {/* Mesh Status Indicators */}
-                  <div className="flex items-center gap-3 text-white text-xs">
+                {/* Right Controls */}
+                <div className="flex items-center gap-1 sm:gap-2 order-1 sm:order-2">
+                  {/* Mesh Status Indicators - Compact on mobile */}
+                  <div className="hidden sm:flex items-center gap-2 lg:gap-3 text-white text-xs">
                     <div className="flex items-center gap-1">
                       <Wifi className="h-3 w-3" />
-                      <span>{meshSignalPercent}%</span>
+                      <span className="hidden md:inline">{meshSignalPercent}%</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Users className="h-3 w-3" />
-                      <span>{meshPeerCount}</span>
+                      <span className="hidden md:inline">{meshPeerCount}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <HardDrive className="h-3 w-3" />
-                      <span>{fragmentStatus}%</span>
+                      <span className="hidden md:inline">{fragmentStatus}%</span>
                     </div>
+                  </div>
+                  
+                  {/* Mobile mesh status - icon only */}
+                  <div className="flex sm:hidden items-center gap-1 text-white">
+                    <Wifi className="h-3 w-3" />
+                    <Users className="h-3 w-3" />
+                    <HardDrive className="h-3 w-3" />
                   </div>
                   
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={toggleFullscreen}
-                    className="text-white hover:bg-white/20 h-7 w-7"
+                    className="text-white hover:bg-white/20 h-6 w-6 sm:h-7 sm:w-7"
                   >
                     <Maximize className="h-3 w-3" />
                   </Button>
