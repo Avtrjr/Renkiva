@@ -1,10 +1,31 @@
-import { useState, useEffect } from "react";
-import { videoFragmenter } from "@/lib/fragmenter";
+import React, { useState, useRef, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Play, 
+  Pause, 
+  Volume2, 
+  VolumeX, 
+  Maximize, 
+  Download, 
+  Share, 
+  ThumbsUp, 
+  ThumbsDown,
+  Wifi,
+  Users,
+  HardDrive
+} from "lucide-react";
 
 interface StreamPlayerProps {
-  title: string;
-  source: string;
-  fragments: any[];
+  title?: string;
+  videoSource?: string;
+  poster?: string;
+  // Legacy props for backward compatibility
+  source?: string;
+  fragments?: any[];
   metadata?: {
     description?: string;
     category?: string;
@@ -22,10 +43,13 @@ interface StreamPlayerProps {
   onViewingStats?: (stats: any) => void;
 }
 
-const StreamPlayer = ({
-  title,
+export default function StreamPlayer({ 
+  title = "Now Streaming via Mesh",
+  videoSource = "/local/mesh/fragments/tears-of-steel/assembled.mp4",
+  poster = "/media/poster-tears-of-steel.jpg",
+  // Legacy props
   source,
-  fragments,
+  fragments = [],
   metadata = {},
   ttl = 5,
   signalStrength = 95,
@@ -33,242 +57,368 @@ const StreamPlayer = ({
   streaming_url,
   onAdImpression,
   onViewingStats
-}: StreamPlayerProps) => {
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [assembled, setAssembled] = useState(false);
-  const [bufferHealth] = useState(93);
+}: StreamPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Check if fragments contain actual video data or just mock data
-  const hasValidVideoData = (fragments: any[]) => {
-    if (!fragments || fragments.length === 0) return false;
-    
-    // Check if any fragment contains mock data
-    const hasMockData = fragments.some(fragment => 
-      typeof fragment.data === 'string' && 
-      (fragment.data.includes('MOCK_VIDEO_DATA') || 
-       fragment.data.includes('FAKE_SHOW_DATA') ||
-       fragment.data.length < 100) // Very small data is likely mock
-    );
-    
-    return !hasMockData;
+  // Mesh network status (simulated or from props)
+  const [meshSignalPercent] = useState(signalStrength || 85);
+  const [meshPeerCount] = useState(12);
+  const [fragmentStatus] = useState(100);
+  const [supabaseAutoSyncStatus] = useState('Connected');
+
+  // Use streaming_url or videoSource as the final source
+  const finalVideoSource = streaming_url || videoSource;
+
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
-  // Fragment assembly using the fragmenter utility
-  const reassembleFragments = (fragments: any[]) => {
-    if (!fragments || fragments.length === 0) return null;
-    
-    // Sort fragments by sequence number
-    const sorted = fragments.sort((a, b) => (a.sequence || a.id) - (b.sequence || b.id));
-    
-    // Create a buffer from fragments
-    const buffers = sorted.map(fragment => {
-      if (fragment.data instanceof Uint8Array) {
-        return fragment.data;
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const handleSeek = (value: number[]) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = value[0];
+      setCurrentTime(value[0]);
+    }
+  };
+
+  const handleVolumeChange = (value: number[]) => {
+    if (videoRef.current) {
+      const newVolume = value[0];
+      videoRef.current.volume = newVolume;
+      setVolume(newVolume);
+      setIsMuted(newVolume === 0);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      if (isMuted) {
+        videoRef.current.volume = volume;
+        setIsMuted(false);
+      } else {
+        videoRef.current.volume = 0;
+        setIsMuted(true);
       }
-      // Convert string data to Uint8Array if needed
-      const encoder = new TextEncoder();
-      return encoder.encode(fragment.data || 'MOCK_VIDEO_DATA');
-    });
-    
-    // Combine all buffers
-    const totalLength = buffers.reduce((sum, buffer) => sum + buffer.length, 0);
-    const combined = new Uint8Array(totalLength);
-    let offset = 0;
-    
-    buffers.forEach(buffer => {
-      combined.set(buffer, offset);
-      offset += buffer.length;
-    });
-    
-    return combined;
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (videoRef.current) {
+      if (!isFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+      setIsFullscreen(!isFullscreen);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleDownload = () => {
+    if (onViewingStats) {
+      onViewingStats({ action: 'download', timestamp: Date.now() });
+    }
+    console.log('Downloading content...');
+  };
+
+  const handleShare = () => {
+    if (onViewingStats) {
+      onViewingStats({ action: 'share', timestamp: Date.now() });
+    }
+    console.log('Sharing content...');
+  };
+
+  const handleFeedback = (type: 'like' | 'dislike') => {
+    if (onViewingStats) {
+      onViewingStats({ action: type, timestamp: Date.now() });
+    }
+    console.log(`Feedback: ${type}`);
   };
 
   useEffect(() => {
-    console.log('StreamPlayer: fragments updated', { 
-      fragmentCount: fragments.length, 
-      hasStreamingUrl: !!streaming_url,
-      streamingUrl: streaming_url,
-      hasValidData: hasValidVideoData(fragments)
-    });
-
-    // Reset video source when streaming_url changes
-    if (streaming_url !== videoSrc) {
-      setVideoSrc(null);
-      setAssembled(false);
-    }
-
-    // Priority 1: Use streaming_url if available
-    if (streaming_url) {
-      console.log('StreamPlayer: Setting video source to:', streaming_url);
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+      video.addEventListener('play', () => setIsPlaying(true));
+      video.addEventListener('pause', () => setIsPlaying(false));
       
-      // Test if the URL is accessible by creating a test request
-      fetch(streaming_url, { method: 'HEAD', mode: 'no-cors' })
-        .then(() => {
-          console.log('StreamPlayer: URL appears accessible');
-          setVideoSrc(streaming_url);
-          setAssembled(true);
-        })
-        .catch((error) => {
-          console.log('StreamPlayer: URL test failed, but setting anyway:', error);
-          setVideoSrc(streaming_url);
-          setAssembled(true);
-        });
-      return;
+      return () => {
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        video.removeEventListener('play', () => setIsPlaying(true));
+        video.removeEventListener('pause', () => setIsPlaying(false));
+      };
     }
-
-    // Priority 2: Use fragments only if they contain valid video data
-    if (fragments && fragments.length > 0) {
-      const totalExpected = fragments[0]?.total || fragments.length;
-      
-      if (fragments.length === totalExpected && !assembled) {
-        if (hasValidVideoData(fragments)) {
-          console.log('StreamPlayer: Assembling valid video fragments');
-          const fullBuffer = reassembleFragments(fragments);
-          if (fullBuffer) {
-            const blob = new Blob([fullBuffer], { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
-            setVideoSrc(url);
-            setAssembled(true);
-          }
-        } else {
-          console.log('StreamPlayer: Fragments contain mock data, skipping assembly');
-          setVideoSrc(null);
-        }
-      }
-    } else {
-      // No streaming URL and no fragments - show waiting state
-      console.log('StreamPlayer: No video source available');
-      setVideoSrc(null);
-      setAssembled(false);
-    }
-  }, [fragments, streaming_url]);
+  }, []);
 
   return (
-    <div className="space-y-2">{/* Removed the gradient background window */}
-      <h2 className="text-xl font-bold">🎬 {title || 'Unknown Title'}</h2>
-      <p className="text-sm">📡 Source: {source || 'MeshTV Network'}</p>
-      <p className="text-sm">🧬 Fragments: {fragments.length}</p>
-      
-      {videoSrc ? (
-        <div>
-          <video
-            key={videoSrc} // Force re-render when source changes
-            className="rounded w-full mt-2"
-            controls
-            autoPlay
-            preload="metadata"
-            crossOrigin="anonymous"
-            playsInline
-            src={videoSrc}
-            onError={(e) => {
-              console.error('Video playback failed:', e);
-              console.log('Failed video src:', videoSrc);
-              const error = e.currentTarget.error;
-              if (error) {
-                console.log('Error code:', error.code);
-                console.log('Error message:', error.message);
-                
-                // Provide user-friendly error messages
-                let errorMsg = "Unknown error";
-                switch (error.code) {
-                  case 1: errorMsg = "Video loading aborted"; break;
-                  case 2: errorMsg = "Network error"; break;
-                  case 3: errorMsg = "Video decoding failed"; break;
-                  case 4: errorMsg = "Video format not supported"; break;
-                }
-                console.log('User-friendly error:', errorMsg);
-              }
-              
-              // Don't immediately clear videoSrc to show error state
-            }}
-            onLoadStart={() => console.log('Video load started')}
-            onCanPlay={() => console.log('Video can play')}
-            onLoadedMetadata={() => console.log('Video metadata loaded')}
-            onLoadedData={() => console.log('Video data loaded')}
-            onPlay={() => console.log('Video started playing')}
-          />
+    <div className="min-h-screen bg-background p-8">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8">
+        {/* Main Video Player */}
+        <div className="lg:col-span-3 space-y-4">
+          <h1 className="text-2xl font-bold text-foreground">{title}</h1>
           
-          {/* Alternative iframe fallback */}
-          <div className="mt-2">
-            <p className="text-xs text-gray-500 mb-2">If video doesn't play above, try these alternatives:</p>
-            <div className="flex gap-2">
-              <button 
-                onClick={() => window.open(videoSrc, '_blank')}
-                className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-              >
-                Open in New Tab
-              </button>
+          <div className="relative bg-black rounded-lg overflow-hidden shadow-2xl">
+            <video
+              ref={videoRef}
+              className="w-full aspect-video"
+              poster={poster}
+              src={finalVideoSource}
+              onClick={togglePlayPause}
+              onError={(e) => {
+                console.error('Video playback failed:', e);
+                const error = e.currentTarget.error;
+                if (error) {
+                  console.log('Error code:', error.code);
+                  console.log('Error message:', error.message);
+                }
+              }}
+            />
+            
+            {/* Custom Controls Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              {/* Progress Bar */}
+              <div className="mb-4">
+                <Slider
+                  value={[currentTime]}
+                  max={duration || 100}
+                  step={1}
+                  onValueChange={handleSeek}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-white mt-1">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
               
-              <button 
-                onClick={() => {
-                  // Try to download the video
-                  const a = document.createElement('a');
-                  a.href = videoSrc;
-                  a.download = 'video.mp4';
-                  a.click();
-                }}
-                className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600"
-              >
-                Download Video
-              </button>
+              {/* Control Buttons */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={togglePlayPause}
+                    className="text-white hover:bg-white/20"
+                  >
+                    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                  </Button>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={toggleMute}
+                      className="text-white hover:bg-white/20"
+                    >
+                      {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    </Button>
+                    <Slider
+                      value={[isMuted ? 0 : volume]}
+                      max={1}
+                      step={0.1}
+                      onValueChange={handleVolumeChange}
+                      className="w-20"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  {/* Mesh Status Indicators */}
+                  <div className="flex items-center gap-4 text-white text-sm">
+                    <div className="flex items-center gap-1">
+                      <Wifi className="h-4 w-4" />
+                      <span>{meshSignalPercent}%</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      <span>{meshPeerCount}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <HardDrive className="h-4 w-4" />
+                      <span>{fragmentStatus}%</span>
+                    </div>
+                  </div>
+                  
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleFullscreen}
+                    className="text-white hover:bg-white/20"
+                  >
+                    <Maximize className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="rounded w-full mt-2 bg-gray-200 dark:bg-gray-800 aspect-video flex items-center justify-center">
-          <div className="text-center text-gray-600 dark:text-gray-400">
-            <div className="text-4xl mb-2">📺</div>
-            <p className="text-sm">
-              {!streaming_url && fragments.length === 0 
-                ? "No video source available" 
-                : streaming_url
-                  ? "Loading video stream..."
-                  : fragments.length === 0 
-                    ? "Waiting for stream fragments..." 
-                    : hasValidVideoData(fragments)
-                      ? `Assembling video... (${fragments.length} fragments)`
-                      : "Demo mode - fragments contain mock data"
-              }
-            </p>
-            {streaming_url && (
-              <>
-                <p className="text-xs mt-2 text-gray-500">
-                  Source: {streaming_url.length > 50 ? streaming_url.substring(0, 50) + '...' : streaming_url}
-                </p>
-                <button 
-                  onClick={() => window.open(streaming_url, '_blank')}
-                  className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
-                >
-                  Open Video in New Tab
-                </button>
-              </>
-            )}
+          
+          {/* Action Buttons */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button variant="outline" onClick={handleDownload}>
+                <Download className="h-4 w-4 mr-2" />
+                Download
+              </Button>
+              <Button variant="outline" onClick={handleShare}>
+                <Share className="h-4 w-4 mr-2" />
+                Share
+              </Button>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleFeedback('like')}
+              >
+                <ThumbsUp className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleFeedback('dislike')}
+              >
+                <ThumbsDown className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-        </div>
-      )}
-      
-      {/* Network Status */}
-      <div className="mt-3 text-sm">
-        <p>📡 {distance} — <strong>{signalStrength}% Signal</strong> — TTL: <strong>{ttl.toFixed(1)}</strong></p>
-        <p>🎞️ Buffer: <strong>{bufferHealth}%</strong></p>
-      </div>
 
-      {/* Metadata */}
-      {metadata && Object.keys(metadata).length > 0 && (
-        <div className="mt-3 text-sm">
-          <hr className="my-2" />
-          {metadata.description && <p>ℹ️ <strong>About</strong>: {metadata.description}</p>}
-          {metadata.category && <p>🎬 <strong>Category</strong>: {metadata.category}</p>}
-          {metadata.rating && <p>⭐ <strong>Rating</strong>: {metadata.rating}</p>}
-          {metadata.release && <p>📅 <strong>Release</strong>: {metadata.release}</p>}
-          {metadata.duration && <p>⏱️ <strong>Duration</strong>: {metadata.duration}</p>}
-          {metadata.studio && <p>🗂️ <strong>Source</strong>: {metadata.studio}</p>}
-          {metadata.size && <p>💾 <strong>File Size</strong>: {metadata.size}</p>}
+          {/* Legacy metadata display */}
+          {metadata && Object.keys(metadata).length > 0 && (
+            <Card className="bg-card/60 backdrop-blur-lg border-border/30">
+              <CardContent className="p-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                  {metadata.description && (
+                    <div>
+                      <span className="font-medium">About:</span>
+                      <p className="text-muted-foreground">{metadata.description}</p>
+                    </div>
+                  )}
+                  {metadata.category && (
+                    <div>
+                      <span className="font-medium">Category:</span>
+                      <p className="text-muted-foreground">{metadata.category}</p>
+                    </div>
+                  )}
+                  {metadata.rating && (
+                    <div>
+                      <span className="font-medium">Rating:</span>
+                      <p className="text-muted-foreground">{metadata.rating}</p>
+                    </div>
+                  )}
+                  {metadata.duration && (
+                    <div>
+                      <span className="font-medium">Duration:</span>
+                      <p className="text-muted-foreground">{metadata.duration}</p>
+                    </div>
+                  )}
+                  {metadata.studio && (
+                    <div>
+                      <span className="font-medium">Studio:</span>
+                      <p className="text-muted-foreground">{metadata.studio}</p>
+                    </div>
+                  )}
+                  {metadata.size && (
+                    <div>
+                      <span className="font-medium">Size:</span>
+                      <p className="text-muted-foreground">{metadata.size}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
-      )}
+        
+        {/* Side Panel - Fragment Details */}
+        <div className="lg:col-span-1">
+          <Card className="bg-card/60 backdrop-blur-lg border-border/30">
+            <CardHeader>
+              <CardTitle className="text-lg">Fragment Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Fragments Found</span>
+                  <Badge variant="secondary">3 / 3</Badge>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Local Device</span>
+                  </div>
+                  <div className="text-sm">
+                    <div className="flex items-center gap-2">
+                      <Wifi className="h-3 w-3" />
+                      <span>{meshSignalPercent}% Signal | TTL: {ttl}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Connected Peers</span>
+                  <Badge variant="outline">{meshPeerCount}</Badge>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Source</span>
+                  <span className="text-sm">{source || "Offline Mesh Network"}</span>
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-border/30">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Download Progress</span>
+                    <span>{fragmentStatus}%</span>
+                  </div>
+                  <Progress value={fragmentStatus} className="h-2" />
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-border/30">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Sync Status</span>
+                  <Badge variant={supabaseAutoSyncStatus === 'Connected' ? 'default' : 'secondary'}>
+                    {supabaseAutoSyncStatus}
+                  </Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default StreamPlayer;
+}
