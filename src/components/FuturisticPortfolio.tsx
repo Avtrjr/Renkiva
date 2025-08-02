@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere, MeshDistortMaterial, Text } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { Bluetooth, Zap, Globe, Cpu } from 'lucide-react';
 import * as THREE from 'three';
 
@@ -17,23 +17,20 @@ function Earth() {
   });
 
   return (
-    <Sphere
+    <mesh
       ref={meshRef}
-      args={[2.5, 64, 64]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <MeshDistortMaterial
+      <sphereGeometry args={[2.5, 64, 64]} />
+      <meshStandardMaterial
         color={hovered ? "#00ffff" : "#0088ff"}
-        attach="material"
-        distort={0.6}
-        speed={2}
         roughness={0.1}
         metalness={0.8}
         emissive={hovered ? "#004444" : "#002244"}
         emissiveIntensity={0.3}
       />
-    </Sphere>
+    </mesh>
   );
 }
 
