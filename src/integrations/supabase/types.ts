@@ -388,6 +388,39 @@ export type Database = {
           },
         ]
       }
+      mesh_channels: {
+        Row: {
+          channel_name: string
+          created_at: string | null
+          description: string | null
+          device_limit: number | null
+          encryption_key: string
+          id: string
+          is_private: boolean | null
+          owner_id: string | null
+        }
+        Insert: {
+          channel_name: string
+          created_at?: string | null
+          description?: string | null
+          device_limit?: number | null
+          encryption_key: string
+          id?: string
+          is_private?: boolean | null
+          owner_id?: string | null
+        }
+        Update: {
+          channel_name?: string
+          created_at?: string | null
+          description?: string | null
+          device_limit?: number | null
+          encryption_key?: string
+          id?: string
+          is_private?: boolean | null
+          owner_id?: string | null
+        }
+        Relationships: []
+      }
       mesh_fragments: {
         Row: {
           device_id: string
