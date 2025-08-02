@@ -71,10 +71,33 @@ const DiagnosticsOverlay = () => {
             break;
             
           case 'Storage Access Test':
-            const { data: buckets } = await supabase.storage.listBuckets();
-            result = buckets && buckets.length > 0
-              ? { test, status: 'passed', message: `Found ${buckets.length} storage buckets` }
-              : { test, status: 'failed', message: 'No storage buckets accessible' };
+            // Test access to each bucket individually
+            const bucketTests = [];
+            try {
+              // Test movies bucket (public)
+              const { data: moviesData, error: moviesError } = await supabase.storage
+                .from('movies')
+                .list('', { limit: 1 });
+              if (!moviesError) bucketTests.push('movies');
+              
+              // Test meshtv-library bucket (public)
+              const { data: libraryData, error: libraryError } = await supabase.storage
+                .from('meshtv-library')
+                .list('', { limit: 1 });
+              if (!libraryError) bucketTests.push('meshtv-library');
+              
+              // Test ad-assets bucket (private, requires auth)
+              const { data: adData, error: adError } = await supabase.storage
+                .from('ad-assets')
+                .list('', { limit: 1 });
+              if (!adError) bucketTests.push('ad-assets');
+              
+              result = bucketTests.length > 0
+                ? { test, status: 'passed', message: `Accessible buckets: ${bucketTests.join(', ')} (${bucketTests.length}/3)` }
+                : { test, status: 'failed', message: 'No storage buckets accessible' };
+            } catch (error) {
+              result = { test, status: 'failed', message: `Storage test error: ${error.message}` };
+            }
             break;
             
           case 'BLE Simulation':
