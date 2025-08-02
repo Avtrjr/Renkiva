@@ -280,9 +280,9 @@ export default function StreamPlayer({
                     variant="ghost"
                     size="icon"
                     onClick={togglePlayPause}
-                    className="text-white hover:bg-white/20"
+                    className="text-white hover:bg-white/20 h-7 w-7"
                   >
-                    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                    {isPlaying ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
                   </Button>
                   
                   <div className="flex items-center gap-2">
@@ -290,33 +290,33 @@ export default function StreamPlayer({
                       variant="ghost"
                       size="icon"
                       onClick={toggleMute}
-                      className="text-white hover:bg-white/20"
+                      className="text-white hover:bg-white/20 h-7 w-7"
                     >
-                      {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                      {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
                     </Button>
                     <Slider
                       value={[isMuted ? 0 : volume]}
                       max={1}
                       step={0.1}
                       onValueChange={handleVolumeChange}
-                      className="w-20"
+                      className="w-16"
                     />
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-2">
                   {/* Mesh Status Indicators */}
-                  <div className="flex items-center gap-4 text-white text-sm">
+                  <div className="flex items-center gap-3 text-white text-xs">
                     <div className="flex items-center gap-1">
-                      <Wifi className="h-4 w-4" />
+                      <Wifi className="h-3 w-3" />
                       <span>{meshSignalPercent}%</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
+                      <Users className="h-3 w-3" />
                       <span>{meshPeerCount}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <HardDrive className="h-4 w-4" />
+                      <HardDrive className="h-3 w-3" />
                       <span>{fragmentStatus}%</span>
                     </div>
                   </div>
@@ -325,9 +325,9 @@ export default function StreamPlayer({
                     variant="ghost"
                     size="icon"
                     onClick={toggleFullscreen}
-                    className="text-white hover:bg-white/20"
+                    className="text-white hover:bg-white/20 h-7 w-7"
                   >
-                    <Maximize className="h-4 w-4" />
+                    <Maximize className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
