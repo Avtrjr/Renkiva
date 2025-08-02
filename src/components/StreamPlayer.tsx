@@ -430,56 +430,91 @@ export default function StreamPlayer({
         
         {/* Side Panel - Fragment Details */}
         <div className="lg:col-span-1">
-          <Card className="bg-card/60 backdrop-blur-lg border-border/30">
-            <CardHeader>
+          <Card className="bg-card/95 backdrop-blur-lg border-border/50 h-fit">
+            <CardHeader className="pb-3">
               <CardTitle className="text-lg">Fragment Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Fragments Found</span>
-                  <Badge variant="secondary" className="text-xs h-5 px-2">3 / 3</Badge>
+                  <span className="text-sm text-muted-foreground">Fragments Found</span>
+                  <Badge variant="secondary" className="text-sm h-6 px-3">3 / 3</Badge>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs text-muted-foreground">Local Device</span>
+                    <span className="text-sm text-muted-foreground">Local Device</span>
                   </div>
-                  <div className="text-xs">
+                  <div className="text-sm">
                     <div className="flex items-center gap-2">
-                      <Wifi className="h-2 w-2" />
+                      <Wifi className="h-4 w-4" />
                       <span>{meshSignalPercent}% Signal | TTL: {ttl}</span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Connected Peers</span>
-                  <Badge variant="outline" className="text-xs h-5 px-2">{meshPeerCount}</Badge>
+                  <span className="text-sm text-muted-foreground">Connected Peers</span>
+                  <Badge variant="outline" className="text-sm h-6 px-3">{meshPeerCount}</Badge>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Source</span>
-                  <span className="text-xs">{source || "Offline Mesh Network"}</span>
+                  <span className="text-sm text-muted-foreground">Source</span>
+                  <span className="text-sm">{source || "Offline Mesh Network"}</span>
                 </div>
-              </div>
-              
-              <div className="pt-4 border-t border-border/30">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span>Download Progress</span>
-                    <span>{fragmentStatus}%</span>
-                  </div>
-                  <Progress value={fragmentStatus} className="h-1" />
-                </div>
-              </div>
-              
-              <div className="pt-4 border-t border-border/30">
+                
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">Sync Status</span>
-                  <Badge variant={supabaseAutoSyncStatus === 'Connected' ? 'default' : 'secondary'} className="text-xs h-5 px-2">
-                    {supabaseAutoSyncStatus}
-                  </Badge>
+                  <span className="text-sm text-muted-foreground">Network Distance</span>
+                  <span className="text-sm font-medium">{distance}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">Signal Strength</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 bg-secondary rounded-full h-2">
+                      <div 
+                        className="bg-primary h-2 rounded-full transition-all duration-300" 
+                        style={{ width: `${signalStrength}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-medium">{signalStrength}%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-border/30">
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span>Download Progress</span>
+                    <span className="font-medium">{fragmentStatus}%</span>
+                  </div>
+                  <Progress value={fragmentStatus} className="h-3" />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Downloading...</span>
+                    <span>{Math.round(fragmentStatus * 2.4 / 100 * 10) / 10} MB/s</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-border/30">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Sync Status</span>
+                    <Badge variant={supabaseAutoSyncStatus === 'Connected' ? 'default' : 'secondary'} className="text-sm h-6 px-3">
+                      {supabaseAutoSyncStatus}
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="text-center p-2 bg-secondary/20 rounded">
+                      <div className="font-medium">Total Size</div>
+                      <div className="text-muted-foreground">2.4 GB</div>
+                    </div>
+                    <div className="text-center p-2 bg-secondary/20 rounded">
+                      <div className="font-medium">Remaining</div>
+                      <div className="text-muted-foreground">{Math.round((100 - fragmentStatus) * 2.4 / 100 * 10) / 10} GB</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
