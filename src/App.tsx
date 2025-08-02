@@ -18,7 +18,6 @@ import { StorageDashboard } from "./components/StorageDashboard";
 import { PitchDeck } from "./components/PitchDeck";
 import { CreatorOnboarding } from "./components/CreatorOnboarding";
 import { SponsorOnboarding } from "./components/SponsorOnboarding";
-import { FuturisticPortfolio } from "./components/FuturisticPortfolio";
 import TermsOfUse from "./pages/TermsOfUse";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
@@ -31,8 +30,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<FuturisticPortfolio />} />
-          <Route path="/mesh-dashboard" element={<Index />} />
+          <Route path="/" element={<Index />} />
           <Route path="/light" element={<LightTheme />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<MeshTVDashboard />} />
