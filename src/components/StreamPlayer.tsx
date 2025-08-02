@@ -437,47 +437,47 @@ export default function StreamPlayer({
             <CardContent className="space-y-4">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Fragments Found</span>
-                  <Badge variant="secondary">3 / 3</Badge>
+                  <span className="text-xs text-muted-foreground">Fragments Found</span>
+                  <Badge variant="secondary" className="text-xs h-5 px-2">3 / 3</Badge>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Local Device</span>
+                    <span className="text-xs text-muted-foreground">Local Device</span>
                   </div>
-                  <div className="text-sm">
+                  <div className="text-xs">
                     <div className="flex items-center gap-2">
-                      <Wifi className="h-3 w-3" />
+                      <Wifi className="h-2 w-2" />
                       <span>{meshSignalPercent}% Signal | TTL: {ttl}</span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Connected Peers</span>
-                  <Badge variant="outline">{meshPeerCount}</Badge>
+                  <span className="text-xs text-muted-foreground">Connected Peers</span>
+                  <Badge variant="outline" className="text-xs h-5 px-2">{meshPeerCount}</Badge>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Source</span>
-                  <span className="text-sm">{source || "Offline Mesh Network"}</span>
+                  <span className="text-xs text-muted-foreground">Source</span>
+                  <span className="text-xs">{source || "Offline Mesh Network"}</span>
                 </div>
               </div>
               
               <div className="pt-4 border-t border-border/30">
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span>Download Progress</span>
                     <span>{fragmentStatus}%</span>
                   </div>
-                  <Progress value={fragmentStatus} className="h-2" />
+                  <Progress value={fragmentStatus} className="h-1" />
                 </div>
               </div>
               
               <div className="pt-4 border-t border-border/30">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Sync Status</span>
-                  <Badge variant={supabaseAutoSyncStatus === 'Connected' ? 'default' : 'secondary'}>
+                  <span className="text-xs text-muted-foreground">Sync Status</span>
+                  <Badge variant={supabaseAutoSyncStatus === 'Connected' ? 'default' : 'secondary'} className="text-xs h-5 px-2">
                     {supabaseAutoSyncStatus}
                   </Badge>
                 </div>
