@@ -337,16 +337,16 @@ export default function StreamPlayer({
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="outline" onClick={handleDownload} className="flex-1 sm:flex-none">
-                <Download className="h-4 w-4 mr-2" />
+              <Button variant="outline" onClick={handleDownload} className="flex-1 sm:flex-none h-7 px-2 py-1 text-xs">
+                <Download className="h-3 w-3 mr-1" />
                 Download
               </Button>
               <Button 
                 variant={shareClicked ? "default" : "outline"} 
                 onClick={handleShare} 
-                className={`flex-1 sm:flex-none transition-all duration-200 ${shareClicked ? 'bg-green-600 hover:bg-green-700 text-white' : ''}`}
+                className={`flex-1 sm:flex-none h-7 px-2 py-1 text-xs transition-all duration-200 ${shareClicked ? 'bg-green-600 hover:bg-green-700 text-white' : ''}`}
               >
-                <Share className="h-4 w-4 mr-2" />
+                <Share className="h-3 w-3 mr-1" />
                 {shareClicked ? 'Shared!' : 'Share'}
               </Button>
             </div>
@@ -357,26 +357,26 @@ export default function StreamPlayer({
                 size="icon"
                 onClick={() => handleFeedback('like')}
                 data-feedback="like"
-                className={`transition-all duration-200 hover:scale-110 ${
+                className={`h-7 w-7 transition-all duration-200 hover:scale-110 ${
                   liked 
                     ? 'bg-green-600 hover:bg-green-700 text-white border-green-600' 
                     : 'hover:bg-green-50 hover:border-green-400 hover:text-green-600'
                 }`}
               >
-                <ThumbsUp className="h-4 w-4" />
+                <ThumbsUp className="h-3 w-3" />
               </Button>
               <Button
                 variant={disliked ? "default" : "outline"}
                 size="icon"
                 onClick={() => handleFeedback('dislike')}
                 data-feedback="dislike"
-                className={`transition-all duration-200 hover:scale-110 ${
+                className={`h-7 w-7 transition-all duration-200 hover:scale-110 ${
                   disliked 
                     ? 'bg-red-600 hover:bg-red-700 text-white border-red-600' 
                     : 'hover:bg-red-50 hover:border-red-400 hover:text-red-600'
                 }`}
               >
-                <ThumbsDown className="h-4 w-4" />
+                <ThumbsDown className="h-3 w-3" />
               </Button>
             </div>
           </div>
