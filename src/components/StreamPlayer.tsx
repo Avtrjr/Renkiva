@@ -147,6 +147,13 @@ export default function StreamPlayer({
     if (onViewingStats) {
       onViewingStats({ action: 'download', timestamp: Date.now() });
     }
+    // Create a mock download link
+    const link = document.createElement('a');
+    link.href = finalVideoSource;
+    link.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     console.log('Downloading content...');
   };
 
@@ -154,12 +161,30 @@ export default function StreamPlayer({
     if (onViewingStats) {
       onViewingStats({ action: 'share', timestamp: Date.now() });
     }
+    // Use Web Share API if available, otherwise copy to clipboard
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out this video: ${title}`,
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        console.log('Link copied to clipboard');
+      }).catch(console.error);
+    }
     console.log('Sharing content...');
   };
 
   const handleFeedback = (type: 'like' | 'dislike') => {
     if (onViewingStats) {
       onViewingStats({ action: type, timestamp: Date.now() });
+    }
+    // Add visual feedback
+    const button = document.querySelector(`[data-feedback="${type}"]`);
+    if (button) {
+      button.classList.add('animate-bounce');
+      setTimeout(() => button.classList.remove('animate-bounce'), 500);
     }
     console.log(`Feedback: ${type}`);
   };
@@ -284,23 +309,25 @@ export default function StreamPlayer({
           </div>
           
           {/* Action Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={handleDownload}>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" onClick={handleDownload} className="flex-1 sm:flex-none">
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" onClick={handleShare}>
+              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-none">
                 <Share className="h-4 w-4 mr-2" />
                 Share
               </Button>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-center">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => handleFeedback('like')}
+                data-feedback="like"
+                className="transition-transform hover:scale-110"
               >
                 <ThumbsUp className="h-4 w-4" />
               </Button>
@@ -308,6 +335,8 @@ export default function StreamPlayer({
                 variant="outline"
                 size="icon"
                 onClick={() => handleFeedback('dislike')}
+                data-feedback="dislike"
+                className="transition-transform hover:scale-110"
               >
                 <ThumbsDown className="h-4 w-4" />
               </Button>
