@@ -388,6 +388,44 @@ export type Database = {
           },
         ]
       }
+      mesh_channel_invites: {
+        Row: {
+          channel_id: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          invite_code: string
+          max_uses: number | null
+          used_by: string[] | null
+        }
+        Insert: {
+          channel_id: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          invite_code: string
+          max_uses?: number | null
+          used_by?: string[] | null
+        }
+        Update: {
+          channel_id?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          invite_code?: string
+          max_uses?: number | null
+          used_by?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mesh_channel_invites_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "mesh_channels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mesh_channels: {
         Row: {
           channel_name: string
