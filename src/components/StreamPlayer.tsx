@@ -65,6 +65,11 @@ export default function StreamPlayer({
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  
+  // User interaction states
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  const [shareClicked, setShareClicked] = useState(false);
 
   // Mesh network status (simulated or from props)
   const [meshSignalPercent] = useState(signalStrength || 85);
@@ -157,35 +162,56 @@ export default function StreamPlayer({
     console.log('Downloading content...');
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
+    setShareClicked(true);
+    
     if (onViewingStats) {
       onViewingStats({ action: 'share', timestamp: Date.now() });
     }
-    // Use Web Share API if available, otherwise copy to clipboard
-    if (navigator.share) {
-      navigator.share({
-        title: title,
-        text: `Check out this video: ${title}`,
-        url: window.location.href,
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(window.location.href).then(() => {
+    
+    try {
+      // Use Web Share API if available, otherwise copy to clipboard
+      if (navigator.share) {
+        await navigator.share({
+          title: title,
+          text: `Check out this video: ${title}`,
+          url: window.location.href,
+        });
+        console.log('Content shared successfully');
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
         console.log('Link copied to clipboard');
-      }).catch(console.error);
+        // Optional: You could show a toast notification here
+      }
+    } catch (error) {
+      console.error('Share failed:', error);
     }
-    console.log('Sharing content...');
+    
+    // Reset share state after some time for visual feedback
+    setTimeout(() => setShareClicked(false), 2000);
   };
 
   const handleFeedback = (type: 'like' | 'dislike') => {
     if (onViewingStats) {
       onViewingStats({ action: type, timestamp: Date.now() });
     }
-    // Add visual feedback
+    
+    // Update state for visual feedback
+    if (type === 'like') {
+      setLiked(!liked);
+      setDisliked(false); // Reset dislike if like is clicked
+    } else {
+      setDisliked(!disliked);
+      setLiked(false); // Reset like if dislike is clicked
+    }
+    
+    // Add bounce animation
     const button = document.querySelector(`[data-feedback="${type}"]`);
     if (button) {
       button.classList.add('animate-bounce');
       setTimeout(() => button.classList.remove('animate-bounce'), 500);
     }
+    
     console.log(`Feedback: ${type}`);
   };
 
@@ -315,28 +341,40 @@ export default function StreamPlayer({
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-none">
+              <Button 
+                variant={shareClicked ? "default" : "outline"} 
+                onClick={handleShare} 
+                className={`flex-1 sm:flex-none transition-all duration-200 ${shareClicked ? 'bg-green-600 hover:bg-green-700 text-white' : ''}`}
+              >
                 <Share className="h-4 w-4 mr-2" />
-                Share
+                {shareClicked ? 'Shared!' : 'Share'}
               </Button>
             </div>
             
             <div className="flex items-center gap-2 justify-center">
               <Button
-                variant="outline"
+                variant={liked ? "default" : "outline"}
                 size="icon"
                 onClick={() => handleFeedback('like')}
                 data-feedback="like"
-                className="transition-transform hover:scale-110"
+                className={`transition-all duration-200 hover:scale-110 ${
+                  liked 
+                    ? 'bg-green-600 hover:bg-green-700 text-white border-green-600' 
+                    : 'hover:bg-green-50 hover:border-green-400 hover:text-green-600'
+                }`}
               >
                 <ThumbsUp className="h-4 w-4" />
               </Button>
               <Button
-                variant="outline"
+                variant={disliked ? "default" : "outline"}
                 size="icon"
                 onClick={() => handleFeedback('dislike')}
                 data-feedback="dislike"
-                className="transition-transform hover:scale-110"
+                className={`transition-all duration-200 hover:scale-110 ${
+                  disliked 
+                    ? 'bg-red-600 hover:bg-red-700 text-white border-red-600' 
+                    : 'hover:bg-red-50 hover:border-red-400 hover:text-red-600'
+                }`}
               >
                 <ThumbsDown className="h-4 w-4" />
               </Button>
