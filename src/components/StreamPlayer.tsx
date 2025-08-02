@@ -309,13 +309,13 @@ export default function StreamPlayer({
           </div>
           
           {/* Action Buttons */}
-          <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-col xs:flex-row gap-2 w-full">
-              <Button variant="outline" onClick={handleDownload} className="flex-1 text-sm">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" onClick={handleDownload} className="flex-1 sm:flex-none">
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </Button>
-              <Button variant="outline" onClick={handleShare} className="flex-1 text-sm">
+              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-none">
                 <Share className="h-4 w-4 mr-2" />
                 Share
               </Button>
@@ -324,23 +324,21 @@ export default function StreamPlayer({
             <div className="flex items-center gap-2 justify-center">
               <Button
                 variant="outline"
-                size="sm"
+                size="icon"
                 onClick={() => handleFeedback('like')}
                 data-feedback="like"
                 className="transition-transform hover:scale-110"
               >
-                <ThumbsUp className="h-4 w-4 mr-1" />
-                <span className="hidden xs:inline">Like</span>
+                <ThumbsUp className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
-                size="sm"
+                size="icon"
                 onClick={() => handleFeedback('dislike')}
                 data-feedback="dislike"
                 className="transition-transform hover:scale-110"
               >
-                <ThumbsDown className="h-4 w-4 mr-1" />
-                <span className="hidden xs:inline">Dislike</span>
+                <ThumbsDown className="h-4 w-4" />
               </Button>
             </div>
           </div>
