@@ -388,6 +388,42 @@ export type Database = {
           },
         ]
       }
+      mesh_fragments: {
+        Row: {
+          created_at: string
+          device_id: string
+          fragment_count: number
+          fragment_hash: string
+          id: string
+          last_seen: string
+          total_size_mb: number
+          updated_at: string
+          video_title: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          fragment_count?: number
+          fragment_hash: string
+          id?: string
+          last_seen?: string
+          total_size_mb?: number
+          updated_at?: string
+          video_title: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          fragment_count?: number
+          fragment_hash?: string
+          id?: string
+          last_seen?: string
+          total_size_mb?: number
+          updated_at?: string
+          video_title?: string
+        }
+        Relationships: []
+      }
       mesh_nodes: {
         Row: {
           created_at: string
@@ -438,31 +474,121 @@ export type Database = {
           },
         ]
       }
+      mesh_packets: {
+        Row: {
+          created_at: string
+          flags: Json
+          id: string
+          packet_type: number
+          payload: string
+          processed_by_node: string | null
+          receiver_id: string
+          sender_id: string
+          timestamp: string
+          ttl: number
+        }
+        Insert: {
+          created_at?: string
+          flags?: Json
+          id?: string
+          packet_type: number
+          payload: string
+          processed_by_node?: string | null
+          receiver_id: string
+          sender_id: string
+          timestamp: string
+          ttl: number
+        }
+        Update: {
+          created_at?: string
+          flags?: Json
+          id?: string
+          packet_type?: number
+          payload?: string
+          processed_by_node?: string | null
+          receiver_id?: string
+          sender_id?: string
+          timestamp?: string
+          ttl?: number
+        }
+        Relationships: []
+      }
+      mesh_streams: {
+        Row: {
+          category: string | null
+          checksum: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_complete: boolean | null
+          sender_node: string
+          started_at: string
+          stream_id: string
+          title: string | null
+          total_fragments: number | null
+        }
+        Insert: {
+          category?: string | null
+          checksum?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_complete?: boolean | null
+          sender_node: string
+          started_at: string
+          stream_id: string
+          title?: string | null
+          total_fragments?: number | null
+        }
+        Update: {
+          category?: string | null
+          checksum?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_complete?: boolean | null
+          sender_node?: string
+          started_at?: string
+          stream_id?: string
+          title?: string | null
+          total_fragments?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          accepted_legal: boolean | null
           avatar_url: string | null
           bio: string | null
           created_at: string
           display_name: string | null
           id: string
+          legal_accepted_at: string | null
           updated_at: string
           username: string
         }
         Insert: {
+          accepted_legal?: boolean | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
           display_name?: string | null
           id: string
+          legal_accepted_at?: string | null
           updated_at?: string
           username: string
         }
         Update: {
+          accepted_legal?: boolean | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
+          legal_accepted_at?: string | null
           updated_at?: string
           username?: string
         }
@@ -593,6 +719,36 @@ export type Database = {
           last_updated?: string
           total_files?: number | null
           total_size_bytes?: number | null
+        }
+        Relationships: []
+      }
+      stream_fragments: {
+        Row: {
+          data: string
+          fragment_index: number
+          id: string
+          received_at: string
+          received_from_node: string
+          stream_id: string
+          total_fragments: number
+        }
+        Insert: {
+          data: string
+          fragment_index: number
+          id?: string
+          received_at?: string
+          received_from_node: string
+          stream_id: string
+          total_fragments: number
+        }
+        Update: {
+          data?: string
+          fragment_index?: number
+          id?: string
+          received_at?: string
+          received_from_node?: string
+          stream_id?: string
+          total_fragments?: number
         }
         Relationships: []
       }
