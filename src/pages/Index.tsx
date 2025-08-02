@@ -235,11 +235,11 @@ const Index = () => {
             </div>
             
             {/* Featured "Now Playing" TV Preview */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-              {/* Main Video Player */}
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 mb-12">
+              {/* Main Video Player - Takes more space on desktop */}
+              <div className="xl:col-span-3">
                 <Card className="mesh-card border border-primary/30 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden animate-scale-in">
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 lg:p-6">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
@@ -251,22 +251,26 @@ const Index = () => {
                     </div>
                     
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
-                      <StreamPlayer title="Tears of Steel (Featured Demo)" source="MeshTV Demo Node" fragments={[{
-                      id: 1,
-                      sequence: 1,
-                      size: 1024
-                    }, {
-                      id: 2,
-                      sequence: 2,
-                      size: 2048
-                    }, {
-                      id: 3,
-                      sequence: 3,
-                      size: 1536
-                    }]} signalStrength={100} distance="0m" streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" />
-                      
-                      {/* Overlay Info */}
-                      
+                      <StreamPlayer 
+                        title="Tears of Steel (Featured Demo)" 
+                        source="MeshTV Demo Node" 
+                        fragments={[{
+                          id: 1,
+                          sequence: 1,
+                          size: 1024
+                        }, {
+                          id: 2,
+                          sequence: 2,
+                          size: 2048
+                        }, {
+                          id: 3,
+                          sequence: 3,
+                          size: 1536
+                        }]} 
+                        signalStrength={100} 
+                        distance="0m" 
+                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" 
+                      />
                     </div>
                     
                     <div className="mt-4 text-center">
