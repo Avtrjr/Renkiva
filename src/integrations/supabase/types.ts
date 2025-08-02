@@ -390,36 +390,30 @@ export type Database = {
       }
       mesh_fragments: {
         Row: {
-          created_at: string
           device_id: string
-          fragment_count: number
+          fragment_count: number | null
           fragment_hash: string
           id: string
-          last_seen: string
-          total_size_mb: number
-          updated_at: string
+          last_seen: string | null
+          total_size_mb: number | null
           video_title: string
         }
         Insert: {
-          created_at?: string
           device_id: string
-          fragment_count?: number
+          fragment_count?: number | null
           fragment_hash: string
           id?: string
-          last_seen?: string
-          total_size_mb?: number
-          updated_at?: string
+          last_seen?: string | null
+          total_size_mb?: number | null
           video_title: string
         }
         Update: {
-          created_at?: string
           device_id?: string
-          fragment_count?: number
+          fragment_count?: number | null
           fragment_hash?: string
           id?: string
-          last_seen?: string
-          total_size_mb?: number
-          updated_at?: string
+          last_seen?: string | null
+          total_size_mb?: number | null
           video_title?: string
         }
         Relationships: []
