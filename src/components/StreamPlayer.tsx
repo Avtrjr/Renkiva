@@ -70,6 +70,7 @@ export default function StreamPlayer({
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [shareClicked, setShareClicked] = useState(false);
+  const [videoError, setVideoError] = useState<string | null>(null);
 
   // Mesh network status (simulated or from props)
   const [meshSignalPercent] = useState(signalStrength || 85);
@@ -252,9 +253,54 @@ export default function StreamPlayer({
                 if (error) {
                   console.log('Error code:', error.code);
                   console.log('Error message:', error.message);
+                  
+                  let errorMessage = 'Video playback failed';
+                  
+                  switch (error.code) {
+                    case 1: // MEDIA_ERR_ABORTED
+                      errorMessage = 'Video playback was aborted';
+                      break;
+                    case 2: // MEDIA_ERR_NETWORK
+                      errorMessage = 'Network error occurred while loading video';
+                      break;
+                    case 3: // MEDIA_ERR_DECODE
+                      errorMessage = 'Video format is not supported by this browser';
+                      break;
+                    case 4: // MEDIA_ERR_SRC_NOT_SUPPORTED
+                      errorMessage = 'Video format is not supported or file is corrupted';
+                      break;
+                    default:
+                      errorMessage = 'Unknown video error';
+                  }
+                  
+                  setVideoError(errorMessage);
                 }
               }}
             />
+            
+            {/* Video Error Overlay */}
+            {videoError && (
+              <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white p-4">
+                <div className="text-center max-w-md">
+                  <div className="text-6xl mb-4">⚠️</div>
+                  <h3 className="text-xl font-bold mb-2">Video Playback Error</h3>
+                  <p className="text-sm text-gray-300 mb-4">{videoError}</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-400">
+                      This video format may not be supported by your browser.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setVideoError(null)}
+                      className="text-white border-white hover:bg-white hover:text-black"
+                    >
+                      Try Again
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* Custom Controls Overlay */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-4">
