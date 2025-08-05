@@ -303,11 +303,14 @@ export function SponsorOnboarding() {
                         }}
                         className="hidden"
                       />
-                      <Label htmlFor="video-upload" className="cursor-pointer">
-                        <Button variant="outline" disabled={uploading}>
-                          {uploading ? 'Uploading...' : 'Choose Video Ad'}
-                        </Button>
-                      </Label>
+                      <Button 
+                        variant="outline" 
+                        disabled={uploading}
+                        onClick={() => document.getElementById('video-upload')?.click()}
+                        type="button"
+                      >
+                        {uploading ? 'Uploading...' : 'Choose Video Ad'}
+                      </Button>
                       {campaign.adVideoUrl && (
                         <p className="text-sm text-green-600 mt-2">Video uploaded ✓</p>
                       )}
