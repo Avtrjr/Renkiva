@@ -333,11 +333,14 @@ export function SponsorOnboarding() {
                         }}
                         className="hidden"
                       />
-                      <Label htmlFor="banner-upload" className="cursor-pointer">
-                        <Button variant="outline" disabled={uploading}>
-                          {uploading ? 'Uploading...' : 'Choose Banner'}
-                        </Button>
-                      </Label>
+                      <Button 
+                        variant="outline" 
+                        disabled={uploading}
+                        onClick={() => document.getElementById('banner-upload')?.click()}
+                        type="button"
+                      >
+                        {uploading ? 'Uploading...' : 'Choose Banner'}
+                      </Button>
                       {campaign.adBannerUrl && (
                         <p className="text-sm text-green-600 mt-2">Banner uploaded ✓</p>
                       )}
@@ -362,7 +365,16 @@ export function SponsorOnboarding() {
               </div>
 
               <Button 
-                onClick={() => setStep(2)} 
+                onClick={() => {
+                  console.log('Button clicked, campaign state:', campaign);
+                  console.log('Validation checks:', {
+                    campaignName: !!campaign.campaignName,
+                    format: campaign.format,
+                    adVideoUrl: !!campaign.adVideoUrl,
+                    adBannerUrl: !!campaign.adBannerUrl
+                  });
+                  setStep(2);
+                }} 
                 className="w-full"
                 disabled={!campaign.campaignName || (
                   (campaign.format === 'video' && !campaign.adVideoUrl) ||
