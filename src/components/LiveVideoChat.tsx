@@ -97,18 +97,18 @@ export const LiveVideoChat = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
+        <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
           {/* Join Button */}
           <Dialog>
             <DialogTrigger asChild>
               <Button 
-                variant="cyber" 
+                variant="outline" 
                 size="lg"
-                className="flex flex-col items-center justify-center space-y-1"
+                className="flex flex-col items-center justify-center space-y-2 h-auto py-4 border-primary/50 hover:border-primary hover:bg-primary/10 text-primary hover:text-primary"
               >
                 <Video className="w-5 h-5" />
                 <span className="font-semibold">Join</span>
-                <span className="text-xs opacity-90">Enter peer's fingerprint</span>
+                <span className="text-xs opacity-80">Enter peer's fingerprint</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
@@ -144,11 +144,11 @@ export const LiveVideoChat = () => {
 
           {/* Host Button */}
           <Button 
-            variant="neon" 
+            variant="default" 
             size="lg"
             onClick={handleHostStream}
             disabled={isHosting}
-            className="flex flex-col items-center justify-center space-y-1"
+            className="flex flex-col items-center justify-center space-y-2 h-auto py-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow"
           >
             <Users className="w-5 h-5" />
             <span className="font-semibold">Host</span>
