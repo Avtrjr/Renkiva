@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { LiveVideoChat } from "@/components/LiveVideoChat";
+import DiagnosticsOverlay from "@/components/DiagnosticsOverlay";
 import { getTopOfflinePicks, VideoItem } from "@/services/meshTVService";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
@@ -687,6 +688,9 @@ const Index = () => {
             <LiveVideoChat />
           </div>
         </section>
+        
+        {/* Diagnostics Overlay - Fixed Position */}
+        <DiagnosticsOverlay />
         
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-border/30 text-center">
