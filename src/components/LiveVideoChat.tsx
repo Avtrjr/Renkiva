@@ -99,48 +99,50 @@ export const LiveVideoChat = () => {
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
           {/* Join Button */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="flex flex-col items-center justify-center space-y-2 h-auto py-4 border-primary/50 hover:border-primary hover:bg-primary/10 text-primary hover:text-primary"
-              >
-                <Video className="w-5 h-5" />
-                <span className="font-semibold">Join</span>
-                <span className="text-xs opacity-80">Enter peer's fingerprint</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Key className="w-5 h-5" />
-                  Join Live Stream
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium">Peer Fingerprint</label>
-                  <Input
-                    placeholder="A1B2-C3D4-E5F6-G7H8"
-                    value={fingerprint}
-                    onChange={(e) => setFingerprint(e.target.value)}
-                    className="mt-1"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Ask your peer to share their device fingerprint
-                  </p>
-                </div>
+          <div className="flex flex-col items-center space-y-2">
+            <Dialog>
+              <DialogTrigger asChild>
                 <Button 
-                  onClick={handleJoinStream} 
-                  disabled={isJoining}
-                  className="w-full"
+                  variant="outline" 
+                  size="lg"
+                  className="flex flex-col items-center justify-center space-y-2 h-auto py-4 border-primary/50 hover:border-primary hover:bg-primary/10 text-primary hover:text-primary w-full"
                 >
-                  {isJoining ? 'Connecting...' : 'Join Stream'}
+                  <Video className="w-5 h-5" />
+                  <span className="font-semibold">Join</span>
                 </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Key className="w-5 h-5" />
+                    Join Live Stream
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Peer Fingerprint</label>
+                    <Input
+                      placeholder="A1B2-C3D4-E5F6-G7H8"
+                      value={fingerprint}
+                      onChange={(e) => setFingerprint(e.target.value)}
+                      className="mt-1"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Ask your peer to share their device fingerprint
+                    </p>
+                  </div>
+                  <Button 
+                    onClick={handleJoinStream} 
+                    disabled={isJoining}
+                    className="w-full"
+                  >
+                    {isJoining ? 'Connecting...' : 'Join Stream'}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <span className="text-xs text-muted-foreground text-center">Enter peer's fingerprint</span>
+          </div>
 
           {/* Host Button */}
           <Button 
