@@ -159,9 +159,10 @@ export const LiveVideoChat = () => {
               <Users className="w-5 h-5" />
               <span className="font-semibold">Host</span>
             </Button>
-            <span className="text-xs text-muted-foreground text-center">
-              {isHosting ? 'Starting...' : 'Start group live stream'}
-            </span>
+            <Input 
+              placeholder={isHosting ? 'Starting...' : 'Start group live stream'}
+              className="mt-3 text-xs border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm"
+            />
           </div>
         </div>
 
