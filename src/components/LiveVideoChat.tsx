@@ -145,19 +145,21 @@ export const LiveVideoChat = () => {
           </div>
 
           {/* Host Button */}
-          <Button 
-            variant="default" 
-            size="lg"
-            onClick={handleHostStream}
-            disabled={isHosting}
-            className="flex flex-col items-center justify-center space-y-2 h-auto py-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow"
-          >
-            <Users className="w-5 h-5" />
-            <span className="font-semibold">Host</span>
-            <span className="text-xs opacity-90">
+          <div className="flex flex-col items-center space-y-2">
+            <Button 
+              variant="default" 
+              size="lg"
+              onClick={handleHostStream}
+              disabled={isHosting}
+              className="flex flex-col items-center justify-center space-y-2 h-auto py-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow w-full"
+            >
+              <Users className="w-5 h-5" />
+              <span className="font-semibold">Host</span>
+            </Button>
+            <span className="text-xs text-muted-foreground text-center">
               {isHosting ? 'Starting...' : 'Start group live stream'}
             </span>
-          </Button>
+          </div>
         </div>
 
         {/* Status Badge */}
