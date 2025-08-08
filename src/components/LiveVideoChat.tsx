@@ -102,8 +102,9 @@ export const LiveVideoChat = () => {
           <Dialog>
             <DialogTrigger asChild>
               <Button 
-                variant="default" 
-                className="h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground"
+                variant="cyber" 
+                size="lg"
+                className="flex flex-col items-center justify-center space-y-1"
               >
                 <Video className="w-5 h-5" />
                 <span className="font-semibold">Join</span>
@@ -143,10 +144,11 @@ export const LiveVideoChat = () => {
 
           {/* Host Button */}
           <Button 
-            variant="secondary" 
+            variant="neon" 
+            size="lg"
             onClick={handleHostStream}
             disabled={isHosting}
-            className="h-16 flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-secondary to-secondary/80 hover:from-secondary/90 hover:to-secondary/70"
+            className="flex flex-col items-center justify-center space-y-1"
           >
             <Users className="w-5 h-5" />
             <span className="font-semibold">Host</span>
