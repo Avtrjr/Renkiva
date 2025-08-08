@@ -353,6 +353,40 @@
     background: var(--mesh-trail);
     animation: stream-flow 2s linear infinite;
   }
+  }
+
+  /* Mesh Header Styles */
+  .mesh-header {
+    position: sticky;
+    top: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    z-index: 999;
+    transition: background 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .mesh-logo {
+    width: 160px;
+    max-height: 64px;
+    object-fit: contain;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .logo-link:hover .mesh-logo {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+  }
+
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .mesh-logo {
+      width: 110px;
+    }
+  }
 }
 
 /* Enhanced Cyberpunk Animations */
