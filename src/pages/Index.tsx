@@ -144,6 +144,26 @@ const Index = () => {
       // Could redirect to landing page or show a message
       console.log('User declined legal terms');
     }} />
+
+      {/* Mesh TV Network Header */}
+      <header className="relative z-20 glass-morphism border-b border-primary/20">
+        <div className="container mx-auto px-6 py-4">
+          <a href="/" className="flex items-center justify-center lg:justify-start">
+            <div className="flex items-center space-x-3 group">
+              {/* Logo placeholder - will be replaced with actual image */}
+              <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
+                <span className="text-primary-foreground font-bold text-xl">M</span>
+              </div>
+              <div className="text-left">
+                <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
+                  Mesh TV Network
+                </h1>
+                <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </header>
       {/* Animated Mesh Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
