@@ -141,7 +141,10 @@ export const LiveVideoChat = () => {
                 </div>
               </DialogContent>
             </Dialog>
-            <span className="text-xs text-muted-foreground text-center">Enter peer's fingerprint</span>
+            <Input 
+              placeholder="Enter peer's fingerprint" 
+              className="mt-3 text-xs border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm"
+            />
           </div>
 
           {/* Host Button */}
