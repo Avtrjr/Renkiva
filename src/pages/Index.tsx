@@ -152,7 +152,7 @@ const Index = () => {
             <div className="flex items-center space-x-3 group">
               {/* Logo placeholder - will be replaced with actual image */}
               <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
-                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-8 h-8 object-contain" />
+                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-10 h-10 object-contain" />
               </div>
               <div className="text-left">
                 <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
