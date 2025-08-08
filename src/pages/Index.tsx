@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import { LiveVideoChat } from "@/components/LiveVideoChat";
 import DiagnosticsOverlay from "@/components/DiagnosticsOverlay";
@@ -147,7 +146,24 @@ const Index = () => {
     }} />
 
       {/* Mesh TV Network Header */}
-      <Header />
+      <header className="relative z-20 glass-morphism border-b border-primary/20">
+        <div className="container mx-auto px-6 py-4">
+          <a href="/" className="flex items-center justify-center lg:justify-start">
+            <div className="flex items-center space-x-3 group">
+              {/* Logo placeholder - will be replaced with actual image */}
+              <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
+                <span className="text-primary-foreground font-bold text-xl">M</span>
+              </div>
+              <div className="text-left">
+                <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
+                  Mesh TV Network
+                </h1>
+                <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </header>
       {/* Animated Mesh Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
@@ -203,9 +219,9 @@ const Index = () => {
       </div>
 
       {/* Content with z-index to be above background */}
-      <div className="relative z-10 pt-20">
+      <div className="relative z-10">
         {/* Dynamic Hero Section with Live Preview */}
-        <section className="container mx-auto px-6 pt-12 pb-8">
+        <section className="container mx-auto px-6 pt-12 pb-8">        
           <div className="max-w-6xl mx-auto">
             {/* Hero Title */}
             <div className="text-center mb-8">
