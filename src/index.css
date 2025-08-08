@@ -353,7 +353,6 @@
     background: var(--mesh-trail);
     animation: stream-flow 2s linear infinite;
   }
-  }
 
   /* Mesh Header Styles */
   .mesh-header {
