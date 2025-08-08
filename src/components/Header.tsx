@@ -41,11 +41,17 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group">
-              <img
-                src="/images/mesh-tv-network-logo.png"
-                alt="Mesh TV Network"
-                className="w-28 md:w-40 max-h-16 object-contain transition-all duration-300 group-hover:brightness-120 group-hover:scale-105"
-              />
+              <div className="w-28 md:w-40 h-12 md:h-16 flex items-center">
+                <img
+                  src="/images/mesh-tv-network-logo.png"
+                  alt="Mesh TV Network"
+                  className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-120 group-hover:scale-105"
+                  onError={(e) => {
+                    console.log('Logo failed to load');
+                    e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40"><text x="5" y="25" fill="%23ff0080" font-family="Inter" font-weight="bold" font-size="14">MESH TV</text></svg>';
+                  }}
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
