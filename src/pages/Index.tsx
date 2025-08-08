@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import meshTVLogo from "@/assets/mesh-tv-logo.png";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { LiveVideoChat } from "@/components/LiveVideoChat";
@@ -204,20 +203,10 @@ const Index = () => {
         {/* Dynamic Hero Section with Live Preview */}
         <section className="container mx-auto px-6 pt-12 pb-8">        
           <div className="max-w-6xl mx-auto">
-            {/* Hero Title with Logo */}
+            {/* Hero Title */}
             <div className="text-center mb-8">
-              <div className="flex flex-col items-center mb-6">
-                <img 
-                  src={meshTVLogo} 
-                  alt="Mesh TV Network Logo" 
-                  className="w-48 h-48 md:w-56 md:h-56 object-contain mb-4 animate-fade-in"
-                />
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-cyber bg-clip-text text-transparent animate-fade-in" style={{
-                  animationDelay: '0.2s'
-                }}>
-                  Decentralized Streaming Network
-                </h1>
-              </div>
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">Mesh TV Network 
+            </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s'
             }}>
