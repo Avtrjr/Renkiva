@@ -1,0 +1,78 @@
+# Mesh TV Network Security Configuration
+# Security-critical constants with runtime validation
+
+# Crypto & Handshake (R4-R5)
+crypto:
+  rekey_interval_minutes: 10
+  rekey_data_threshold_mib: 32
+  max_handshake_attempts: 3
+  handshake_timeout_seconds: 30
+  
+# Fragment & AEAD (R8-R9)  
+fragmentation:
+  max_fragment_size_bytes: 1024
+  sliding_window_size: 128
+  stall_timeout_multiplier: 2.0
+  max_fragments_per_stream: 65535
+
+# Anti-Replay & Flood (R10-R11)
+anti_replay:
+  max_seq_window_size: 128
+  token_bucket_capacity: 100
+  token_refill_rate_per_second: 10
+  max_ttl_hops: 6
+  auth_failure_backoff_base_ms: 1000
+  auth_failure_backoff_max_ms: 60000
+
+# Origin Signing (R12-R13)
+origin_signing:
+  min_keyframe_signature_interval_ms: 1000
+  signature_verification_timeout_ms: 5000
+  tofu_warning_duration_minutes: 5
+
+# Routing & Anti-Sybil (R14-R16)
+routing:
+  rssi_weight: 0.4
+  hop_penalty_weight: 0.3  
+  latency_weight: 0.3
+  latency_smoothing_factor: 0.8
+  wormhole_latency_threshold_multiplier: 3.0
+  identity_creation_rate_limit_per_hour: 5
+
+# Bloom Filters (R17)
+bloom_filters:
+  rotation_interval_seconds: 60
+  target_false_positive_rate: 0.01
+  max_filter_capacity: 10000
+
+# Hardware Security (R6, R18-R19)
+hardware_security:
+  require_strongbox: true
+  require_attestation: true
+  block_rooted_devices: true
+  min_play_integrity_verdict: "MEETS_DEVICE_INTEGRITY"
+
+# Privacy & Analytics (R21-R22)
+privacy:
+  pseudonym_rotation_hours: 24
+  default_retention_days: 30
+  require_opt_in: true
+  local_only_by_default: true
+
+# Security Logging (R23)
+logging:
+  rate_limit_per_minute: 60
+  max_log_entry_size_bytes: 1024
+  sensitive_field_redaction: true
+
+# RF Resilience (R24)
+rf_resilience:
+  interference_detection_threshold: -70
+  audio_fallback_bitrate_kbps: 64
+  adaptive_bitrate_step_percent: 20
+
+# Runtime Validation
+validation:
+  enforce_bounds_checking: true
+  crypto_constant_time_ops: true
+  memory_protection: true
