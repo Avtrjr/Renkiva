@@ -1,0 +1,62 @@
+# Global Mode Configuration for Mesh TV Network
+# Enables worldwide E2E encrypted communication across mesh networks
+
+global_mode:
+  enabled: true
+  
+  # Rendezvous signaling service (minimal, ephemeral tokens only)
+  rendezvous:
+    pinned_key: "MCowBQYDK2VwAyEAZGVmYXVsdF9waW5uZWRfa2V5X2Zvcl9kZXZlbG9wbWVudA=="
+    endpoint: "wss://rendezvous.meshtv.network:443/signal"
+    log_retention_hours: 24
+    max_token_ttl_minutes: 15
+    
+  # ICE/STUN configuration for NAT traversal
+  ice:
+    direct_timeout_s: 2
+    stun_servers: 
+      - "stun:stun1.l.google.com:19302"
+      - "stun:stun2.l.google.com:19302"
+      - "stun:stun.meshtv.network:3478"
+    relay_fallback_timeout_s: 3
+    ice_gathering_timeout_s: 5
+    
+  # Transport layer settings
+  tunnel:
+    transport: "quic"           # Preferred: QUIC/UDP
+    fallback: "webrtc"          # Fallback: WebRTC datachannel
+    keepalive_s: 15
+    max_packet_size: 1200       # Safe for most MTUs
+    congestion_control: "bbr"
+    
+    # Rekey thresholds for forward secrecy
+    rekey:
+      minutes: 10
+      bytes: 33554432          # 32 MiB
+      
+  # Bridge operator settings
+  bridge:
+    attestation_required: true
+    max_concurrent_sessions: 4
+    battery_threshold_percent: 20
+    data_budget_mb_per_hour: 100
+    priority_qos: true
+    
+  # Performance tuning
+  performance:
+    audio_latency_target_ms: 150
+    video_latency_target_ms: 250
+    file_transfer_min_speed_kbps: 512
+    connection_timeout_s: 5
+    
+  # DoS protection (inherits from security.yml)
+  dos_protection:
+    rate_limit_packets_per_second: 100
+    max_session_duration_hours: 4
+    flood_detection_threshold: 50
+    
+  # Safety enforcement (same policies as local mesh)
+  safety:
+    enforce_manifests: true
+    propagate_bulletins: true
+    quarantine_unknown_origins: true

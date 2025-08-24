@@ -97,8 +97,8 @@ export const LiveVideoChat = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
-          {/* Join Button */}
+        <div className="grid grid-cols-3 gap-3 w-full max-w-md">
+          {/* Join Local Button */}
           <div className="flex flex-col items-center space-y-2">
             <Dialog>
               <DialogTrigger asChild>
@@ -108,14 +108,14 @@ export const LiveVideoChat = () => {
                   className="flex flex-col items-center justify-center space-y-2 h-auto py-4 border-primary/50 hover:border-primary hover:bg-primary/10 text-primary hover:text-primary w-full"
                 >
                   <Video className="w-5 h-5" />
-                  <span className="font-semibold">Join</span>
+                  <span className="font-semibold text-xs">Join Local</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Key className="w-5 h-5" />
-                    Join Live Stream
+                    Join Local Stream
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
@@ -128,7 +128,7 @@ export const LiveVideoChat = () => {
                       className="mt-1"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Ask your peer to share their device fingerprint
+                      Local mesh peer fingerprint
                     </p>
                   </div>
                   <Button 
@@ -136,15 +136,56 @@ export const LiveVideoChat = () => {
                     disabled={isJoining}
                     className="w-full"
                   >
-                    {isJoining ? 'Connecting...' : 'Join Stream'}
+                    {isJoining ? 'Connecting...' : 'Join Local Stream'}
                   </Button>
                 </div>
               </DialogContent>
             </Dialog>
-            <Input 
-              placeholder="Enter fingerprint" 
-              className="mt-3 text-xs placeholder:text-xs border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm"
-            />
+          </div>
+
+          {/* Join Global Button */}
+          <div className="flex flex-col items-center space-y-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="flex flex-col items-center justify-center space-y-2 h-auto py-4 border-accent/50 hover:border-accent hover:bg-accent/10 text-accent hover:text-accent w-full"
+                >
+                  <Globe className="w-5 h-5" />
+                  <span className="font-semibold text-xs">Join Global</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Globe className="w-5 h-5" />
+                    Join Global Stream
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Global Peer Fingerprint</label>
+                    <Input
+                      placeholder="A1B2-C3D4-E5F6-G7H8"
+                      value={fingerprint}
+                      onChange={(e) => setFingerprint(e.target.value)}
+                      className="mt-1"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Worldwide E2E encrypted connection
+                    </p>
+                  </div>
+                  <Button 
+                    onClick={handleJoinStream} 
+                    disabled={isJoining}
+                    className="w-full bg-gradient-to-r from-accent to-primary"
+                  >
+                    {isJoining ? 'Connecting Globally...' : 'Join Global Stream'}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Host Button */}
@@ -157,18 +198,24 @@ export const LiveVideoChat = () => {
               className="flex flex-col items-center justify-center space-y-2 h-auto py-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow w-full"
             >
               <Users className="w-5 h-5" />
-              <span className="font-semibold">Host</span>
-            </Button>
-            <Button 
-              variant="outline"
-              size="sm"
-              onClick={handleHostStream}
-              disabled={isHosting}
-              className="mt-3 text-xs border-primary/50 hover:border-primary hover:bg-primary/10 text-primary hover:text-primary w-full"
-            >
-              {isHosting ? 'Starting...' : 'Start Group Live'}
+              <span className="font-semibold text-xs">Host Live</span>
             </Button>
           </div>
+        </div>
+
+        {/* Quick Connect Input */}
+        <div className="w-full max-w-md">
+          <Input 
+            placeholder="Quick connect: paste fingerprint here" 
+            value={fingerprint}
+            onChange={(e) => setFingerprint(e.target.value)}
+            className="text-sm placeholder:text-sm border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && fingerprint.trim()) {
+                handleJoinStream();
+              }
+            }}
+          />
         </div>
 
         {/* Status Badge */}
