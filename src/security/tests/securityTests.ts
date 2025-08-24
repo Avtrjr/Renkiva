@@ -4,6 +4,12 @@ import { NoiseProtocol } from '../handshake/noiseProtocol';
 import { AeadFramer } from '../framing/aeadFramer';
 import { VerificationManager } from '../oob/verificationManager';
 import { DeviceAttestation } from '../attestation/deviceAttestation';
+import { RateLimiter } from '../ratecontrol/tokenBucket';
+import { AntiSybilRouter } from '../routing/antiSybilRouter';
+import { OriginSigner } from '../signing/originSigner';
+import { RotatingBloomFilter } from '../bloom/rotatingBloomFilter';
+import { RFResilienceManager } from '../resilience/rfResilienceManager';
+import { PrivacyManager } from '../privacy/privacyManager';
 
 export class SecurityTestSuite {
   private crypto = CryptoPrimitives.getInstance();
@@ -19,6 +25,12 @@ export class SecurityTestSuite {
       { name: 'Replay Protection Test', fn: () => this.testReplayProtection() },
       { name: 'OOB Verification Test', fn: () => this.testOOBVerification() },
       { name: 'Device Attestation Test', fn: () => this.testDeviceAttestation() },
+      { name: 'Rate Limiting Test', fn: () => this.testRateLimiting() },
+      { name: 'Anti-Sybil Routing Test', fn: () => this.testAntiSybilRouting() },
+      { name: 'Origin Signing Test', fn: () => this.testOriginSigning() },
+      { name: 'Bloom Filters Test', fn: () => this.testBloomFilters() },
+      { name: 'RF Resilience Test', fn: () => this.testRFResilience() },
+      { name: 'Privacy Protection Test', fn: () => this.testPrivacyProtection() },
       { name: 'Constant Time Operations', fn: () => this.testConstantTimeOps() }
     ];
 
@@ -157,5 +169,147 @@ export class SecurityTestSuite {
     }
 
     console.log('✓ Constant time operations test passed');
+  }
+
+  private async testRateLimiting(): Promise<void> {
+    const rateLimiter = new RateLimiter(10, 2); // 10 tokens, 2/sec refill
+    
+    // Test normal operation
+    if (!rateLimiter.checkRateLimit('peer1', 5)) {
+      throw new Error('Rate limit should allow initial request');
+    }
+    
+    // Test rate limit enforcement
+    if (rateLimiter.checkRateLimit('peer1', 10)) {
+      throw new Error('Rate limit should block oversized request');
+    }
+    
+    // Test auth failure backoff
+    rateLimiter.recordAuthFailure('peer2');
+    rateLimiter.recordAuthFailure('peer2');
+    
+    if (rateLimiter.checkRateLimit('peer2', 1)) {
+      throw new Error('Should be in backoff period');
+    }
+    
+    console.log('✓ Rate limiting test passed');
+  }
+
+  private async testAntiSybilRouting(): Promise<void> {
+    const router = new AntiSybilRouter();
+    
+    // Test normal peer
+    router.updatePeerLink('peer1', -50, 20, 1, true);
+    
+    // Test potential wormhole (low latency, high hop count)
+    router.updatePeerLink('peer2', -60, 5, 5, true);
+    
+    const path = router.getBestPath('destination');
+    if (path.includes('peer2')) {
+      throw new Error('Wormhole peer should not be in best path');
+    }
+    
+    // Test identity creation rate limit
+    if (!router.checkIdentityCreationRate('device1')) {
+      throw new Error('First identity creation should be allowed');
+    }
+    
+    console.log('✓ Anti-Sybil routing test passed');
+  }
+
+  private async testOriginSigning(): Promise<void> {
+    const signer = new OriginSigner();
+    const keys = await signer.generateBroadcasterKeys('broadcaster1');
+    
+    const frameData = new TextEncoder().encode('Test keyframe data');
+    const signature = await signer.signKeyframe('broadcaster1', frameData, 1);
+    
+    const verification = await signer.verifyOriginSignature(
+      frameData,
+      signature,
+      keys.publicKey,
+      1
+    );
+    
+    if (!verification.valid || !verification.trusted) {
+      throw new Error('Origin signature verification failed');
+    }
+    
+    console.log('✓ Origin signing test passed');
+  }
+
+  private async testBloomFilters(): Promise<void> {
+    const filter = new RotatingBloomFilter(1000, 0.01, 100); // 1sec rotation for testing
+    
+    const testData = new Uint8Array([1, 2, 3, 4]);
+    
+    // Test add/contains
+    filter.add(testData);
+    if (!filter.contains(testData)) {
+      throw new Error('Filter should contain added item');
+    }
+    
+    // Test false positive rate
+    const stats = filter.getStats();
+    if (stats.estimatedFalsePositiveRate > 0.02) {
+      throw new Error('False positive rate too high');
+    }
+    
+    console.log('✓ Bloom filter test passed');
+  }
+
+  private async testRFResilience(): Promise<void> {
+    const rfManager = new RFResilienceManager();
+    
+    // Test good conditions
+    rfManager.updateMetrics({
+      signalStrength: -50,
+      snr: 25,
+      packetLoss: 0.5
+    });
+    
+    let state = rfManager.getTransmissionState();
+    if (state.audioFallbackActive) {
+      throw new Error('Should not be in audio fallback with good conditions');
+    }
+    
+    // Test poor conditions
+    rfManager.updateMetrics({
+      signalStrength: -85,
+      snr: 5,
+      packetLoss: 8
+    });
+    
+    state = rfManager.getTransmissionState();
+    if (!state.audioFallbackActive) {
+      throw new Error('Should activate audio fallback with poor conditions');
+    }
+    
+    console.log('✓ RF resilience test passed');
+  }
+
+  private async testPrivacyProtection(): Promise<void> {
+    const privacy = new PrivacyManager();
+    
+    // Test opt-in requirement
+    const recorded = privacy.recordMetric('usage', { action: 'test' });
+    if (recorded) {
+      throw new Error('Should not record without opt-in');
+    }
+    
+    // Test with opt-in
+    privacy.setOptInStatus('usage', true);
+    const recordedWithOptIn = privacy.recordMetric('usage', { action: 'test' });
+    if (!recordedWithOptIn) {
+      throw new Error('Should record with opt-in');
+    }
+    
+    // Test data sanitization
+    const exported = privacy.exportMetrics(['usage']);
+    if (!exported || exported.metrics.length === 0) {
+      throw new Error('Should export metrics when opted in');
+    }
+    
+    console.log('✓ Privacy protection test passed');
   }
 }
