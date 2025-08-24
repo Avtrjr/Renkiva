@@ -1,0 +1,47 @@
+# Mesh TV Network Content Safety Policy
+# Offline content moderation and safety controls
+
+content:
+  allow_types: [mp4, webm, mov, mp3, aac, opus, jpg, png, gif, webp]
+  block_types: [zip, rar, 7z, exe, apk, js, html, dll, bat, sh, pdf, doc, docx]
+  
+  nsfw:
+    enabled: true
+    threshold_block: 0.85        # Block if NSFW score >= 0.85
+    threshold_warn: 0.70         # Warn if score >= 0.70 
+    youth_mode: false            # Stricter thresholds when enabled
+    youth_threshold_block: 0.60  # Youth mode blocking threshold
+    
+  safety_manifest:
+    require_signed: true
+    include_sha256: true
+    include_phash: true
+    max_age_hours: 24           # Reject manifests older than 24h
+    
+  moderation:
+    bulletin_quorum: "2of3"     # Require 2 of 3 moderator signatures
+    bulletin_ttl_hours: 72      # Bulletins expire after 72 hours
+    hash_block_expiry_days: 14  # Hash blocks expire after 14 days
+    origin_revoke_expiry_days: 30  # Origin revocations expire after 30 days
+    
+  publisher_controls:
+    new_account_cooloff_hours: 24    # New accounts read-only for 24h
+    max_posts_per_minute: 2          # Rate limit for publishing
+    require_attestation: true        # Device attestation required
+    
+  attestation:
+    required_for_publish: true
+    min_security_level: "strongbox"  # Require hardware security
+    
+  rendering:
+    max_resolution_width: 1920
+    max_resolution_height: 1080
+    max_bitrate_kbps: 5000
+    strip_metadata: true         # Remove EXIF/ICC profiles
+    sandbox_decode: true         # Use isolated renderer process
+    
+  privacy:
+    log_content_hashes: false    # Never log content hashes
+    log_user_actions: true       # Log user reports/moderator actions
+    retention_days: 30           # Local log retention
+    rate_limit_logs_per_minute: 60
