@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { LiveVideoChat } from "@/components/LiveVideoChat";
 import DiagnosticsOverlay from "@/components/DiagnosticsOverlay";
+import { HelpOnboardingPanel } from "@/components/help/HelpOnboardingPanel";
 import { getTopOfflinePicks, VideoItem } from "@/services/meshTVService";
 import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
@@ -688,6 +689,10 @@ const Index = () => {
 
         {/* Analytics & Settings Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Help & Onboarding */}
+          <div className="lg:col-span-1">
+            <HelpOnboardingPanel />
+          </div>
           {/* Ad Tracker Analytics */}
           <div className="lg:col-span-1">
             <AdTracker />
