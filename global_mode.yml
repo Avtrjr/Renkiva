@@ -1,0 +1,55 @@
+# Global Mode Configuration for Mesh TV Network
+# End-to-end encrypted cross-mesh communication
+
+global_mode:
+  enabled: true
+  
+  # Rendezvous signaling server
+  rendezvous:
+    pinned_key: "MCowBQYDK2VwAyEAyH7rJhVKNqMVGjQhNn+pNzZ8xV1nA9kQzJ4sJ1pZ2Zw="
+    log_retention_hours: 24
+    max_token_lifetime_hours: 1
+    
+  # ICE connectivity
+  ice:
+    direct_timeout_s: 2
+    stun: 
+      - "stun1.l.google.com:19302"
+      - "stun2.l.google.com:19302"
+      - "stun.meshnet.global:3478"
+    relay_fallback_timeout_s: 3
+    max_ice_candidates: 10
+    
+  # Transport layer
+  tunnel:
+    transport: "quic"  # "quic" or "webrtc"
+    keepalive_s: 15
+    max_packet_size: 1472  # MTU minus headers
+    congestion_control: "bbr"
+    rekey:
+      minutes: 10
+      bytes: 33554432  # 32 MiB
+      
+  # Bridge mode settings
+  bridge:
+    attestation_required: true
+    max_concurrent_sessions: 4
+    battery_threshold_percent: 20
+    cpu_threshold_percent: 80
+    bandwidth_limit_mbps: 50
+    
+  # Security settings
+  security:
+    handshake_timeout_s: 30
+    noise_pattern: "XX"  # XX or XK
+    forward_secrecy: true
+    anti_replay_window: 128
+    rate_limit_per_peer_pps: 100
+    
+  # Performance tuning
+  performance:
+    fragment_size_bytes: 1024
+    max_inflight_fragments: 64
+    adaptive_bitrate: true
+    audio_fallback_threshold_ms: 300
+    video_fallback_threshold_ms: 500

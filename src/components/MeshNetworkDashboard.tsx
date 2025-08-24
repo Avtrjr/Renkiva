@@ -18,6 +18,7 @@ import {
   Zap
 } from "lucide-react";
 import { meshStreamer, MeshNode, MeshStreamingSession } from "@/services/meshStreamer";
+import GlobalModePanel from "./GlobalModePanel";
 
 export default function MeshNetworkDashboard() {
   const [nodes, setNodes] = useState<MeshNode[]>([]);
@@ -196,6 +197,7 @@ export default function MeshNetworkDashboard() {
         <TabsList>
           <TabsTrigger value="nodes">Nearby Nodes</TabsTrigger>
           <TabsTrigger value="streams">Active Streams</TabsTrigger>
+          <TabsTrigger value="global">Global Mode</TabsTrigger>
           <TabsTrigger value="network">Network Map</TabsTrigger>
         </TabsList>
 
@@ -325,6 +327,10 @@ export default function MeshNetworkDashboard() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="global" className="space-y-4">
+          <GlobalModePanel />
         </TabsContent>
 
         <TabsContent value="network">
