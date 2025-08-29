@@ -42,6 +42,11 @@ const FingerprintCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Patent Notice */}
+        <div className="text-center">
+          <span className="text-xs text-muted-foreground">Patent pending</span>
+        </div>
+        
         {/* Fingerprint Display */}
         <div className="p-4 bg-muted/20 rounded-2xl text-center">
           <p className="text-sm text-muted-foreground mb-2">Your Device Fingerprint</p>
