@@ -729,6 +729,9 @@ const Index = () => {
             </a>
           </div>
           <p className="text-xs text-muted-foreground/60 mt-2">
+            Copyright 2025 / Patent pending
+          </p>
+          <p className="text-xs text-muted-foreground/60 mt-1">
             MeshTV - Decentralized. Private. Offline.
           </p>
         </footer>
