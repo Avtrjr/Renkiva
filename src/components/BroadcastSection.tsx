@@ -50,6 +50,11 @@ const BroadcastSection = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Patent Notice */}
+        <div className="text-center">
+          <span className="text-xs text-muted-foreground">Patent pending</span>
+        </div>
+        
         {/* Upload Area */}
         <div
           className={`
