@@ -85,29 +85,48 @@ export function InstallWizard() {
 
   async function requestPermissions() {
     setIsInstalling(true);
+    let mediaGranted = false;
+    let notificationGranted = false;
+
     try {
       // Request camera and microphone permissions
       await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      
+      mediaGranted = true;
+    } catch (error) {
+      console.log('Media permissions denied:', error);
+    }
+
+    try {
       // Request notifications permission
       if ('Notification' in window) {
-        await Notification.requestPermission();
+        const permission = await Notification.requestPermission();
+        notificationGranted = permission === 'granted';
       }
-
-      updateStepCompletion('permissions', true);
-      toast({
-        title: "Permissions Granted",
-        description: "MeshTV can now access camera, microphone, and notifications.",
-      });
     } catch (error) {
-      toast({
-        title: "Permission Error",
-        description: "Some permissions were denied. Features may be limited.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsInstalling(false);
+      console.log('Notification permission denied:', error);
     }
+
+    // Always mark step as completed to allow user to proceed
+    updateStepCompletion('permissions', true);
+    
+    if (mediaGranted && notificationGranted) {
+      toast({
+        title: "All Permissions Granted",
+        description: "MeshTV can access camera, microphone, and notifications.",
+      });
+    } else if (mediaGranted || notificationGranted) {
+      toast({
+        title: "Partial Permissions Granted",
+        description: "Some features may be limited. You can continue using the app.",
+      });
+    } else {
+      toast({
+        title: "Limited Permissions",
+        description: "You can still use MeshTV with reduced functionality.",
+      });
+    }
+    
+    setIsInstalling(false);
   }
 
   async function installPWA() {
