@@ -132,24 +132,44 @@ export function InstallWizard() {
   async function installPWA() {
     setIsInstalling(true);
     try {
-      // Check if PWA install is available
-      if ('serviceWorker' in navigator) {
-        await navigator.serviceWorker.register('/sw.js');
+      // Check if PWA install prompt is available
+      const beforeInstallPrompt = (window as any).beforeinstallprompt;
+      
+      if (beforeInstallPrompt) {
+        // Show native install prompt
+        const result = await beforeInstallPrompt.prompt();
+        if (result.outcome === 'accepted') {
+          updateStepCompletion('pwa-install', true);
+          toast({
+            title: "App Installed Successfully",
+            description: "MeshTV has been added to your device. Look for the icon on your home screen.",
+          });
+          return;
+        }
       }
 
-      // Simulate PWA installation process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      // Fallback: Register service worker and mark as completed
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator.serviceWorker.register('/sw.js');
+        } catch (swError) {
+          console.log('Service worker registration failed, continuing anyway');
+        }
+      }
+
+      // Always complete this step as PWA installation is optional
       updateStepCompletion('pwa-install', true);
       toast({
-        title: "App Installed",
-        description: "MeshTV has been added to your device.",
+        title: "Installation Ready",
+        description: "You can install MeshTV by using your browser's 'Add to Home Screen' or 'Install App' option.",
       });
+
     } catch (error) {
+      // Even if installation fails, mark as completed since it's optional
+      updateStepCompletion('pwa-install', true);
       toast({
-        title: "Installation Error",
-        description: "Failed to install PWA. You can still use the web version.",
-        variant: "destructive",
+        title: "Installation Available",
+        description: "Use your browser's menu to install MeshTV as an app for the best experience.",
       });
     } finally {
       setIsInstalling(false);
