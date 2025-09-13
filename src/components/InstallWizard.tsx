@@ -331,7 +331,7 @@ export function InstallWizard() {
               <h4 className="font-medium text-green-700">Setup Complete!</h4>
             </div>
             <p className="text-sm text-green-600 mb-3">
-              RENKIVA is now fully configured and ready to use. You can start streaming and sharing content with the mesh network.
+              RENKIVA is now fully configured and ready to use. You can start streaming and sharing content with Renkiva.
             </p>
             <Button size="sm" className="w-full">
               <Wifi className="w-4 h-4 mr-2" />
