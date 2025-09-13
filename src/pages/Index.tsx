@@ -529,7 +529,7 @@ const Index = () => {
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">🚀 Get Started with Renkiva</h2>
               <p className="text-muted-foreground">
-                Follow our setup wizard to configure MeshTV for optimal performance
+                Follow our setup wizard to configure Renkiva for optimal performance
               </p>
             </div>
             <InstallWizard />
