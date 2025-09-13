@@ -287,7 +287,7 @@ export const CyberpunkMeshNetwork = () => {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-bold text-primary flex items-center gap-2">
               <Zap className="w-5 h-5" />
-              Cyberpunk Mesh Network
+              Cyberpunk Renkiva Network
             </h3>
             <Button
               variant="outline"
