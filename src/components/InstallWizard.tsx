@@ -41,7 +41,7 @@ export function InstallWizard() {
       {
         id: 'permissions',
         title: 'Grant Permissions',
-        description: 'Allow camera, microphone, and storage access for full Renkiva functionality',
+        description: 'Allow camera, microphone, and storage access for full mesh functionality',
         completed: false,
         required: true,
         action: requestPermissions
@@ -55,12 +55,12 @@ export function InstallWizard() {
         action: installPWA
       },
       {
-        id: 'renkiva-setup',
-        title: 'Renkiva Network Setup',
-        description: 'Configure Bluetooth and WiFi for Renkiva connectivity',
+        id: 'mesh-setup',
+        title: 'Mesh Network Setup',
+        description: 'Configure Bluetooth and WiFi for mesh connectivity',
         completed: false,
         required: true,
-        action: setupRenkiva
+        action: setupMesh
       },
       {
         id: 'profile-setup',
@@ -73,7 +73,7 @@ export function InstallWizard() {
       {
         id: 'test-connection',
         title: 'Test Connection',
-        description: 'Verify Renkiva network connectivity and streaming capability',
+        description: 'Verify mesh network connectivity and streaming capability',
         completed: false,
         required: true,
         action: testConnection
@@ -176,21 +176,21 @@ export function InstallWizard() {
     }
   }
 
-  async function setupRenkiva() {
+  async function setupMesh() {
     setIsInstalling(true);
     try {
-      // Simulate Renkiva network configuration
+      // Simulate mesh network configuration
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      updateStepCompletion('renkiva-setup', true);
+      updateStepCompletion('mesh-setup', true);
       toast({
-        title: "Renkiva Network Ready",
-        description: "Your device is now connected to the Renkiva network.",
+        title: "Mesh Network Ready",
+        description: "Your device is now connected to the mesh network.",
       });
     } catch (error) {
       toast({
-        title: "Renkiva Setup Error",
-        description: "Failed to configure Renkiva network. Please try again.",
+        title: "Mesh Setup Error",
+        description: "Failed to configure mesh network. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -331,7 +331,7 @@ export function InstallWizard() {
               <h4 className="font-medium text-green-700">Setup Complete!</h4>
             </div>
             <p className="text-sm text-green-600 mb-3">
-              RENKIVA is now fully configured and ready to use. You can start streaming and sharing content with the Renkiva network.
+              RENKIVA is now fully configured and ready to use. You can start streaming and sharing content with the mesh network.
             </p>
             <Button size="sm" className="w-full">
               <Wifi className="w-4 h-4 mr-2" />
