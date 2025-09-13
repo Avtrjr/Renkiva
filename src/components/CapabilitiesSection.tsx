@@ -10,21 +10,21 @@ const CapabilitiesSection = () => {
   }, {
     icon: <Headphones className="w-6 h-6" />,
     title: "Offline Podcast Library",
-    description: "Upload your favorite podcasts for offline listening. Share episodes across the mesh network instantly.",
+    description: "Upload your favorite podcasts for offline listening. Share episodes across the Renkiva network instantly.",
     highlight: true
   }, {
     icon: <Radio className="w-6 h-6" />,
-    title: "Mesh Network Broadcasting",
+    title: "Renkiva Network Broadcasting",
     description: "Transform any device into a content broadcaster. Stream to nearby devices without cellular or WiFi."
   }, {
     icon: <Share2 className="w-6 h-6" />,
     title: "Community Content Sharing",
-    description: "Upload and share your own videos, movies, and shows with people around you through secure mesh connections."
+    description: "Upload and share your own videos, movies, and shows with people around you through secure Renkiva connections."
   }];
   const technicalFeatures = [{
     icon: <Shield className="w-5 h-5" />,
     title: "Encrypted P2P",
-    description: "All mesh communications use encryption for privacy and security"
+    description: "All Renkiva communications use encryption for privacy and security"
   }, {
     icon: <Zap className="w-5 h-5" />,
     title: "Bluetooth LE",
@@ -32,7 +32,7 @@ const CapabilitiesSection = () => {
   }, {
     icon: <Download className="w-5 h-5" />,
     title: "Smart Fragmentation",
-    description: "Content is broken into optimal chunks for mesh distribution"
+    description: "Content is broken into optimal chunks for Renkiva distribution"
   }, {
     icon: <Users className="w-5 h-5" />,
     title: "Adaptive Routing",
@@ -46,7 +46,7 @@ const CapabilitiesSection = () => {
     title: "Offline-First Design",
     description: "Full functionality without any internet connection required"
   }];
-  const differentiators = ["🚫 No Internet Required - Works completely offline", "📡 True Mesh Networking - Not just hotspot sharing", "🎧 Podcast-Optimized - Upload and stream audio content offline", "🔐 Privacy-First - No data collection or tracking", "⚡ Battery Efficient - Bluetooth LE for extended usage", "🎬 Legal Content - Built-in access to public domain movies", "🌐 Community Driven - Share content with nearby users", "🔄 Sync-Ready - Upload watch data when back online"];
+  const differentiators = ["🚫 No Internet Required - Works completely offline", "📡 True Renkiva Networking - Not just hotspot sharing", "🎧 Podcast-Optimized - Upload and stream audio content offline", "🔐 Privacy-First - No data collection or tracking", "⚡ Battery Efficient - Bluetooth LE for extended usage", "🎬 Legal Content - Built-in access to public domain movies", "🌐 Community Driven - Share content with nearby users", "🔄 Sync-Ready - Upload watch data when back online"];
   return <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-6">
         {/* Header */}
@@ -54,7 +54,7 @@ const CapabilitiesSection = () => {
           <h2 className="text-4xl font-bold text-foreground mb-4">Why RENKIVA is Revolutionary</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             The world's first truly offline streaming platform. When the internet goes down, 
-            RENKIVA keeps your entertainment going through innovative mesh networking technology.
+            RENKIVA keeps your entertainment going through innovative Renkiva networking technology.
           </p>
         </div>
 
@@ -117,7 +117,7 @@ const CapabilitiesSection = () => {
           <div className="bg-primary/10 backdrop-blur-lg border border-primary/20 rounded-xl p-8 max-w-2xl mx-auto">
             <h4 className="text-2xl font-bold mb-4">Ready to Stream Without Internet?</h4>
             <p className="text-muted-foreground mb-6">
-              Join the mesh network revolution. Upload your podcasts, discover nearby content, 
+              Join the Renkiva network revolution. Upload your podcasts, discover nearby content, 
               and never worry about internet outages again.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
