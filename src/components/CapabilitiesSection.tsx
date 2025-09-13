@@ -5,7 +5,7 @@ const CapabilitiesSection = () => {
   const coreFeatures = [{
     icon: <WifiOff className="w-6 h-6" />,
     title: "Internet-Free Streaming",
-    description: "Watch shows and podcasts when your internet is down. MeshTV creates its own network using nearby devices.",
+    description: "Watch shows and podcasts when your internet is down. RENKIVA creates its own network using nearby devices.",
     highlight: true
   }, {
     icon: <Headphones className="w-6 h-6" />,
@@ -51,10 +51,10 @@ const CapabilitiesSection = () => {
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Why Mesh TV Network is Revolutionary</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">Why RENKIVA is Revolutionary</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             The world's first truly offline streaming platform. When the internet goes down, 
-            MeshTV keeps your entertainment going through innovative mesh networking technology.
+            RENKIVA keeps your entertainment going through innovative mesh networking technology.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const CapabilitiesSection = () => {
 
         {/* What Makes Us Different */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">What Makes MeshTV Different</h3>
+          <h3 className="text-3xl font-bold text-center mb-8">What Makes RENKIVA Different</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {differentiators.map((point, index) => <div key={index} className="bg-card/60 backdrop-blur-lg border border-border/30 rounded-lg p-4 text-center shadow-clay-inset hover:bg-card/80 transition-colors">
                 <p className="text-sm font-medium">{point}</p>
@@ -116,7 +116,10 @@ const CapabilitiesSection = () => {
         <div className="text-center mt-16">
           <div className="bg-primary/10 backdrop-blur-lg border border-primary/20 rounded-xl p-8 max-w-2xl mx-auto">
             <h4 className="text-2xl font-bold mb-4">Ready to Stream Without Internet?</h4>
-            <p className="text-muted-foreground mb-6">Join the Renkiva network revolution. Upload your podcasts, discover nearby content, and never worry about internet outages again.</p>
+            <p className="text-muted-foreground mb-6">
+              Join the mesh network revolution. Upload your podcasts, discover nearby content, 
+              and never worry about internet outages again.
+            </p>
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="outline" className="bg-card/50">📱 Cross-Platform</Badge>
               <Badge variant="outline" className="bg-card/50">🔋 Battery Optimized</Badge>
