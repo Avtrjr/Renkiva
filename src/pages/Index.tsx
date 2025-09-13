@@ -75,7 +75,7 @@ const Index = () => {
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
       title: content.title,
-      senderName: `Mesh Node`,
+      senderName: `Renkiva Node`,
       signalStrength: 95,
       distance: "5m",
       streaming_url: content.streaming_url
@@ -298,7 +298,7 @@ const Index = () => {
                     <div className="mt-4 text-center">
                       <p className="text-sm text-muted-foreground/80 flex items-center justify-center gap-2">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        <strong>Zero Internet Required</strong> • Mesh Network Powered
+                        <strong>Zero Internet Required</strong> • Renkiva Network Powered
                       </p>
                     </div>
                   </CardContent>
@@ -392,7 +392,7 @@ const Index = () => {
             🤖 AI-Curated Top Picks
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover the best content from your mesh network with AI-powered recommendations
+            Discover the best content from your Renkiva network with AI-powered recommendations
           </p>
         </div>
         
@@ -449,10 +449,10 @@ const Index = () => {
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-2">
-              🌐 3D Mesh Network
+              🌐 3D Renkiva Network
             </h2>
             <p className="text-muted-foreground">
-              Interactive 3D visualization of the mesh network topology
+              Interactive 3D visualization of the Renkiva network topology
             </p>
           </div>
           <Scene3D />
@@ -462,10 +462,10 @@ const Index = () => {
         <section className="mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
-              🌐 Neural Mesh Network
+              🌐 Neural Renkiva Network
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Experience the future of decentralized streaming with our cyberpunk-enhanced mesh network. 
+              Experience the future of decentralized streaming with our cyberpunk-enhanced Renkiva network. 
               Watch as data flows through encrypted channels with neon-lit pathways.
             </p>
           </div>
@@ -490,7 +490,7 @@ const Index = () => {
               📤 Upload Content
             </h2>
             <p className="text-muted-foreground">
-              Share your own videos and movies with the mesh network
+              Share your own videos and movies with the Renkiva network
             </p>
           </div>
           
@@ -501,7 +501,7 @@ const Index = () => {
                 Upload Your Content
               </CardTitle>
               <CardDescription>
-                Share your movies and shows with the mesh network
+                Share your movies and shows with the Renkiva network
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -553,7 +553,7 @@ const Index = () => {
                 🤖 AI & Private Channels
               </h2>
               <p className="text-muted-foreground">
-                AI-powered content suggestions and encrypted invite-only mesh networks
+                AI-powered content suggestions and encrypted invite-only Renkiva networks
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -609,7 +609,7 @@ const Index = () => {
               📡 Nearby Streams
             </h2>
             <p className="text-muted-foreground">
-              Content available from devices in your mesh network
+              Content available from devices in your Renkiva network
             </p>
           </div>
           
@@ -619,7 +619,7 @@ const Index = () => {
               </div> : error ? <div className="col-span-full text-center py-8">
                 <p className="text-destructive">Error: {error}</p>
               </div> : nearbyStreams.length === 0 ? <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground">No streamable content available in mesh network</p>
+                <p className="text-muted-foreground">No streamable content available in Renkiva network</p>
                 <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
               </div> : nearbyStreams.map((stream, index) => <StreamCard key={index} title={stream.title} distance={stream.distance} senderName={stream.senderName} category={stream.category} viewerCount={stream.viewerCount} signalStrength={stream.signalStrength} streaming_url={stream.streaming_url} onPlay={streamData => {
               setCurrentStream(streamData);
