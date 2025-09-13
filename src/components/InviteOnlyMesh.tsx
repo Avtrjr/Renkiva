@@ -217,7 +217,7 @@ export function InviteOnlyMesh() {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Shield className="w-6 h-6 text-primary" />
-            Invite-Only Mesh
+            Renkiva Invite-Only
           </h2>
           <p className="text-muted-foreground">Private channels with end-to-end encryption</p>
         </div>
