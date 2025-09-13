@@ -21,7 +21,7 @@ import {
   Clock
 } from 'lucide-react';
 
-const MeshTVDashboard = () => {
+const RENKIVADashboard = () => {
   const { user } = useAuth();
   const { shows, loading } = useShows();
   const [networkStats, setNetworkStats] = useState({
@@ -56,7 +56,7 @@ const MeshTVDashboard = () => {
       <div className="flex items-center gap-3 mb-6">
         <Settings className="w-8 h-8 text-primary" />
         <div>
-          <h1 className="text-3xl font-bold">MeshTV Dashboard</h1>
+          <h1 className="text-3xl font-bold">RENKIVA Dashboard</h1>
           <p className="text-muted-foreground">Monitor your mesh network and manage content</p>
         </div>
       </div>
@@ -289,4 +289,4 @@ const MeshTVDashboard = () => {
   );
 };
 
-export default MeshTVDashboard;
+export default RENKIVADashboard;

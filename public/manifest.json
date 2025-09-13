@@ -1,6 +1,6 @@
 {
-  "name": "MeshTV - Decentralized Streaming",
-  "short_name": "MeshTV",
+  "name": "RENKIVA - Decentralized Streaming",
+  "short_name": "RENKIVA",
   "description": "Privacy-first peer-to-peer video streaming platform with offline mesh networking",
   "start_url": "/",
   "display": "standalone",
@@ -34,14 +34,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "MeshTV Desktop Interface"
+      "label": "RENKIVA Desktop Interface"
     },
     {
       "src": "/screenshot-narrow.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "MeshTV Mobile Interface"
+      "label": "RENKIVA Mobile Interface"
     }
   ],
   "features": [

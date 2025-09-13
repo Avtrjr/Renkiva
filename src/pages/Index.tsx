@@ -153,11 +153,11 @@ const Index = () => {
             <div className="flex items-center space-x-3 group">
               {/* Logo placeholder - will be replaced with actual image */}
               <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
-                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-12 h-12 object-contain" />
+                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="RENKIVA" className="w-12 h-12 object-contain" />
               </div>
               <div className="text-left">
                 <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-                  Mesh TV Network
+                  RENKIVA
                 </h1>
                 <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
               </div>
@@ -226,7 +226,7 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             {/* Hero Title */}
             <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">Mesh TV Network 
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">RENKIVA 
             </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s'
@@ -265,7 +265,7 @@ const Index = () => {
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
-                        <p className="text-sm text-muted-foreground">Live from Mesh Network</p>
+                        <p className="text-sm text-muted-foreground">Live from RENKIVA Network</p>
                       </div>
                       <Badge className="bg-red-500/20 text-red-400 border-red-500/30 animate-pulse">
                         LIVE
@@ -275,7 +275,7 @@ const Index = () => {
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
                       <StreamPlayer 
                         title="Tears of Steel (Featured Demo)" 
-                        source="MeshTV Demo Node" 
+                        source="RENKIVA Demo Node"
                         fragments={[{
                           id: 1,
                           sequence: 1,

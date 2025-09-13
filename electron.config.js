@@ -1,6 +1,6 @@
 module.exports = {
-  appId: 'com.meshtv.app',
-  productName: 'MeshTV',
+  appId: 'com.renkiva.app',
+  productName: 'RENKIVA',
   directories: {
     output: 'dist-electron'
   },

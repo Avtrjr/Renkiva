@@ -8,9 +8,9 @@ import StreamPage from "./pages/StreamPage";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import LibraryPage from "./pages/LibraryPage";
-import MeshTVDashboard from "./components/MeshTVDashboard";
+import RENKIVADashboard from "./components/RENKIVADashboard";
 import MeshLibraryExplorer from "./components/MeshLibraryExplorer";
-import MeshTVApp from "./components/MeshTVApp";
+import RENKIVAApp from "./components/RENKIVAApp";
 import MeshNetworkDashboard from "./components/MeshNetworkDashboard";
 import { MassImportDashboard } from "./components/MassImportDashboard";
 import { StorageDashboard } from "./components/StorageDashboard";
@@ -31,11 +31,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<MeshTVDashboard />} />
+          <Route path="/dashboard" element={<RENKIVADashboard />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:genre" element={<LibraryPage />} />
           <Route path="/mesh-library" element={<MeshLibraryExplorer />} />
-          <Route path="/meshtv" element={<MeshTVApp />} />
+          <Route path="/renkiva" element={<RENKIVAApp />} />
         <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
         <Route path="/mass-import" element={<MassImportDashboard />} />
         <Route path="/storage" element={<StorageDashboard />} />

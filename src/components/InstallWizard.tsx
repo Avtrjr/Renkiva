@@ -49,7 +49,7 @@ export function InstallWizard() {
       {
         id: 'pwa-install',
         title: 'Install App',
-        description: 'Add MeshTV to your home screen for native app experience',
+        description: 'Add RENKIVA to your home screen for native app experience',
         completed: false,
         required: false,
         action: installPWA
@@ -65,7 +65,7 @@ export function InstallWizard() {
       {
         id: 'profile-setup',
         title: 'Create Profile',
-        description: 'Set up your MeshTV profile and preferences',
+        description: 'Set up your RENKIVA profile and preferences',
         completed: false,
         required: true,
         action: setupProfile
@@ -112,7 +112,7 @@ export function InstallWizard() {
     if (mediaGranted && notificationGranted) {
       toast({
         title: "All Permissions Granted",
-        description: "MeshTV can access camera, microphone, and notifications.",
+        description: "RENKIVA can access camera, microphone, and notifications.",
       });
     } else if (mediaGranted || notificationGranted) {
       toast({
@@ -122,7 +122,7 @@ export function InstallWizard() {
     } else {
       toast({
         title: "Limited Permissions",
-        description: "You can still use MeshTV with reduced functionality.",
+        description: "You can still use RENKIVA with reduced functionality.",
       });
     }
     
@@ -142,7 +142,7 @@ export function InstallWizard() {
           updateStepCompletion('pwa-install', true);
           toast({
             title: "App Installed Successfully",
-            description: "MeshTV has been added to your device. Look for the icon on your home screen.",
+            description: "RENKIVA has been added to your device. Look for the icon on your home screen.",
           });
           return;
         }
@@ -161,7 +161,7 @@ export function InstallWizard() {
       updateStepCompletion('pwa-install', true);
       toast({
         title: "Installation Ready",
-        description: "You can install MeshTV by using your browser's 'Add to Home Screen' or 'Install App' option.",
+        description: "You can install RENKIVA by using your browser's 'Add to Home Screen' or 'Install App' option.",
       });
 
     } catch (error) {
@@ -169,7 +169,7 @@ export function InstallWizard() {
       updateStepCompletion('pwa-install', true);
       toast({
         title: "Installation Available",
-        description: "Use your browser's menu to install MeshTV as an app for the best experience.",
+        description: "Use your browser's menu to install RENKIVA as an app for the best experience.",
       });
     } finally {
       setIsInstalling(false);
@@ -207,7 +207,7 @@ export function InstallWizard() {
       updateStepCompletion('profile-setup', true);
       toast({
         title: "Profile Created",
-        description: "Your MeshTV profile is ready to use.",
+        description: "Your RENKIVA profile is ready to use.",
       });
     } catch (error) {
       toast({
@@ -229,7 +229,7 @@ export function InstallWizard() {
       updateStepCompletion('test-connection', true);
       toast({
         title: "Connection Verified",
-        description: "MeshTV is ready for streaming and sharing!",
+        description: "RENKIVA is ready for streaming and sharing!",
       });
     } catch (error) {
       toast({
@@ -260,7 +260,7 @@ export function InstallWizard() {
           ) : (
             <Monitor className="w-5 h-5 text-primary" />
           )}
-          MeshTV Setup Wizard
+          RENKIVA Setup Wizard
         </CardTitle>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
@@ -331,11 +331,11 @@ export function InstallWizard() {
               <h4 className="font-medium text-green-700">Setup Complete!</h4>
             </div>
             <p className="text-sm text-green-600 mb-3">
-              MeshTV is now fully configured and ready to use. You can start streaming and sharing content with the mesh network.
+              RENKIVA is now fully configured and ready to use. You can start streaming and sharing content with the mesh network.
             </p>
             <Button size="sm" className="w-full">
               <Wifi className="w-4 h-4 mr-2" />
-              Start Using MeshTV
+              Start Using RENKIVA
             </Button>
           </div>
         )}

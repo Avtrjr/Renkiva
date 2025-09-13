@@ -5,7 +5,7 @@ const CapabilitiesSection = () => {
   const coreFeatures = [{
     icon: <WifiOff className="w-6 h-6" />,
     title: "Internet-Free Streaming",
-    description: "Watch shows and podcasts when your internet is down. MeshTV creates its own network using nearby devices.",
+    description: "Watch shows and podcasts when your internet is down. RENKIVA creates its own network using nearby devices.",
     highlight: true
   }, {
     icon: <Headphones className="w-6 h-6" />,
@@ -51,10 +51,10 @@ const CapabilitiesSection = () => {
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Why Mesh TV Network is Revolutionary</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">Why RENKIVA is Revolutionary</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             The world's first truly offline streaming platform. When the internet goes down, 
-            MeshTV keeps your entertainment going through innovative mesh networking technology.
+            RENKIVA keeps your entertainment going through innovative mesh networking technology.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ const CapabilitiesSection = () => {
 
         {/* What Makes Us Different */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">What Makes MeshTV Different</h3>
+          <h3 className="text-3xl font-bold text-center mb-8">What Makes RENKIVA Different</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {differentiators.map((point, index) => <div key={index} className="bg-card/60 backdrop-blur-lg border border-border/30 rounded-lg p-4 text-center shadow-clay-inset hover:bg-card/80 transition-colors">
                 <p className="text-sm font-medium">{point}</p>

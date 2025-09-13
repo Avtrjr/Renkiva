@@ -28,7 +28,7 @@ export function LegalAgreementModal({ open, onAccept, onDecline }: LegalAgreemen
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-2xl bg-card/95 backdrop-blur-lg border-border/50">
         <DialogHeader>
-          <DialogTitle className="text-xl text-foreground">Welcome to MeshTV</DialogTitle>
+          <DialogTitle className="text-xl text-foreground">Welcome to RENKIVA</DialogTitle>
           <p className="text-sm text-muted-foreground">
             Before you start sharing and discovering content, please review our legal policies.
           </p>
@@ -79,7 +79,7 @@ export function LegalAgreementModal({ open, onAccept, onDecline }: LegalAgreemen
                       I have read and understand the Privacy Policy
                     </label>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Learn how MeshTV protects your privacy with local-first, offline mesh networking.
+                      Learn how RENKIVA protects your privacy with local-first, offline mesh networking.
                     </p>
                     <Button 
                       variant="link" 

@@ -175,7 +175,7 @@ const Hero = () => {
               <Button 
                 variant="cyber" 
                 size="sm"
-                onClick={() => window.open('mailto:sponsors@meshtv.com?subject=Sponsorship Inquiry', '_blank')}
+                onClick={() => window.open('mailto:sponsors@renkiva.com?subject=Sponsorship Inquiry', '_blank')}
                 className="shadow-glow hover:shadow-glow-intense"
               >
                 Sponsor Here

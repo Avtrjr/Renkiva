@@ -7,14 +7,14 @@ import { ChevronLeft, ChevronRight, Play, Globe, Smartphone, Users, DollarSign, 
 const slides = [
   {
     id: 1,
-    title: "MeshTV: Decentralized Offline Streaming for the World",
+    title: "RENKIVA: Decentralized Offline Streaming for the World",
     subtitle: "Powered by Bluetooth Mesh. Private. Offline. Borderless.",
     icon: Globe,
     content: (
       <div className="text-center space-y-6">
         <div className="flex items-center justify-center space-x-4">
           <Globe className="h-16 w-16 text-primary" />
-          <div className="text-6xl font-bold text-primary">MeshTV</div>
+          <div className="text-6xl font-bold text-primary">RENKIVA</div>
         </div>
         <div className="grid grid-cols-3 gap-4 mt-8">
           <Badge variant="secondary" className="p-3">Private</Badge>
@@ -64,7 +64,7 @@ const slides = [
   {
     id: 3,
     title: "The Solution",
-    subtitle: "MeshTV: A Bluetooth-based, decentralized streaming platform built for the offline world",
+    subtitle: "RENKIVA: A Bluetooth-based, decentralized streaming platform built for the offline world",
     icon: Smartphone,
     content: (
       <div className="space-y-8">
@@ -230,7 +230,7 @@ const slides = [
   {
     id: 7,
     title: "Competitive Comparison",
-    subtitle: "MeshTV's unique advantages over traditional platforms",
+    subtitle: "RENKIVA's unique advantages over traditional platforms",
     icon: Trophy,
     content: (
       <div className="space-y-6">
@@ -239,7 +239,7 @@ const slides = [
             <thead>
               <tr className="border-b">
                 <th className="text-left p-4 font-semibold">Feature</th>
-                <th className="text-center p-4 font-semibold text-primary">MeshTV</th>
+                <th className="text-center p-4 font-semibold text-primary">RENKIVA</th>
                 <th className="text-center p-4 font-semibold">YouTube</th>
                 <th className="text-center p-4 font-semibold">Netflix</th>
                 <th className="text-center p-4 font-semibold">Facebook</th>
@@ -435,7 +435,7 @@ const slides = [
         </blockquote>
         <div className="flex items-center justify-center space-x-4">
           <Globe className="h-16 w-16 text-primary" />
-          <div className="text-4xl font-bold text-primary">MeshTV</div>
+          <div className="text-4xl font-bold text-primary">RENKIVA</div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
           <Badge variant="outline" className="p-3">Website</Badge>

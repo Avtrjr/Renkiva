@@ -30,7 +30,7 @@ interface MeshShow {
   download_progress?: number;
 }
 
-export default function MeshTVApp() {
+export default function RENKIVAApp() {
   const { user } = useAuth();
   const { shows, loading } = useShows();
   const [selectedShow, setSelectedShow] = useState<MeshShow | null>(null);
@@ -169,7 +169,7 @@ export default function MeshTVApp() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-                📺 MeshTV
+                📺 RENKIVA
               </h1>
               <Badge variant="outline" className="text-xs">
                 <Globe className="w-3 h-3 mr-1" />
@@ -197,7 +197,7 @@ export default function MeshTVApp() {
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
-                    <DialogTitle>Upload Content to MeshTV</DialogTitle>
+                    <DialogTitle>Upload Content to RENKIVA</DialogTitle>
                   </DialogHeader>
                   <EasyUpload onUploadComplete={() => window.location.reload()} />
                 </DialogContent>
@@ -213,7 +213,7 @@ export default function MeshTVApp() {
           <section className="mb-12">
             <div className="relative bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl p-8 overflow-hidden">
               <div className="relative z-10">
-                <h2 className="text-4xl font-bold mb-4">Featured on MeshTV</h2>
+                <h2 className="text-4xl font-bold mb-4">Featured on RENKIVA</h2>
                 <p className="text-xl text-muted-foreground mb-6 max-w-2xl">
                   Discover popular content streaming through the mesh network. No internet required.
                 </p>
