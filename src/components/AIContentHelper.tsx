@@ -84,8 +84,8 @@ export function AIContentHelper() {
         {
           id: '3',
           type: 'trending',
-          title: 'Renkiva Gaming Hub',
-          description: 'Gaming content is trending 45% higher in your Renkiva network',
+          title: 'Mesh Gaming Hub',
+          description: 'Gaming content is trending 45% higher in your mesh network',
           confidence: 0.92,
           reason: 'Local network trending analysis',
           metadata: {
@@ -110,8 +110,8 @@ export function AIContentHelper() {
       const mockSuggestions: ContentSuggestion[] = [
         {
           id: '1',
-          title: 'Local Renkiva Network Tutorial',
-          description: 'Create a guide on setting up BLE Renkiva networks for beginners',
+          title: 'Local Mesh Network Tutorial',
+          description: 'Create a guide on setting up BLE mesh networks for beginners',
           tags: ['tutorial', 'networking', 'beginner'],
           estimatedViews: 1200,
           difficulty: 'beginner'
@@ -126,8 +126,8 @@ export function AIContentHelper() {
         },
         {
           id: '3',
-          title: 'Renkiva Network Art Project',
-          description: 'Collaborative digital art created across Renkiva networks',
+          title: 'Mesh Network Art Project',
+          description: 'Collaborative digital art created across mesh networks',
           tags: ['art', 'collaboration', 'creative'],
           estimatedViews: 600,
           difficulty: 'advanced'
@@ -150,10 +150,10 @@ export function AIContentHelper() {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const responses = [
-        `Based on your Renkiva network activity, I'd recommend focusing on privacy-themed content. Your audience shows 73% preference for anonymous sharing features.`,
+        `Based on your mesh network activity, I'd recommend focusing on privacy-themed content. Your audience shows 73% preference for anonymous sharing features.`,
         `I notice your content performs 34% better when posted during evening hours (6-9 PM). Consider scheduling your next upload accordingly.`,
         `Your sci-fi content has the highest engagement rate (4.2x average). I suggest creating a series around space exploration themes.`,
-        `The Renkiva network near you is trending toward educational content. Tutorial-style videos could increase your reach by 60%.`
+        `The mesh network near you is trending toward educational content. Tutorial-style videos could increase your reach by 60%.`
       ];
 
       const randomResponse = responses[Math.floor(Math.random() * responses.length)];
@@ -161,7 +161,7 @@ export function AIContentHelper() {
       
       toast({
         title: "AI Assistant",
-        description: "Generated personalized recommendation based on your Renkiva activity.",
+        description: "Generated personalized recommendation based on your mesh activity.",
       });
     } catch (error) {
       toast({
@@ -190,7 +190,7 @@ export function AIContentHelper() {
       
       toast({
         title: "Recommendations Updated",
-        description: "AI has analyzed latest Renkiva activity for fresh suggestions.",
+        description: "AI has analyzed latest mesh activity for fresh suggestions.",
       });
     }, 1000);
   };
@@ -395,7 +395,7 @@ export function AIContentHelper() {
           <div className="space-y-3">
             <div className="space-y-2">
               <Textarea
-                placeholder="Ask AI about content strategy, Renkiva optimization, or audience insights..."
+                placeholder="Ask AI about content strategy, mesh optimization, or audience insights..."
                 value={userPrompt}
                 onChange={(e) => setUserPrompt(e.target.value)}
                 className="min-h-[80px] text-sm"
