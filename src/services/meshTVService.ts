@@ -14,7 +14,7 @@ export interface DemoVideo {
 // Mock data for top offline picks
 const mockSuggestions: VideoItem[] = [
   {
-    title: "Mesh Network Documentary",
+    title: "Renkiva Network Documentary",
     category: "Tech",
     duration: "45 min",
     description: "Learn how decentralized networks are changing the way we share content."
@@ -29,7 +29,7 @@ const mockSuggestions: VideoItem[] = [
     title: "Local Music Sessions",
     category: "Music",
     duration: "1h 30min",
-    description: "Live performances from local artists broadcasted through mesh."
+    description: "Live performances from local artists broadcasted through Renkiva."
   },
   {
     title: "Citizen Journalism",
@@ -41,10 +41,10 @@ const mockSuggestions: VideoItem[] = [
     title: "DIY Tech Tutorials",
     category: "Education",
     duration: "35 min",
-    description: "Step-by-step guides for building your own mesh network setup."
+    description: "Step-by-step guides for building your own Renkiva network setup."
   },
   {
-    title: "Mesh Gaming Streams",
+    title: "Renkiva Gaming Streams",
     category: "Gaming",
     duration: "2h",
     description: "Local multiplayer gaming sessions and tournaments."
@@ -66,7 +66,7 @@ export async function getLiveDemoVideo(): Promise<DemoVideo | null> {
     setTimeout(() => {
       resolve({
         url: "/placeholder.svg", // Using placeholder since we don't have a real video
-        title: "MeshTV Live Demo"
+        title: "RENKIVA Live Demo"
       });
     }, 800);
   });
