@@ -104,7 +104,7 @@ export function InviteOnlyMesh() {
       },
       {
         fingerprint: 'B2C3-D4E5-F6G7-H8I9',
-        name: 'MeshRelay-Beta',
+        name: 'RenkivaRelay-Beta',
         trustLevel: 'private',
         addedAt: new Date(Date.now() - 172800000),
         lastSeen: new Date(Date.now() - 7200000)
