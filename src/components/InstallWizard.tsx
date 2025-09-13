@@ -55,12 +55,12 @@ export function InstallWizard() {
         action: installPWA
       },
       {
-        id: 'renkiva-setup',
-        title: 'Renkiva Network Setup',
-        description: 'Configure Bluetooth and WiFi for Renkiva connectivity',
+        id: 'mesh-setup',
+        title: 'Mesh Network Setup',
+        description: 'Configure Bluetooth and WiFi for mesh connectivity',
         completed: false,
         required: true,
-        action: setupRenkiva
+        action: setupMesh
       },
       {
         id: 'profile-setup',
@@ -176,21 +176,21 @@ export function InstallWizard() {
     }
   }
 
-  async function setupRenkiva() {
+  async function setupMesh() {
     setIsInstalling(true);
     try {
-      // Simulate Renkiva network configuration
+      // Simulate mesh network configuration
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      updateStepCompletion('renkiva-setup', true);
+      updateStepCompletion('mesh-setup', true);
       toast({
-        title: "Renkiva Network Ready",
-        description: "Your device is now connected to the Renkiva network.",
+        title: "Mesh Network Ready",
+        description: "Your device is now connected to the mesh network.",
       });
     } catch (error) {
       toast({
-        title: "Renkiva Setup Error",
-        description: "Failed to configure Renkiva network. Please try again.",
+        title: "Mesh Setup Error",
+        description: "Failed to configure mesh network. Please try again.",
         variant: "destructive",
       });
     } finally {
