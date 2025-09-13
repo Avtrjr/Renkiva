@@ -310,7 +310,7 @@ export function EnhancedMeshAnimation() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary animate-pulse-mesh" />
-            Enhanced Mesh Network
+            Enhanced Renkiva Network
           </CardTitle>
           
           <div className="flex items-center gap-2">
