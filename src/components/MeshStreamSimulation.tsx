@@ -29,7 +29,7 @@ export function MeshStreamSimulation() {
   const showTitle = 'Simpsons S1E1';
 
   const simulateRelay = useCallback((packet: StreamPacket, onReceive: (p: StreamPacket, origin: string) => void) => {
-    // Simulate network delay and relay through mesh
+    // Simulate network delay and relay through renkiva
     setTimeout(() => {
       if (packet.ttl > 0) {
         const relayedPacket = { ...packet, ttl: packet.ttl - 1 };
@@ -43,7 +43,7 @@ export function MeshStreamSimulation() {
     setReceivedPackets([]);
     setStreamProgress(0);
 
-    console.log(`📡 Starting mesh stream simulation for: ${showTitle}`);
+    console.log(`📡 Starting renkiva stream simulation for: ${showTitle}`);
     console.log(`📦 Show data size: ${showData.length} bytes`);
 
     // Fragment the show data
@@ -52,7 +52,7 @@ export function MeshStreamSimulation() {
     
     console.log(`📦 Fragmented into ${fragments.length} fragments`);
 
-    // Simulate broadcasting fragments through mesh
+    // Simulate broadcasting fragments through renkiva
     fragments.forEach((fragment, index) => {
       const packet: StreamPacket = {
         id: crypto.randomUUID(),
@@ -99,12 +99,12 @@ export function MeshStreamSimulation() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          📡 Mesh Stream Simulation
+          📡 Renkiva Stream Simulation
           {isStreaming && <Badge variant="secondary" className="animate-pulse">Live</Badge>}
           {isComplete && <Badge variant="default">Complete</Badge>}
         </CardTitle>
         <CardDescription>
-          Simulates fragmenting and streaming video content through a mesh network
+          Simulates fragmenting and streaming video content through a renkiva network
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
