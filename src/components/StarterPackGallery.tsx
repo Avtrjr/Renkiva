@@ -89,7 +89,7 @@ export default function StarterPackGallery({
       
       <div className="mt-4 p-3 bg-card/50 backdrop-blur-sm rounded-lg border border-border/50">
         <p className="text-sm text-muted-foreground">
-          💡 These videos are pre-downloaded and ready for offline mesh streaming. 
+          💡 These videos are pre-downloaded and ready for offline Renkiva streaming. 
           No internet required!
         </p>
       </div>
