@@ -25,12 +25,12 @@ const NearbyStreamsList = ({ onJoin }: NearbyStreamsListProps) => {
   const [nearbyStreams, setNearbyStreams] = useState<StreamData[]>([]);
 
   useEffect(() => {
-    // Convert database shows to nearby streams with mock mesh data
+    // Convert database shows to nearby streams with mock Renkiva data
     const mockStreams = shows.map((show, index) => ({
       id: show.id,
       title: show.title,
       distance: `${Math.floor(Math.random() * 50 + 1)}m`,
-      senderName: `MeshNode${Math.floor(Math.random() * 1000)}`,
+      senderName: `RenkivaNode${Math.floor(Math.random() * 1000)}`,
       category: show.category || "TV Show",
       viewerCount: Math.floor(Math.random() * 5),
       signalStrength: Math.floor(Math.random() * 40 + 60),
@@ -56,10 +56,10 @@ const NearbyStreamsList = ({ onJoin }: NearbyStreamsListProps) => {
       <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-clay">
         <CardContent className="p-6">
           <div className="flex items-center justify-center py-8">
-            <div className="animate-pulse-mesh">
+            <div className="animate-pulse-Renkiva">
               <Radio className="w-8 h-8 text-primary" />
             </div>
-            <span className="ml-2 text-muted-foreground">Scanning mesh network...</span>
+            <span className="ml-2 text-muted-foreground">Scanning Renkiva network...</span>
           </div>
         </CardContent>
       </Card>
@@ -96,14 +96,14 @@ const NearbyStreamsList = ({ onJoin }: NearbyStreamsListProps) => {
             <Wifi className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
             <p className="text-muted-foreground mb-2">No streams detected</p>
             <p className="text-sm text-muted-foreground">
-              Make sure mesh mode is enabled and you're near other broadcasters
+              Make sure Renkiva mode is enabled and you're near other broadcasters
             </p>
           </div>
         ) : (
           nearbyStreams.map((stream) => (
             <div
               key={stream.id}
-              className="p-4 rounded-lg bg-muted/20 border border-border/30 hover:bg-muted/30 transition-all duration-300 hover:shadow-mesh-glow"
+              className="p-4 rounded-lg bg-muted/20 border border-border/30 hover:bg-muted/30 transition-all duration-300 hover:shadow-Renkiva-glow"
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
