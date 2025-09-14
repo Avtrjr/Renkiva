@@ -62,7 +62,7 @@ const BroadcastSection = () => {
                 Supports MP4, MKV, AVI and more • Max 2GB per file
               </p>
             </div>
-            <div className="relative bg-purple-950">
+            <div className="relative bg-fuchsia-950">
               <input type="file" multiple accept="video/*,.mp4,.mkv,.avi,.mov,.wmv" onChange={e => handleFileSelect(e.target.files)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file-upload" />
               <Button variant="outline" size="sm" asChild className="text-purple-800">
                 <label htmlFor="file-upload" className="cursor-pointer">
