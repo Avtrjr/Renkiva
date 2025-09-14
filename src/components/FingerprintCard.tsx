@@ -54,7 +54,7 @@ const FingerprintCard = () => {
             {fingerprint}
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            This unique ID identifies your device on the mesh network
+            This unique ID identifies your device on the Renkiva network
           </p>
         </div>
 
@@ -94,10 +94,10 @@ const FingerprintCard = () => {
         </div>
 
         {/* Connection Status */}
-        <div className="flex items-center justify-between p-3 bg-aurora-mesh/10 rounded-xl border border-secondary/20">
+        <div className="flex items-center justify-between p-3 bg-aurora-Renkiva/10 rounded-xl border border-secondary/20">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-secondary rounded-full animate-pulse-mesh"></div>
-            <span className="text-sm font-medium">Mesh Network</span>
+            <div className="w-3 h-3 bg-secondary rounded-full animate-pulse-Renkiva"></div>
+            <span className="text-sm font-medium">Renkiva Network</span>
           </div>
           <Badge variant="secondary" className="text-xs">
             Connected
