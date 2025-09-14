@@ -35,7 +35,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
       const title = file.name.replace(/\.[^.]+$/, '').replace(/_/g, ' ');
       const videoData = await fileToUint8Array(file);
       
-      // Fragment the video for mesh distribution
+      // Fragment the video for Renkiva distribution
       const videoPacket = videoFragmenter.fragmentVideo(
         videoData, 
         crypto.randomUUID(), 
@@ -47,7 +47,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
         title,
         size: (file.size / 1_000_000).toFixed(1) + ' MB',
         duration: 'Custom',
-        source: 'Community Mesh',
+        source: 'Community Renkiva',
       };
       
       const entry: CommunityUpload = { 
@@ -58,7 +58,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
       };
       
       setUploads(prev => [...prev, entry]);
-      toast.success(`"${title}" fragmented and ready for mesh sharing`);
+      toast.success(`"${title}" fragmented and ready for Renkiva sharing`);
     } catch (error) {
       console.error('Upload error:', error);
       toast.error('Failed to process video file');
@@ -86,12 +86,12 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
             className="flex-1"
           />
           <Button variant="outline" disabled={isUploading}>
-            {isUploading ? 'Processing...' : '📡 Share to Mesh'}
+            {isUploading ? 'Processing...' : '📡 Share to Renkiva'}
           </Button>
         </div>
         
         <p className="text-sm text-muted-foreground">
-          Upload videos to fragment and share them across the mesh network
+          Upload videos to fragment and share them across the Renkiva network
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
         {uploads.map((item, idx) => (
           <Card
             key={idx}
-            className="group bg-card/80 backdrop-blur-lg border-border/50 shadow-clay hover:shadow-mesh-glow transition-clay cursor-pointer overflow-hidden"
+            className="group bg-card/80 backdrop-blur-lg border-border/50 shadow-clay hover:shadow-Renkiva-glow transition-clay cursor-pointer overflow-hidden"
             onClick={() => onSelect(item)}
           >
             <CardContent className="p-6">
@@ -122,7 +122,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
                   💾 <span className="font-medium text-foreground">{item.metadata.size}</span>
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  📡 {item.fragments.length} fragments ready for mesh
+                  📡 {item.fragments.length} fragments ready for Renkiva
                 </p>
               </div>
 
@@ -130,9 +130,9 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
                 <Button 
                   variant="mesh" 
                   size="sm" 
-                  className="flex-1 group-hover:animate-pulse-mesh"
+                  className="flex-1 group-hover:animate-pulse-Renkiva"
                 >
-                  ▶️ Stream from Mesh
+                  ▶️ Stream from Renkiva
                 </Button>
                 <Button
                   variant="outline"
@@ -141,14 +141,14 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                     toast.success('Marked as Favorite & Verified!');
-                    // TODO: Sync to mesh index via meshIndexService
+                    // TODO: Sync to Renkiva index via RenkivaIndexService
                   }}
                 >
                   ⭐ Favorite
                 </Button>
               </div>
 
-              {/* Decorative Mesh Lines */}
+              {/* Decorative Renkiva Lines */}
               <div className="absolute top-0 right-0 w-16 h-16 opacity-5 overflow-hidden">
                 <div className="absolute top-2 right-2 w-8 h-px bg-primary rotate-45"></div>
                 <div className="absolute top-4 right-4 w-6 h-px bg-secondary rotate-12"></div>
@@ -164,7 +164,7 @@ export default function CommunityLibrary({ onSelect }: CommunityLibraryProps) {
           <div className="text-6xl mb-4">📁</div>
           <p className="text-muted-foreground text-lg mb-2">No community uploads yet</p>
           <p className="text-sm text-muted-foreground">
-            Upload video files to share them across the mesh network
+            Upload video files to share them across the Renkiva network
           </p>
         </div>
       )}
