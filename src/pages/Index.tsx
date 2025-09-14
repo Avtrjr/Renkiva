@@ -291,7 +291,7 @@ const Index = () => {
                     <div className="mt-4 text-center">
                       <p className="text-sm text-muted-foreground/80 flex items-center justify-center gap-2">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        <strong>Zero Internet Required</strong> • Mesh Network Powered
+                        <strong>Zero Internet Required</strong> • Renkiva Powered
                       </p>
                     </div>
                   </CardContent>
