@@ -20,15 +20,15 @@ export default function TermsOfUse() {
 
         <Card className="bg-card/80 backdrop-blur-lg border-border/50">
           <CardHeader>
-            <CardTitle className="text-xl text-foreground">MeshTV Terms of Service</CardTitle>
+            <CardTitle className="text-xl text-foreground">Renkiva Terms of Service</CardTitle>
             <p className="text-sm text-muted-foreground">Last updated: January 2025</p>
           </CardHeader>
           <CardContent className="prose prose-sm max-w-none text-foreground space-y-6">
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">1. Acceptance of Terms</h3>
               <p className="text-muted-foreground">
-                By accessing and using MeshTV, you accept and agree to be bound by the terms and provision of this agreement.
-                MeshTV is a decentralized, offline-first content sharing platform that operates via Bluetooth Low Energy (BLE) mesh networking.
+                By accessing and using Renkiva, you accept and agree to be bound by the terms and provision of this agreement.
+                Renkiva is a decentralized, offline-first content sharing platform that operates via Bluetooth Low Energy (BLE) mesh networking.
               </p>
             </section>
 
@@ -46,7 +46,7 @@ export default function TermsOfUse() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">3. Offline & Decentralized Nature</h3>
               <p className="text-muted-foreground">
-                MeshTV operates primarily offline through BLE mesh networking. Users acknowledge that:
+                Renkiva operates primarily offline through BLE mesh networking. Users acknowledge that:
                 content is shared peer-to-peer, the platform cannot monitor all shared content in real-time,
                 and users are responsible for content they choose to download and share.
               </p>
@@ -55,7 +55,7 @@ export default function TermsOfUse() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">4. Privacy & Data</h3>
               <p className="text-muted-foreground">
-                MeshTV is designed with privacy-first principles. Most data stays on your device.
+                Renkiva is designed with privacy-first principles. Most data stays on your device.
                 See our Privacy Policy for detailed information about data handling.
               </p>
             </section>
@@ -63,7 +63,7 @@ export default function TermsOfUse() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">5. Limitation of Liability</h3>
               <p className="text-muted-foreground">
-                MeshTV is provided "as is" without warranties. The platform facilitates peer-to-peer sharing
+                Renkiva is provided "as is" without warranties. The platform facilitates peer-to-peer sharing
                 and cannot be held liable for content shared between users or technical issues with mesh networking.
               </p>
             </section>
@@ -71,7 +71,7 @@ export default function TermsOfUse() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">6. Changes to Terms</h3>
               <p className="text-muted-foreground">
-                These terms may be updated periodically. Continued use of MeshTV constitutes acceptance of updated terms.
+                These terms may be updated periodically. Continued use of Renkiva constitutes acceptance of updated terms.
               </p>
             </section>
           </CardContent>

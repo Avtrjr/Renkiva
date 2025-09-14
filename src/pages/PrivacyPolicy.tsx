@@ -20,21 +20,21 @@ export default function PrivacyPolicy() {
 
         <Card className="bg-card/80 backdrop-blur-lg border-border/50">
           <CardHeader>
-            <CardTitle className="text-xl text-foreground">MeshTV Privacy Policy</CardTitle>
+            <CardTitle className="text-xl text-foreground">Renkiva Privacy Policy</CardTitle>
             <p className="text-sm text-muted-foreground">Last updated: January 2025</p>
           </CardHeader>
           <CardContent className="prose prose-sm max-w-none text-foreground space-y-6">
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">1. Privacy-First Design</h3>
               <p className="text-muted-foreground">
-                MeshTV is built with privacy as a core principle. Most of your data stays on your device and
+                Renkiva is built with privacy as a core principle. Most of your data stays on your device and
                 is shared only through local Bluetooth mesh networks. We collect minimal data and never sell your information.
               </p>
             </section>
 
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">2. Data We Collect</h3>
-              <p className="text-muted-foreground mb-2">MeshTV collects only essential information:</p>
+              <p className="text-muted-foreground mb-2">Renkiva collects only essential information:</p>
               <ul className="list-disc list-inside text-muted-foreground space-y-1">
                 <li><strong>Account Data:</strong> Username, display name, optional avatar</li>
                 <li><strong>Content Metadata:</strong> Video titles, descriptions, categories (not the videos themselves)</li>
@@ -55,7 +55,7 @@ export default function PrivacyPolicy() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">4. No Tracking or Ads</h3>
               <p className="text-muted-foreground">
-                MeshTV does not use tracking cookies, analytics that identify individuals, or targeted advertising.
+                Renkiva does not use tracking cookies, analytics that identify individuals, or targeted advertising.
                 Sponsor content is distributed through the mesh network without personal data collection.
               </p>
             </section>
@@ -63,7 +63,7 @@ export default function PrivacyPolicy() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">5. Offline Operation</h3>
               <p className="text-muted-foreground">
-                Most MeshTV functionality works completely offline. When online sync is enabled,
+                Most Renkiva functionality works completely offline. When online sync is enabled,
                 only essential metadata is transmitted - never your actual video content.
               </p>
             </section>
@@ -79,7 +79,7 @@ export default function PrivacyPolicy() {
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">7. Contact</h3>
               <p className="text-muted-foreground">
-                For privacy questions or data requests, contact us through the app settings or at privacy@meshtv.app
+                For privacy questions or data requests, contact us through the app settings or at privacy@renkiva.app
               </p>
             </section>
           </CardContent>
