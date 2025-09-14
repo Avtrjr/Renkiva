@@ -75,7 +75,7 @@ const Index = () => {
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
       title: content.title,
-      senderName: `Renkiva Node`,
+      senderName: `Mesh Node`,
       signalStrength: 95,
       distance: "5m",
       streaming_url: content.streaming_url
@@ -153,11 +153,11 @@ const Index = () => {
             <div className="flex items-center space-x-3 group">
               {/* Logo placeholder - will be replaced with actual image */}
               <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
-                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="RENKIVA" className="w-12 h-12 object-contain" />
+                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-12 h-12 object-contain" />
               </div>
               <div className="text-left">
                 <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-                  RENKIVA
+                  Mesh TV Network
                 </h1>
                 <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
               </div>
@@ -226,7 +226,7 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             {/* Hero Title */}
             <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">RENKIVA 
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">Mesh TV Network 
             </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s'
@@ -265,7 +265,7 @@ const Index = () => {
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
-                        <p className="text-sm text-muted-foreground">Live from RENKIVA Network</p>
+                        <p className="text-sm text-muted-foreground">Live from Mesh Network</p>
                       </div>
                       <Badge className="bg-red-500/20 text-red-400 border-red-500/30 animate-pulse">
                         LIVE
@@ -273,32 +273,25 @@ const Index = () => {
                     </div>
                     
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
-                      <StreamPlayer 
-                        title="Tears of Steel (Featured Demo)" 
-                        source="RENKIVA Demo Node"
-                        fragments={[{
-                          id: 1,
-                          sequence: 1,
-                          size: 1024
-                        }, {
-                          id: 2,
-                          sequence: 2,
-                          size: 2048
-                        }, {
-                          id: 3,
-                          sequence: 3,
-                          size: 1536
-                        }]} 
-                        signalStrength={100} 
-                        distance="0m" 
-                        streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" 
-                      />
+                      <StreamPlayer title="Tears of Steel (Featured Demo)" source="MeshTV Demo Node" fragments={[{
+                      id: 1,
+                      sequence: 1,
+                      size: 1024
+                    }, {
+                      id: 2,
+                      sequence: 2,
+                      size: 2048
+                    }, {
+                      id: 3,
+                      sequence: 3,
+                      size: 1536
+                    }]} signalStrength={100} distance="0m" streaming_url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" />
                     </div>
                     
                     <div className="mt-4 text-center">
                       <p className="text-sm text-muted-foreground/80 flex items-center justify-center gap-2">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        <strong>Zero Internet Required</strong> • Renkiva Network Powered
+                        <strong>Zero Internet Required</strong> • Mesh Network Powered
                       </p>
                     </div>
                   </CardContent>
@@ -391,9 +384,7 @@ const Index = () => {
           <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
             🤖 AI-Curated Top Picks
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover the best content from your Renkiva network with AI-powered recommendations
-          </p>
+          <p className="text-muted-foreground max-w-2xl mx-auto">Discover the best content from your Renkiva network with AI-powered recommendations</p>
         </div>
         
         {loadingAi ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -449,10 +440,10 @@ const Index = () => {
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-2">
-              🌐 3D Renkiva Network
+              🌐 3D Mesh Network
             </h2>
             <p className="text-muted-foreground">
-              Interactive 3D visualization of the Renkiva network topology
+              Interactive 3D visualization of the mesh network topology
             </p>
           </div>
           <Scene3D />
@@ -462,10 +453,10 @@ const Index = () => {
         <section className="mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
-              🌐 Neural Renkiva Network
+              🌐 Neural Mesh Network
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Experience the future of decentralized streaming with our cyberpunk-enhanced Renkiva network. 
+              Experience the future of decentralized streaming with our cyberpunk-enhanced mesh network. 
               Watch as data flows through encrypted channels with neon-lit pathways.
             </p>
           </div>
@@ -490,7 +481,7 @@ const Index = () => {
               📤 Upload Content
             </h2>
             <p className="text-muted-foreground">
-              Share your own videos and movies with the Renkiva network
+              Share your own videos and movies with the mesh network
             </p>
           </div>
           
@@ -501,7 +492,7 @@ const Index = () => {
                 Upload Your Content
               </CardTitle>
               <CardDescription>
-                Share your movies and shows with the Renkiva network
+                Share your movies and shows with the mesh network
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -536,12 +527,8 @@ const Index = () => {
         {/* Install Wizard for New Users */}
         {!user && <section>
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                🚀 Get Started with MeshTV
-              </h2>
-              <p className="text-muted-foreground">
-                Follow our setup wizard to configure MeshTV for optimal performance
-              </p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">🚀 Get Started with Renkiva</h2>
+              <p className="text-muted-foreground">Follow our setup wizard to configure Renkiva for optimal performance</p>
             </div>
             <InstallWizard />
           </section>}
@@ -553,7 +540,7 @@ const Index = () => {
                 🤖 AI & Private Channels
               </h2>
               <p className="text-muted-foreground">
-                AI-powered content suggestions and encrypted invite-only Renkiva networks
+                AI-powered content suggestions and encrypted invite-only mesh networks
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -609,7 +596,7 @@ const Index = () => {
               📡 Nearby Streams
             </h2>
             <p className="text-muted-foreground">
-              Content available from devices in your Renkiva network
+              Content available from devices in your mesh network
             </p>
           </div>
           
@@ -619,7 +606,7 @@ const Index = () => {
               </div> : error ? <div className="col-span-full text-center py-8">
                 <p className="text-destructive">Error: {error}</p>
               </div> : nearbyStreams.length === 0 ? <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground">No streamable content available in Renkiva network</p>
+                <p className="text-muted-foreground">No streamable content available in mesh network</p>
                 <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
               </div> : nearbyStreams.map((stream, index) => <StreamCard key={index} title={stream.title} distance={stream.distance} senderName={stream.senderName} category={stream.category} viewerCount={stream.viewerCount} signalStrength={stream.signalStrength} streaming_url={stream.streaming_url} onPlay={streamData => {
               setCurrentStream(streamData);
