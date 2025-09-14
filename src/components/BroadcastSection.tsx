@@ -50,7 +50,7 @@ const BroadcastSection = () => {
         {/* Upload Area */}
         <div className={`
             relative border-2 border-dashed rounded-2xl p-8 text-center transition-clay cursor-pointer
-            ${dragActive ? "border-primary bg-primary/10 shadow-signal-pulse" : "border-border hover:border-primary/50 bg-muted/20"}
+            ${dragActive ? "border-primary bg-primary/10 shadow-signal-pulse" : "border-border/50 hover:border-primary/50 bg-muted/20"}
           `} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}>
           <div className="space-y-4">
             <div className="text-4xl">📁</div>
@@ -79,7 +79,7 @@ const BroadcastSection = () => {
         </div>
 
         {/* Broadcast Toggle */}
-        <div className="flex items-center justify-between p-4 bg-muted/20 rounded-2xl">
+        <div className="flex items-center justify-between p-4 bg-muted/20 rounded-xl">
           <div className="space-y-1">
             <Label htmlFor="broadcast-mode" className="text-base font-medium">
               Enable Renkiva Broadcasting
@@ -92,7 +92,7 @@ const BroadcastSection = () => {
         </div>
 
         {/* Broadcast Stats */}
-        {isBroadcasting && <div className="grid grid-cols-2 gap-4 p-4 bg-aurora-Renkiva/10 rounded-2xl border border-primary/20">
+        {isBroadcasting && <div className="grid grid-cols-2 gap-4 p-4 bg-aurora-Renkiva/10 rounded-xl border border-secondary/20">
             <div className="text-center">
               <div className="text-2xl font-bold text-primary">3</div>
               <div className="text-sm text-muted-foreground">Connected Peers</div>
