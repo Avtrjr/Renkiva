@@ -157,7 +157,7 @@ const Index = () => {
               </div>
               <div className="text-left">
           <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-            Renkiva TV
+            Renkiva
           </h1>
                 <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
               </div>
