@@ -596,7 +596,7 @@ const Index = () => {
               📡 Nearby Streams
             </h2>
             <p className="text-muted-foreground">
-              Content available from devices in your mesh network
+              Content available from devices in your Renkiva network
             </p>
           </div>
           
