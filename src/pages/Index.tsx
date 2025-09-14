@@ -156,9 +156,9 @@ const Index = () => {
                 <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-12 h-12 object-contain" />
               </div>
               <div className="text-left">
-                <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-                  Mesh TV Network
-                </h1>
+          <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
+            Renkiva TV Network
+          </h1>
                 <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
               </div>
             </div>
