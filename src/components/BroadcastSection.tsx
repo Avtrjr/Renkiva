@@ -64,7 +64,7 @@ const BroadcastSection = () => {
             </div>
             <div className="relative">
               <input type="file" multiple accept="video/*,.mp4,.mkv,.avi,.mov,.wmv" onChange={e => handleFileSelect(e.target.files)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file-upload" />
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild className="text-purple-800">
                 <label htmlFor="file-upload" className="cursor-pointer">
                   📂 Browse Files
                 </label>
