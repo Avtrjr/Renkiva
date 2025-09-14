@@ -116,7 +116,7 @@ function Scene3DContent() {
         anchorX="center"
         anchorY="middle"
       >
-        MeshTV Network
+        Renkiva Network
       </Text>
       
       {/* Orbit Controls */}
