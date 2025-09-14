@@ -178,7 +178,7 @@ export const LiveVideoChat = () => {
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="bg-background/50">
             <Tv className="w-3 h-3 mr-1" />
-            MeshTV Network
+            Renkiva Network
           </Badge>
           <span className="text-xs text-muted-foreground">Patent pending</span>
         </div>
