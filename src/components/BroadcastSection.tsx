@@ -43,7 +43,7 @@ const BroadcastSection = () => {
         <CardTitle className="flex items-center gap-3 text-xl">
           📤 Broadcast Your Content
           {isBroadcasting && (
-            <Badge variant="default" className="bg-aurora-1 animate-pulse-mesh">
+            <Badge variant="default" className="bg-aurora-1 animate-pulse-Renkiva">
               🔴 Live
             </Badge>
           )}
@@ -98,7 +98,7 @@ const BroadcastSection = () => {
 
           {/* Decorative Upload Icon */}
           <div className="absolute top-4 right-4 opacity-20">
-            <div className="w-6 h-6 border-2 border-primary rounded-full animate-pulse-mesh"></div>
+            <div className="w-6 h-6 border-2 border-primary rounded-full animate-pulse-Renkiva"></div>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ const BroadcastSection = () => {
         <div className="flex items-center justify-between p-4 bg-muted/20 rounded-2xl">
           <div className="space-y-1">
             <Label htmlFor="broadcast-mode" className="text-base font-medium">
-              Enable Mesh Broadcasting
+              Enable Renkiva Broadcasting
             </Label>
             <p className="text-sm text-muted-foreground">
               Share your content with nearby devices via Bluetooth LE
@@ -122,7 +122,7 @@ const BroadcastSection = () => {
 
         {/* Broadcast Stats */}
         {isBroadcasting && (
-          <div className="grid grid-cols-2 gap-4 p-4 bg-aurora-mesh/10 rounded-2xl border border-primary/20">
+          <div className="grid grid-cols-2 gap-4 p-4 bg-aurora-Renkiva/10 rounded-2xl border border-primary/20">
             <div className="text-center">
               <div className="text-2xl font-bold text-primary">3</div>
               <div className="text-sm text-muted-foreground">Connected Peers</div>
