@@ -265,7 +265,7 @@ const Index = () => {
                     <div className="mb-4 flex items-center justify-between">
                       <div>
                         <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
-                        <p className="text-sm text-muted-foreground">Live from Mesh Network</p>
+                        <p className="text-sm text-muted-foreground">Live from Renkiva Network</p>
                       </div>
                       <Badge className="bg-red-500/20 text-red-400 border-red-500/30 animate-pulse">
                         LIVE
