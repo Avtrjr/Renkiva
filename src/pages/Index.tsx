@@ -719,7 +719,7 @@ const Index = () => {
             Copyright 2025 / Patent pending
           </p>
           <p className="text-xs text-muted-foreground/60 mt-1">
-            MeshTV - Decentralized. Private. Offline.
+            Renkiva - Decentralized. Private. Offline.
           </p>
         </footer>
       </div>
