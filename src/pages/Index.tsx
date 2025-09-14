@@ -75,7 +75,7 @@ const Index = () => {
   const handlePlayContent = (content: ContentItem) => {
     setCurrentStream({
       title: content.title,
-      senderName: `Mesh Node`,
+      senderName: `Renkiva Node`,
       signalStrength: 95,
       distance: "5m",
       streaming_url: content.streaming_url
@@ -146,14 +146,14 @@ const Index = () => {
       console.log('User declined legal terms');
     }} />
 
-      {/* Mesh TV Network Header */}
+      {/* Renkiva TV Network Header */}
       <header className="relative z-20 glass-morphism border-b border-primary/20">
         <div className="container mx-auto px-6 py-4">
           <a href="/" className="flex items-center justify-center lg:justify-start">
             <div className="flex items-center space-x-3 group">
               {/* Logo placeholder - will be replaced with actual image */}
               <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
-                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Mesh TV Network" className="w-12 h-12 object-contain" />
+                <img src="/lovable-uploads/5fff35d1-ba43-4678-84d9-b41ff3aab22d.png" alt="Renkiva TV Network" className="w-12 h-12 object-contain" />
               </div>
               <div className="text-left">
           <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
@@ -165,14 +165,14 @@ const Index = () => {
           </a>
         </div>
       </header>
-      {/* Animated Mesh Background */}
+      {/* Animated Renkiva Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90" />
         
-        {/* Animated mesh lines */}
+        {/* Animated renkiva lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 800">
           <defs>
-            <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="renkivaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" style={{
               stopColor: "hsl(var(--primary))",
               stopOpacity: 0.3
@@ -198,10 +198,10 @@ const Index = () => {
             }} />
                 
                 {/* Connecting lines */}
-                {i < 8 && <line x1={x} y1={y} x2={x + 300} y2={y} stroke="url(#meshGradient)" strokeWidth="1" className="animate-pulse" style={{
+                {i < 8 && <line x1={x} y1={y} x2={x + 300} y2={y} stroke="url(#renkivaGradient)" strokeWidth="1" className="animate-pulse" style={{
               animationDelay: `${i * 0.3}s`
             }} />}
-                {i % 4 !== 3 && i < 8 && <line x1={x} y1={y} x2={x} y2={y + 200} stroke="url(#meshGradient)" strokeWidth="1" className="animate-pulse" style={{
+                {i % 4 !== 3 && i < 8 && <line x1={x} y1={y} x2={x} y2={y + 200} stroke="url(#renkivaGradient)" strokeWidth="1" className="animate-pulse" style={{
               animationDelay: `${i * 0.4}s`
             }} />}
               </g>;
@@ -244,12 +244,12 @@ const Index = () => {
                   </Button>
                 </Link>
                 <Link to="/sponsor">
-                  <Button size="lg" variant="outline" className="mesh-button border-primary/50 hover:border-primary text-lg px-8">
+                  <Button size="lg" variant="outline" className="renkiva-button border-primary/50 hover:border-primary text-lg px-8">
                     🎯 Sponsor Campaign
                   </Button>
                 </Link>
                 <Link to="/library">
-                  <Button size="lg" variant="outline" className="mesh-button border-secondary/50 hover:border-secondary text-lg px-8">
+                  <Button size="lg" variant="outline" className="renkiva-button border-secondary/50 hover:border-secondary text-lg px-8">
                     📚 Browse Library
                   </Button>
                 </Link>
@@ -260,7 +260,7 @@ const Index = () => {
             <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 mb-12">
               {/* Main Video Player - Takes more space on desktop */}
               <div className="xl:col-span-3">
-                <Card className="mesh-card border border-primary/30 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden animate-scale-in">
+                <Card className="renkiva-card border border-primary/30 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden animate-scale-in">
                   <CardContent className="p-4 lg:p-6">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
@@ -273,7 +273,7 @@ const Index = () => {
                     </div>
                     
                     <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative group">
-                      <StreamPlayer title="Tears of Steel (Featured Demo)" source="MeshTV Demo Node" fragments={[{
+                      <StreamPlayer title="Tears of Steel (Featured Demo)" source="RenkivaTV Demo Node" fragments={[{
                       id: 1,
                       sequence: 1,
                       size: 1024
@@ -301,7 +301,7 @@ const Index = () => {
               {/* Live Stats & Quick Actions */}
               <div className="space-y-6">
                 {/* Network Stats */}
-                <Card className="mesh-card border-secondary/30 animate-fade-in" style={{
+                <Card className="renkiva-card border-secondary/30 animate-fade-in" style={{
                 animationDelay: '0.6s'
               }}>
                   <CardContent className="p-4">
@@ -328,19 +328,19 @@ const Index = () => {
                 </Card>
                 
                 {/* Quick Preview Actions */}
-                <Card className="mesh-card border-accent/30 animate-fade-in" style={{
+                <Card className="renkiva-card border-accent/30 animate-fade-in" style={{
                 animationDelay: '0.8s'
               }}>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-accent mb-3">⚡ Quick Actions</h4>
                     <div className="space-y-2">
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
+                      <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
                         📱 Join as Viewer
                       </Button>
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
+                      <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
                         🔗 Share Network
                       </Button>
-                      <Button size="sm" variant="outline" className="w-full justify-start mesh-button h-7 px-2 py-1 text-xs">
+                      <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
                         📡 Boost Signal
                       </Button>
                     </div>
@@ -348,7 +348,7 @@ const Index = () => {
                 </Card>
                 
                 {/* Currently Trending */}
-                <Card className="mesh-card border-yellow-500/30 animate-fade-in" style={{
+                <Card className="renkiva-card border-yellow-500/30 animate-fade-in" style={{
                 animationDelay: '1.0s'
               }}>
                   <CardContent className="p-4">
@@ -388,7 +388,7 @@ const Index = () => {
         </div>
         
         {loadingAi ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, idx) => <Card key={idx} className="mesh-card animate-pulse">
+            {[...Array(6)].map((_, idx) => <Card key={idx} className="renkiva-card animate-pulse">
                 <CardContent className="p-6">
                   <div className="bg-muted/30 h-6 rounded mb-3"></div>
                   <div className="bg-muted/30 h-4 rounded mb-3 w-3/4"></div>
@@ -396,7 +396,7 @@ const Index = () => {
                 </CardContent>
               </Card>)}
           </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {aiSuggestions.map((item, idx) => <Card key={idx} className="mesh-card hover:shadow-glow transition-all duration-300 cursor-pointer group" onClick={() => {
+            {aiSuggestions.map((item, idx) => <Card key={idx} className="renkiva-card hover:shadow-glow transition-all duration-300 cursor-pointer group" onClick={() => {
             setCurrentStream({
               title: item.title,
               senderName: 'AI Recommendation',
@@ -436,40 +436,40 @@ const Index = () => {
       <div className="container mx-auto px-6 py-12 space-y-12">
         
         
-        {/* 3D Mesh Network Visualization */}
+        {/* 3D Renkiva Network Visualization */}
         <section>
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-2">
-              🌐 3D Mesh Network
+              🌐 3D Renkiva Network
             </h2>
             <p className="text-muted-foreground">
-              Interactive 3D visualization of the mesh network topology
+              Interactive 3D visualization of the renkiva network topology
             </p>
           </div>
           <Scene3D />
         </section>
 
-        {/* Cyberpunk Mesh Network Visualization */}
+        {/* Cyberpunk Renkiva Network Visualization */}
         <section className="mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4">
-              🌐 Neural Mesh Network
+              🌐 Neural Renkiva Network
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Experience the future of decentralized streaming with our cyberpunk-enhanced mesh network. 
+              Experience the future of decentralized streaming with our cyberpunk-enhanced renkiva network.
               Watch as data flows through encrypted channels with neon-lit pathways.
             </p>
           </div>
           <CyberpunkMeshNetwork />
         </section>
 
-        {/* Enhanced Mesh Network Grid */}
+        {/* Enhanced Renkiva Network Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <EnhancedMeshAnimation />
           <MeshStreamSimulation />
         </section>
 
-        {/* Invite-Only Mesh Channels */}
+        {/* Invite-Only Renkiva Channels */}
         <section>
           <InviteOnlyMesh />
         </section>
@@ -481,7 +481,7 @@ const Index = () => {
               📤 Upload Content
             </h2>
             <p className="text-muted-foreground">
-              Share your own videos and movies with the mesh network
+              Share your own videos and movies with the renkiva network
             </p>
           </div>
           
@@ -492,7 +492,7 @@ const Index = () => {
                 Upload Your Content
               </CardTitle>
               <CardDescription>
-                Share your movies and shows with the mesh network
+                Share your movies and shows with the renkiva network
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -540,7 +540,7 @@ const Index = () => {
                 🤖 AI & Private Channels
               </h2>
               <p className="text-muted-foreground">
-                AI-powered content suggestions and encrypted invite-only mesh networks
+                AI-powered content suggestions and encrypted invite-only renkiva networks
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -606,7 +606,7 @@ const Index = () => {
               </div> : error ? <div className="col-span-full text-center py-8">
                 <p className="text-destructive">Error: {error}</p>
               </div> : nearbyStreams.length === 0 ? <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground">No streamable content available in mesh network</p>
+                <p className="text-muted-foreground">No streamable content available in renkiva network</p>
                 <p className="text-sm text-muted-foreground mt-2">Upload content with streaming URLs to see them here</p>
               </div> : nearbyStreams.map((stream, index) => <StreamCard key={index} title={stream.title} distance={stream.distance} senderName={stream.senderName} category={stream.category} viewerCount={stream.viewerCount} signalStrength={stream.signalStrength} streaming_url={stream.streaming_url} onPlay={streamData => {
               setCurrentStream(streamData);
@@ -627,7 +627,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* MeshTV Dashboard Grid */}
+        {/* RenkivaTV Dashboard Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {/* Enhanced Broadcast Controls */}
           <div className="xl:col-span-1">
