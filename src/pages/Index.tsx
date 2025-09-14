@@ -226,8 +226,8 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             {/* Hero Title */}
             <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">Mesh TV Network 
-            </h1>
+             <h1 className="text-5xl md:text-6xl font-bold bg-gradient-cyber bg-clip-text text-transparent mb-4 animate-fade-in">Renkiva Network 
+             </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s'
             }}>
