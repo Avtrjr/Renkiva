@@ -648,6 +648,36 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Video Player - Shows when currentStream is set */}
+        {currentStream && (
+          <section className="mt-8">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                🎬 Now Playing
+              </h2>
+              <p className="text-muted-foreground">
+                Streaming from {currentStream.senderName}
+              </p>
+            </div>
+            <div className="aspect-video bg-background/90 rounded-lg overflow-hidden border border-border/50 relative">
+              <StreamPlayer 
+                title={currentStream.title}
+                source={currentStream.senderName}
+                fragments={fragments}
+                signalStrength={currentStream.signalStrength}
+                distance={currentStream.distance}
+                videoSource={currentStream.streaming_url}
+              />
+              <button 
+                onClick={() => setCurrentStream(null)}
+                className="absolute top-4 right-4 bg-black/50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/70 transition-colors z-10"
+              >
+                ✕
+              </button>
+            </div>
+          </section>
+        )}
+        
         {/* Diagnostics Overlay - Fixed Position */}
         <DiagnosticsOverlay />
         
