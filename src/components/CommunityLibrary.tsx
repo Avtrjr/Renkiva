@@ -94,18 +94,40 @@ export default function CommunityLibrary({
               {/* Video Preview Area */}
               <div className="mb-4 aspect-video bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-primary/20 flex items-center justify-center relative overflow-hidden">
                 <video 
+                  ref={(ref) => { if (ref) ref.dataset.playing = 'false'; }}
                   src={URL.createObjectURL(item.file)}
                   className="w-full h-full object-cover rounded-lg"
                   controls={false}
                   muted
                   preload="metadata"
-                  onMouseEnter={(e) => e.currentTarget.play()}
+                  onMouseEnter={(e) => {
+                    if (e.currentTarget.dataset.playing !== 'true') {
+                      e.currentTarget.play();
+                    }
+                  }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.pause();
-                    e.currentTarget.currentTime = 0;
+                    if (e.currentTarget.dataset.playing !== 'true') {
+                      e.currentTarget.pause();
+                      e.currentTarget.currentTime = 0;
+                    }
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center">
+                <div 
+                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const video = e.currentTarget.previousElementSibling as HTMLVideoElement;
+                    if (video) {
+                      if (video.paused) {
+                        video.controls = true;
+                        video.muted = false;
+                        video.dataset.playing = 'true';
+                        video.play();
+                        e.currentTarget.style.display = 'none';
+                      }
+                    }
+                  }}
+                >
                   <div className="text-white/80 text-4xl">▶️</div>
                 </div>
               </div>
