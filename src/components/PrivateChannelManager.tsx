@@ -116,21 +116,27 @@ export function PrivateChannelManager() {
         loadData();
         setJoinCode('');
         
+        // Switch to channels tab to show the newly joined channel
+        const tabsList = document.querySelector('[data-value="channels"]') as HTMLElement;
+        if (tabsList) {
+          tabsList.click();
+        }
+        
         toast({
-          title: "Joined Channel",
-          description: `Successfully joined "${result.channel.name}".`,
+          title: "Channel Joined Successfully!",
+          description: `Welcome to "${result.channel.name}". You can now access this private channel.`,
         });
       } else {
         toast({
-          title: "Invalid Invite",
-          description: result.error || "Failed to join channel.",
+          title: "Invalid Invite Code",
+          description: result.error || "Please check your invite code and try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to join channel. Please try again.",
+        title: "Connection Error",
+        description: "Unable to join channel. Please check your connection and try again.",
         variant: "destructive",
       });
     }
