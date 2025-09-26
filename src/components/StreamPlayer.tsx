@@ -81,14 +81,34 @@ export default function StreamPlayer({
   // Use streaming_url or videoSource as the final source
   const finalVideoSource = streaming_url || videoSource;
 
-  const togglePlayPause = () => {
+  const togglePlayPause = async () => {
     if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
+      try {
+        if (isPlaying) {
+          videoRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          // Ensure video is loaded before playing
+          if (videoRef.current.readyState < 2) {
+            await new Promise((resolve) => {
+              const handleCanPlay = () => {
+                videoRef.current?.removeEventListener('canplay', handleCanPlay);
+                resolve(true);
+              };
+              videoRef.current?.addEventListener('canplay', handleCanPlay);
+              videoRef.current?.load();
+            });
+          }
+          
+          await videoRef.current.play();
+          setIsPlaying(true);
+        }
+        setVideoError(null); // Clear any previous errors
+      } catch (error) {
+        console.error('Video play failed:', error);
+        setVideoError('Unable to play video. Please try again.');
+        setIsPlaying(false);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
