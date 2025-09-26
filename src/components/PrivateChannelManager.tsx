@@ -45,8 +45,12 @@ export function PrivateChannelManager() {
   }, []);
 
   const loadData = () => {
-    setChannels(encryptionService.getChannels());
-    setInvites(encryptionService.getInvites());
+    const loadedChannels = encryptionService.getChannels();
+    const loadedInvites = encryptionService.getInvites();
+    console.log('Loaded channels:', loadedChannels);
+    console.log('Loaded invites:', loadedInvites);
+    setChannels(loadedChannels);
+    setInvites(loadedInvites);
   };
 
   const handleCreateChannel = async () => {
@@ -248,59 +252,67 @@ export function PrivateChannelManager() {
             )}
 
             <div className="space-y-3">
-              {channels.map((channel) => (
-                <Card 
-                  key={channel.id}
-                  className={`p-3 cursor-pointer transition-colors ${
-                    selectedChannel?.id === channel.id ? 'border-primary' : 'border-border/50'
-                  }`}
-                  onClick={() => setSelectedChannel(channel)}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-sm">{channel.name}</h4>
-                        <Badge variant={getTrustBadgeVariant(channel.trustLevel)} className="text-xs">
-                          {getTrustIcon(channel.trustLevel)}
-                        </Badge>
-                        {channel.isInviteOnly && (
-                          <Badge variant="outline" className="text-xs">
-                            <Lock className="w-3 h-3 mr-1" />
-                            Invite Only
+              {channels.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Shield className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p className="text-sm">No private channels yet</p>
+                  <p className="text-xs">Create your first channel or join one with an invite code</p>
+                </div>
+              ) : (
+                channels.map((channel) => (
+                  <Card 
+                    key={channel.id}
+                    className={`p-3 cursor-pointer transition-colors ${
+                      selectedChannel?.id === channel.id ? 'border-primary' : 'border-border/50'
+                    }`}
+                    onClick={() => setSelectedChannel(channel)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium text-sm">{channel.name}</h4>
+                          <Badge variant={getTrustBadgeVariant(channel.trustLevel)} className="text-xs">
+                            {getTrustIcon(channel.trustLevel)}
                           </Badge>
+                          {channel.isInviteOnly && (
+                            <Badge variant="outline" className="text-xs">
+                              <Lock className="w-3 h-3 mr-1" />
+                              Invite Only
+                            </Badge>
+                          )}
+                        </div>
+                        {channel.description && (
+                          <p className="text-xs text-muted-foreground mb-2">{channel.description}</p>
                         )}
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {channel.memberCount}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Activity className="w-3 h-3" />
+                            {formatTimeAgo(channel.lastActivity)}
+                          </span>
+                        </div>
                       </div>
-                      {channel.description && (
-                        <p className="text-xs text-muted-foreground mb-2">{channel.description}</p>
+                      
+                      {selectedChannel?.id === channel.id && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowInviteForm(true);
+                          }}
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          Invite
+                        </Button>
                       )}
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          {channel.memberCount}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Activity className="w-3 h-3" />
-                          {formatTimeAgo(channel.lastActivity)}
-                        </span>
-                      </div>
                     </div>
-                    
-                    {selectedChannel?.id === channel.id && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowInviteForm(true);
-                        }}
-                      >
-                        <Plus className="w-3 h-3 mr-1" />
-                        Invite
-                      </Button>
-                    )}
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))
+              )}
             </div>
 
             {showInviteForm && selectedChannel && (
