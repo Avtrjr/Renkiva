@@ -66,26 +66,15 @@ export default function CommunityLibrary({
       
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <Input 
-            ref={(ref) => { if (ref) fileInputRef.current = ref; }}
-            type="file" 
-            accept="video/mp4,video/webm,video/avi,video/mov" 
-            onChange={handleUpload} 
-            disabled={isUploading} 
-            className="flex-1 bg-purple-950" 
-          />
-          <Button 
-            variant="outline" 
-            disabled={isUploading}
-            onClick={() => fileInputRef.current?.click()}
-          >
+          <Input ref={ref => {
+          if (ref) fileInputRef.current = ref;
+        }} type="file" accept="video/mp4,video/webm,video/avi,video/mov" onChange={handleUpload} disabled={isUploading} className="flex-1 bg-purple-950" />
+          <Button variant="outline" disabled={isUploading} onClick={() => fileInputRef.current?.click()}>
             {isUploading ? 'Processing...' : '📡 Share to Renkiva'}
           </Button>
         </div>
         
-        <p className="text-sm text-muted-foreground">
-          Upload videos to fragment and share them across the mesh network
-        </p>
+        <p className="text-sm text-muted-foreground">Upload videos and share them across the network</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -93,41 +82,31 @@ export default function CommunityLibrary({
             <CardContent className="p-6">
               {/* Video Preview Area */}
               <div className="mb-4 aspect-video bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-primary/20 flex items-center justify-center relative overflow-hidden">
-                <video 
-                  ref={(ref) => { if (ref) ref.dataset.playing = 'false'; }}
-                  src={URL.createObjectURL(item.file)}
-                  className="w-full h-full object-cover rounded-lg"
-                  controls={false}
-                  muted
-                  preload="metadata"
-                  onMouseEnter={(e) => {
-                    if (e.currentTarget.dataset.playing !== 'true') {
-                      e.currentTarget.play();
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (e.currentTarget.dataset.playing !== 'true') {
-                      e.currentTarget.pause();
-                      e.currentTarget.currentTime = 0;
-                    }
-                  }}
-                />
-                <div 
-                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const video = e.currentTarget.previousElementSibling as HTMLVideoElement;
-                    if (video) {
-                      if (video.paused) {
-                        video.controls = true;
-                        video.muted = false;
-                        video.dataset.playing = 'true';
-                        video.play();
-                        e.currentTarget.style.display = 'none';
-                      }
-                    }
-                  }}
-                >
+                <video ref={ref => {
+              if (ref) ref.dataset.playing = 'false';
+            }} src={URL.createObjectURL(item.file)} className="w-full h-full object-cover rounded-lg" controls={false} muted preload="metadata" onMouseEnter={e => {
+              if (e.currentTarget.dataset.playing !== 'true') {
+                e.currentTarget.play();
+              }
+            }} onMouseLeave={e => {
+              if (e.currentTarget.dataset.playing !== 'true') {
+                e.currentTarget.pause();
+                e.currentTarget.currentTime = 0;
+              }
+            }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center cursor-pointer" onClick={e => {
+              e.stopPropagation();
+              const video = e.currentTarget.previousElementSibling as HTMLVideoElement;
+              if (video) {
+                if (video.paused) {
+                  video.controls = true;
+                  video.muted = false;
+                  video.dataset.playing = 'true';
+                  video.play();
+                  e.currentTarget.style.display = 'none';
+                }
+              }
+            }}>
                   <div className="text-white/80 text-4xl">▶️</div>
                 </div>
               </div>
@@ -156,16 +135,11 @@ export default function CommunityLibrary({
               </div>
 
               <div className="flex gap-2">
-                <Button 
-                  variant="mesh" 
-                  size="sm" 
-                  className="flex-1 group-hover:animate-pulse-mesh"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelect(item);
-                    toast.success(`🎬 Started streaming "${item.title}" from mesh network`);
-                  }}
-                >
+                <Button variant="mesh" size="sm" className="flex-1 group-hover:animate-pulse-mesh" onClick={e => {
+              e.stopPropagation();
+              onSelect(item);
+              toast.success(`🎬 Started streaming "${item.title}" from mesh network`);
+            }}>
                   ▶️ Stream from Renkiva
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs px-2" onClick={e => {
