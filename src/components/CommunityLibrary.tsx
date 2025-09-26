@@ -9,6 +9,7 @@ interface CommunityUpload {
   title: string;
   file: File;
   fragments: any[];
+  isPlaying?: boolean;
   metadata: {
     title: string;
     size: string;
@@ -66,10 +67,19 @@ export default function CommunityLibrary({
       
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <Input ref={ref => {
-          if (ref) fileInputRef.current = ref;
-        }} type="file" accept="video/mp4,video/webm,video/avi,video/mov" onChange={handleUpload} disabled={isUploading} className="flex-1 bg-purple-950" />
-          <Button variant="outline" disabled={isUploading} onClick={() => fileInputRef.current?.click()}>
+          <Input 
+            ref={fileInputRef}
+            type="file" 
+            accept="video/mp4,video/webm,video/avi,video/mov" 
+            onChange={handleUpload} 
+            disabled={isUploading} 
+            className="flex-1 bg-purple-950" 
+          />
+          <Button 
+            variant="outline" 
+            disabled={isUploading} 
+            onClick={() => fileInputRef.current?.click()}
+          >
             {isUploading ? 'Processing...' : '📡 Share to Renkiva'}
           </Button>
         </div>
@@ -82,33 +92,54 @@ export default function CommunityLibrary({
             <CardContent className="p-6">
               {/* Video Preview Area */}
               <div className="mb-4 aspect-video bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-primary/20 flex items-center justify-center relative overflow-hidden">
-                <video ref={ref => {
-              if (ref) ref.dataset.playing = 'false';
-            }} src={URL.createObjectURL(item.file)} className="w-full h-full object-cover rounded-lg" controls={false} muted preload="metadata" onMouseEnter={e => {
-              if (e.currentTarget.dataset.playing !== 'true') {
-                e.currentTarget.play();
-              }
-            }} onMouseLeave={e => {
-              if (e.currentTarget.dataset.playing !== 'true') {
-                e.currentTarget.pause();
-                e.currentTarget.currentTime = 0;
-              }
-            }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center cursor-pointer" onClick={e => {
-              e.stopPropagation();
-              const video = e.currentTarget.previousElementSibling as HTMLVideoElement;
-              if (video) {
-                if (video.paused) {
-                  video.controls = true;
-                  video.muted = false;
-                  video.dataset.playing = 'true';
-                  video.play();
-                  e.currentTarget.style.display = 'none';
-                }
-              }
-            }}>
-                  <div className="text-white/80 text-4xl">▶️</div>
-                </div>
+                <video 
+                  src={URL.createObjectURL(item.file)} 
+                  className="w-full h-full object-cover rounded-lg" 
+                  controls={false} 
+                  muted 
+                  preload="metadata"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const video = e.currentTarget;
+                    if (video.paused) {
+                      video.controls = true;
+                      video.muted = false;
+                      video.play();
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    const video = e.currentTarget;
+                    if (!video.controls && video.paused) {
+                      video.play();
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const video = e.currentTarget;
+                    if (!video.controls) {
+                      video.pause();
+                      video.currentTime = 0;
+                    }
+                  }}
+                />
+                {!uploads[idx]?.isPlaying && (
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center cursor-pointer" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const video = e.currentTarget.previousElementSibling as HTMLVideoElement;
+                      if (video && video.paused) {
+                        video.controls = true;
+                        video.muted = false;
+                        video.play();
+                        setUploads(prev => prev.map((upload, index) => 
+                          index === idx ? { ...upload, isPlaying: true } : upload
+                        ));
+                      }
+                    }}
+                  >
+                    <div className="text-white/80 text-4xl">▶️</div>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-start justify-between mb-4">
@@ -135,18 +166,28 @@ export default function CommunityLibrary({
               </div>
 
               <div className="flex gap-2">
-                <Button variant="mesh" size="sm" className="flex-1 group-hover:animate-pulse-mesh" onClick={e => {
-              e.stopPropagation();
-              onSelect(item);
-              toast.success(`🎬 Started streaming "${item.title}" from mesh network`);
-            }}>
+                <Button 
+                  variant="mesh" 
+                  size="sm" 
+                  className="flex-1 group-hover:animate-pulse-mesh" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelect(item);
+                    toast.success(`🎬 Started streaming "${item.title}" from Renkiva network`);
+                  }}
+                >
                   ▶️ Stream from Renkiva
                 </Button>
-                <Button variant="outline" size="sm" className="text-xs px-2" onClick={e => {
-              e.stopPropagation();
-              toast.success('Marked as Favorite & Verified!');
-              // TODO: Sync to mesh index via meshIndexService
-            }}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-xs px-2" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success('Marked as Favorite & Verified!');
+                    // TODO: Sync to mesh index via meshIndexService
+                  }}
+                >
                   ⭐ Favorite
                 </Button>
               </div>
