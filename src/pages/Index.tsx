@@ -234,22 +234,55 @@ const Index = () => {
                 Experience decentralized streaming without traditional internet infrastructure
               </p>
               
+              {/* Authentication Section */}
+              {!user ? (
+                <Card className="renkiva-card border border-primary/30 bg-card/80 backdrop-blur-xl shadow-2xl max-w-md mx-auto mb-8 animate-fade-in" style={{
+                  animationDelay: '0.3s'
+                }}>
+                  <CardContent className="p-6 text-center">
+                    <h3 className="text-xl font-bold text-primary mb-2">Join Renkiva Network</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Create your account to upload content and join the decentralized streaming revolution
+                    </p>
+                    <Link to="/auth">
+                      <Button size="lg" className="w-full bg-gradient-neon hover:shadow-glow text-lg mb-3">
+                        🚀 Sign Up Now
+                      </Button>
+                    </Link>
+                    <p className="text-xs text-muted-foreground">
+                      Already have an account?{' '}
+                      <Link to="/auth" className="text-primary hover:underline">
+                        Sign in here
+                      </Link>
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="text-center mb-8 animate-fade-in" style={{
+                  animationDelay: '0.3s'
+                }}>
+                  <p className="text-lg text-muted-foreground mb-4">
+                    Welcome back, <span className="text-primary font-medium">{user.email}</span>!
+                  </p>
+                </div>
+              )}
+
               {/* Call-to-Action Buttons */}
               <div className="flex gap-4 justify-center flex-wrap mb-8 animate-fade-in" style={{
               animationDelay: '0.4s'
             }}>
                 <Link to="/creator">
-                  <Button size="lg" className="bg-gradient-neon hover:shadow-glow text-lg px-8">
+                  <Button size="lg" className="bg-gradient-neon hover:shadow-glow text-lg px-6 md:px-8">
                     🎥 Start Sharing
                   </Button>
                 </Link>
                 <Link to="/sponsor">
-                  <Button size="lg" variant="outline" className="renkiva-button border-primary/50 hover:border-primary text-lg px-8">
+                  <Button size="lg" variant="outline" className="renkiva-button border-primary/50 hover:border-primary text-lg px-6 md:px-8">
                     🎯 Sponsor Campaign
                   </Button>
                 </Link>
                 <Link to="/library">
-                  <Button size="lg" variant="outline" className="renkiva-button border-secondary/50 hover:border-secondary text-lg px-8">
+                  <Button size="lg" variant="outline" className="renkiva-button border-secondary/50 hover:border-secondary text-lg px-6 md:px-8">
                     📚 Browse Library
                   </Button>
                 </Link>

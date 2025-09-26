@@ -79,7 +79,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-aurora-mesh bg-[length:400%_400%] animate-aurora flex items-center justify-center p-6">
+    <div className="min-h-screen bg-aurora-mesh bg-[length:400%_400%] animate-aurora flex items-center justify-center p-4 md:p-6">
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-4 h-4 bg-primary rounded-full animate-pulse-mesh opacity-60"></div>
       <div className="absolute top-32 right-20 w-6 h-6 bg-secondary rounded-full animate-float opacity-40"></div>
@@ -88,26 +88,26 @@ const Auth = () => {
       {/* Back to Home Badge */}
       <Badge 
         variant="outline" 
-        className="absolute top-8 left-8 bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset cursor-pointer hover:bg-card/90 transition-colors"
+        className="absolute top-4 left-4 md:top-8 md:left-8 bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset cursor-pointer hover:bg-card/90 transition-colors text-xs md:text-sm"
         onClick={() => navigate('/')}
       >
-        ← Back to MeshTV
+        ← Back to Renkiva
       </Badge>
 
-      <Card className="w-full max-w-md bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl bg-aurora-1 bg-clip-text text-transparent">
-            📺 {isSignUp ? 'Join' : 'Welcome to'} MeshTV
+      <Card className="w-full max-w-sm md:max-w-md bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset mx-4">
+        <CardHeader className="text-center px-4 md:px-6">
+          <CardTitle className="text-xl md:text-2xl bg-aurora-1 bg-clip-text text-transparent">
+            📺 {isSignUp ? 'Join' : 'Welcome to'} Renkiva
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-sm md:text-base">
             {isSignUp 
-              ? 'Create your account to start uploading and sharing content'
+              ? 'Create your account to start uploading and sharing content on the decentralized network'
               : 'Sign in to upload content and join the mesh network'
             }
           </CardDescription>
         </CardHeader>
         
-        <CardContent>
+        <CardContent className="px-4 md:px-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive">
@@ -172,12 +172,12 @@ const Auth = () => {
             
             <Button
               type="submit"
-              className="w-full"
+              className="w-full h-11 md:h-12 text-base md:text-lg bg-gradient-neon hover:shadow-glow"
               disabled={loading}
             >
               {loading 
                 ? (isSignUp ? 'Creating Account...' : 'Signing In...') 
-                : (isSignUp ? 'Create Account' : 'Sign In')
+                : (isSignUp ? '🚀 Create Account' : '🔑 Sign In')
               }
             </Button>
           </form>
@@ -193,13 +193,20 @@ const Auth = () => {
                 setUsername('');
                 setDisplayName('');
               }}
-              className="text-sm"
+              className="text-sm md:text-base w-full"
             >
               {isSignUp 
                 ? 'Already have an account? Sign in' 
                 : "Don't have an account? Sign up"
               }
             </Button>
+          </div>
+          
+          {/* Additional Info */}
+          <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
+            <p className="text-xs md:text-sm text-center text-muted-foreground">
+              🔒 Secure authentication with encrypted data storage
+            </p>
           </div>
         </CardContent>
       </Card>
