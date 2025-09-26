@@ -17,117 +17,10 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle,
-  Clock,
-  Video
+  Clock
 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { encryptionService, type PrivateChannel, type EncryptedInvite } from '../services/encryptionService';
-
-// Channel Video Upload Component
-function ChannelVideoUpload({ channelId, channelName }: { channelId: string, channelName: string }) {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [title, setTitle] = useState('');
-  const [uploading, setUploading] = useState(false);
-  const { toast } = useToast();
-
-  const handleVideoUpload = async () => {
-    if (!videoFile || !title.trim()) {
-      toast({
-        title: "Missing Info",
-        description: "Please select a video file and enter a title.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setUploading(true);
-    try {
-      // Simulate upload process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Video Uploaded!",
-        description: `"${title}" has been uploaded to ${channelName} channel.`,
-      });
-      
-      // Reset form
-      setVideoFile(null);
-      setTitle('');
-    } catch (error) {
-      toast({
-        title: "Upload Failed",
-        description: "Failed to upload video. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-3">
-      <div className="border-2 border-dashed border-accent/30 rounded-lg p-4">
-        {!videoFile ? (
-          <div className="text-center space-y-2">
-            <Video className="w-8 h-8 mx-auto text-accent opacity-60" />
-            <p className="text-sm text-muted-foreground">Upload funny videos to share with channel members</p>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => document.getElementById('channel-video-upload')?.click()}
-            >
-              Choose Video File
-            </Button>
-            <input
-              id="channel-video-upload"
-              type="file"
-              accept="video/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) setVideoFile(file);
-              }}
-            />
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">{videoFile.name}</span>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setVideoFile(null)}
-              >
-                ✕
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Size: {(videoFile.size / (1024 * 1024)).toFixed(2)} MB
-            </p>
-          </div>
-        )}
-      </div>
-
-      {videoFile && (
-        <div className="space-y-2">
-          <Input
-            placeholder="Video title (e.g., 'Hilarious Cat Compilation')"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Button
-            onClick={handleVideoUpload}
-            disabled={uploading || !title.trim()}
-            size="sm"
-            className="w-full"
-          >
-            {uploading ? 'Uploading...' : 'Upload to Channel'}
-          </Button>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function PrivateChannelManager() {
   const [channels, setChannels] = useState<PrivateChannel[]>([]);
@@ -152,12 +45,8 @@ export function PrivateChannelManager() {
   }, []);
 
   const loadData = () => {
-    const loadedChannels = encryptionService.getChannels();
-    const loadedInvites = encryptionService.getInvites();
-    console.log('Loaded channels:', loadedChannels);
-    console.log('Loaded invites:', loadedInvites);
-    setChannels(loadedChannels);
-    setInvites(loadedInvites);
+    setChannels(encryptionService.getChannels());
+    setInvites(encryptionService.getInvites());
   };
 
   const handleCreateChannel = async () => {
@@ -227,27 +116,21 @@ export function PrivateChannelManager() {
         loadData();
         setJoinCode('');
         
-        // Switch to channels tab to show the newly joined channel
-        const tabsList = document.querySelector('[data-value="channels"]') as HTMLElement;
-        if (tabsList) {
-          tabsList.click();
-        }
-        
         toast({
-          title: "Channel Joined Successfully!",
-          description: `Welcome to "${result.channel.name}". You can now access this private channel.`,
+          title: "Joined Channel",
+          description: `Successfully joined "${result.channel.name}".`,
         });
       } else {
         toast({
-          title: "Invalid Invite Code",
-          description: result.error || "Please check your invite code and try again.",
+          title: "Invalid Invite",
+          description: result.error || "Failed to join channel.",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Connection Error",
-        description: "Unable to join channel. Please check your connection and try again.",
+        title: "Error",
+        description: "Failed to join channel. Please try again.",
         variant: "destructive",
       });
     }
@@ -312,10 +195,7 @@ export function PrivateChannelManager() {
           {/* Channels Tab */}
           <TabsContent value="channels" className="space-y-4">
             <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-medium">Your Private Channels</h3>
-                <p className="text-xs text-muted-foreground">Click on a channel to access it and manage invites</p>
-              </div>
+              <h3 className="text-sm font-medium">Your Private Channels</h3>
               <Button
                 size="sm"
                 onClick={() => setShowCreateForm(!showCreateForm)}
@@ -362,95 +242,59 @@ export function PrivateChannelManager() {
             )}
 
             <div className="space-y-3">
-              {channels.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Shield className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm font-medium">No private channels available</p>
-                  <p className="text-xs mb-4">To access private channels, you can:</p>
-                  <div className="space-y-2 text-xs">
-                    <p>• Create a new channel using the "Create Channel" button above</p>
-                    <p>• Join an existing channel using an invite code in the "Join" tab</p>
-                    <p>• Wait for someone to invite you to their private channel</p>
-                  </div>
-                </div>
-              ) : (
-                channels.map((channel) => (
-                  <Card 
-                    key={channel.id}
-                    className={`p-3 transition-colors hover:bg-accent/50 ${
-                      selectedChannel?.id === channel.id ? 'border-primary bg-primary/5' : 'border-border/50'
-                    }`}
-                  >
-                    <div className="space-y-4">
-                      {/* Channel Header */}
-                      <div 
-                        className="flex items-start justify-between cursor-pointer"
-                        onClick={() => {
-                          setSelectedChannel(channel);
-                          toast({
-                            title: "Channel Selected",
-                            description: `You can now access "${channel.name}" and create invites for others.`,
-                          });
-                        }}
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-medium text-sm">{channel.name}</h4>
-                            <Badge variant={getTrustBadgeVariant(channel.trustLevel)} className="text-xs">
-                              {getTrustIcon(channel.trustLevel)}
-                            </Badge>
-                            {channel.isInviteOnly && (
-                              <Badge variant="outline" className="text-xs">
-                                <Lock className="w-3 h-3 mr-1" />
-                                Invite Only
-                              </Badge>
-                            )}
-                          </div>
-                          {channel.description && (
-                            <p className="text-xs text-muted-foreground mb-2">{channel.description}</p>
-                          )}
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Users className="w-3 h-3" />
-                              {channel.memberCount}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Activity className="w-3 h-3" />
-                              {formatTimeAgo(channel.lastActivity)}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        {selectedChannel?.id === channel.id && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setShowInviteForm(true);
-                            }}
-                          >
-                            <Plus className="w-3 h-3 mr-1" />
-                            Invite
-                          </Button>
+              {channels.map((channel) => (
+                <Card 
+                  key={channel.id}
+                  className={`p-3 cursor-pointer transition-colors ${
+                    selectedChannel?.id === channel.id ? 'border-primary' : 'border-border/50'
+                  }`}
+                  onClick={() => setSelectedChannel(channel)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-medium text-sm">{channel.name}</h4>
+                        <Badge variant={getTrustBadgeVariant(channel.trustLevel)} className="text-xs">
+                          {getTrustIcon(channel.trustLevel)}
+                        </Badge>
+                        {channel.isInviteOnly && (
+                          <Badge variant="outline" className="text-xs">
+                            <Lock className="w-3 h-3 mr-1" />
+                            Invite Only
+                          </Badge>
                         )}
                       </div>
-
-                      {/* Video Upload Section for Each Channel */}
-                      <div className="border-t border-border/30 pt-3">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Video className="w-4 h-4 text-accent" />
-                          <h5 className="text-xs font-medium text-muted-foreground">Upload Funny Videos</h5>
-                        </div>
-                        <ChannelVideoUpload 
-                          channelId={channel.id} 
-                          channelName={channel.name}
-                        />
+                      {channel.description && (
+                        <p className="text-xs text-muted-foreground mb-2">{channel.description}</p>
+                      )}
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          {channel.memberCount}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Activity className="w-3 h-3" />
+                          {formatTimeAgo(channel.lastActivity)}
+                        </span>
                       </div>
                     </div>
-                  </Card>
-                ))
-              )}
+                    
+                    {selectedChannel?.id === channel.id && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowInviteForm(true);
+                        }}
+                      >
+                        <Plus className="w-3 h-3 mr-1" />
+                        Invite
+                      </Button>
+                    )}
+                  </div>
+                </Card>
+              ))}
             </div>
 
             {showInviteForm && selectedChannel && (
@@ -486,7 +330,6 @@ export function PrivateChannelManager() {
                 </div>
               </Card>
             )}
-
           </TabsContent>
           
           {/* Invites Tab */}
