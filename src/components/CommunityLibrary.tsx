@@ -166,7 +166,7 @@ export default function CommunityLibrary({
                     toast.success(`🎬 Started streaming "${item.title}" from mesh network`);
                   }}
                 >
-                  ▶️ Stream from Mesh
+                  ▶️ Stream from Renkiva
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs px-2" onClick={e => {
               e.stopPropagation();
