@@ -93,7 +93,10 @@ const StreamCard = ({
           variant="mesh" 
           size="sm" 
           className="w-full"
-          onClick={handlePlay}
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePlay();
+          }}
         >
           ▶️ {streaming_url ? 'Stream Now' : 'Play Now'}
         </Button>
