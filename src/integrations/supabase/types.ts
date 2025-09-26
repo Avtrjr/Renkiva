@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -1069,17 +1069,17 @@ export type Database = {
       discover_nearby_content: {
         Args: Record<PropertyKey, never>
         Returns: {
-          id: string
-          title: string
-          description: string
           category: string
-          thumbnail_url: string
-          video_url: string
+          description: string
+          distance_meters: number
           duration_minutes: number
           file_size_bytes: number
-          distance_meters: number
-          signal_strength: number
+          id: string
           sender_node: string
+          signal_strength: number
+          thumbnail_url: string
+          title: string
+          video_url: string
         }[]
       }
       get_sponsor_stats: {
