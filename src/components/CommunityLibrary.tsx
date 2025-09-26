@@ -115,7 +115,16 @@ export default function CommunityLibrary({
               </div>
 
               <div className="flex gap-2">
-                <Button variant="mesh" size="sm" className="flex-1 group-hover:animate-pulse-mesh">
+                <Button 
+                  variant="mesh" 
+                  size="sm" 
+                  className="flex-1 group-hover:animate-pulse-mesh"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelect(item);
+                    toast.success(`🎬 Started streaming "${item.title}" from mesh network`);
+                  }}
+                >
                   ▶️ Stream from Mesh
                 </Button>
                 <Button variant="outline" size="sm" className="text-xs px-2" onClick={e => {
