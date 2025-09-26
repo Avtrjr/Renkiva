@@ -205,7 +205,10 @@ export function PrivateChannelManager() {
           {/* Channels Tab */}
           <TabsContent value="channels" className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">Your Private Channels</h3>
+              <div>
+                <h3 className="text-sm font-medium">Your Private Channels</h3>
+                <p className="text-xs text-muted-foreground">Click on a channel to access it and manage invites</p>
+              </div>
               <Button
                 size="sm"
                 onClick={() => setShowCreateForm(!showCreateForm)}
@@ -255,17 +258,28 @@ export function PrivateChannelManager() {
               {channels.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Shield className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm">No private channels yet</p>
-                  <p className="text-xs">Create your first channel or join one with an invite code</p>
+                  <p className="text-sm font-medium">No private channels available</p>
+                  <p className="text-xs mb-4">To access private channels, you can:</p>
+                  <div className="space-y-2 text-xs">
+                    <p>• Create a new channel using the "Create Channel" button above</p>
+                    <p>• Join an existing channel using an invite code in the "Join" tab</p>
+                    <p>• Wait for someone to invite you to their private channel</p>
+                  </div>
                 </div>
               ) : (
                 channels.map((channel) => (
                   <Card 
                     key={channel.id}
-                    className={`p-3 cursor-pointer transition-colors ${
-                      selectedChannel?.id === channel.id ? 'border-primary' : 'border-border/50'
+                    className={`p-3 cursor-pointer transition-colors hover:bg-accent/50 ${
+                      selectedChannel?.id === channel.id ? 'border-primary bg-primary/5' : 'border-border/50'
                     }`}
-                    onClick={() => setSelectedChannel(channel)}
+                    onClick={() => {
+                      setSelectedChannel(channel);
+                      toast({
+                        title: "Channel Selected",
+                        description: `You can now access "${channel.name}" and create invites for others.`,
+                      });
+                    }}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
