@@ -17,10 +17,117 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle,
-  Clock
+  Clock,
+  Video
 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { encryptionService, type PrivateChannel, type EncryptedInvite } from '../services/encryptionService';
+
+// Channel Video Upload Component
+function ChannelVideoUpload({ channelId, channelName }: { channelId: string, channelName: string }) {
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [title, setTitle] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const { toast } = useToast();
+
+  const handleVideoUpload = async () => {
+    if (!videoFile || !title.trim()) {
+      toast({
+        title: "Missing Info",
+        description: "Please select a video file and enter a title.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Simulate upload process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Video Uploaded!",
+        description: `"${title}" has been uploaded to ${channelName} channel.`,
+      });
+      
+      // Reset form
+      setVideoFile(null);
+      setTitle('');
+    } catch (error) {
+      toast({
+        title: "Upload Failed",
+        description: "Failed to upload video. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="border-2 border-dashed border-accent/30 rounded-lg p-4">
+        {!videoFile ? (
+          <div className="text-center space-y-2">
+            <Video className="w-8 h-8 mx-auto text-accent opacity-60" />
+            <p className="text-sm text-muted-foreground">Upload funny videos to share with channel members</p>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => document.getElementById('channel-video-upload')?.click()}
+            >
+              Choose Video File
+            </Button>
+            <input
+              id="channel-video-upload"
+              type="file"
+              accept="video/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) setVideoFile(file);
+              }}
+            />
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">{videoFile.name}</span>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setVideoFile(null)}
+              >
+                ✕
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Size: {(videoFile.size / (1024 * 1024)).toFixed(2)} MB
+            </p>
+          </div>
+        )}
+      </div>
+
+      {videoFile && (
+        <div className="space-y-2">
+          <Input
+            placeholder="Video title (e.g., 'Hilarious Cat Compilation')"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Button
+            onClick={handleVideoUpload}
+            disabled={uploading || !title.trim()}
+            size="sm"
+            className="w-full"
+          >
+            {uploading ? 'Uploading...' : 'Upload to Channel'}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function PrivateChannelManager() {
   const [channels, setChannels] = useState<PrivateChannel[]>([]);
@@ -360,6 +467,20 @@ export function PrivateChannelManager() {
                     Cancel
                   </Button>
                 </div>
+              </Card>
+            )}
+
+            {/* Video Upload Section for Selected Channel */}
+            {selectedChannel && (
+              <Card className="p-4 space-y-4 border-accent/50 bg-accent/5">
+                <div className="flex items-center gap-2">
+                  <Video className="w-5 h-5 text-accent" />
+                  <h4 className="font-medium text-sm">Upload Funny Videos to "{selectedChannel.name}"</h4>
+                </div>
+                <ChannelVideoUpload 
+                  channelId={selectedChannel.id} 
+                  channelName={selectedChannel.name}
+                />
               </Card>
             )}
           </TabsContent>
