@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ export default function CommunityLibrary({
 }: CommunityLibraryProps) {
   const [uploads, setUploads] = useState<CommunityUpload[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -65,8 +66,19 @@ export default function CommunityLibrary({
       
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          <Input type="file" accept="video/mp4,video/webm,video/avi,video/mov" onChange={handleUpload} disabled={isUploading} className="flex-1 bg-purple-950" />
-          <Button variant="outline" disabled={isUploading}>
+          <Input 
+            ref={(ref) => { if (ref) fileInputRef.current = ref; }}
+            type="file" 
+            accept="video/mp4,video/webm,video/avi,video/mov" 
+            onChange={handleUpload} 
+            disabled={isUploading} 
+            className="flex-1 bg-purple-950" 
+          />
+          <Button 
+            variant="outline" 
+            disabled={isUploading}
+            onClick={() => fileInputRef.current?.click()}
+          >
             {isUploading ? 'Processing...' : '📡 Share to Mesh'}
           </Button>
         </div>
