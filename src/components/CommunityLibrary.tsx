@@ -91,6 +91,25 @@ export default function CommunityLibrary({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {uploads.map((item, idx) => <Card key={idx} className="group bg-card/80 backdrop-blur-lg border-border/50 shadow-clay hover:shadow-mesh-glow transition-clay cursor-pointer overflow-hidden" onClick={() => onSelect(item)}>
             <CardContent className="p-6">
+              {/* Video Preview Area */}
+              <div className="mb-4 aspect-video bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-primary/20 flex items-center justify-center relative overflow-hidden">
+                <video 
+                  src={URL.createObjectURL(item.file)}
+                  className="w-full h-full object-cover rounded-lg"
+                  controls={false}
+                  muted
+                  preload="metadata"
+                  onMouseEnter={(e) => e.currentTarget.play()}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.pause();
+                    e.currentTarget.currentTime = 0;
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-center justify-center">
+                  <div className="text-white/80 text-4xl">▶️</div>
+                </div>
+              </div>
+
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="text-3xl">🎬</div>
