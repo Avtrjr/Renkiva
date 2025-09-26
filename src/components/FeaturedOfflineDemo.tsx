@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Play, Download, Signal } from "lucide-react";
+import { Play, Download, Signal, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 interface DemoContent {
@@ -26,16 +27,11 @@ export default function FeaturedOfflineDemo() {
 
   const [isStreaming, setIsStreaming] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
+  const [videoPopupOpen, setVideoPopupOpen] = useState(false);
 
   const handleStreamDemo = () => {
-    setIsStreaming(true);
-    toast.success("Starting mesh demo stream...");
-    
-    // Simulate streaming
-    setTimeout(() => {
-      setIsStreaming(false);
-      toast.info("Demo stream completed!");
-    }, 5000);
+    setVideoPopupOpen(true);
+    toast.success("Opening video player...");
   };
 
   const handleDownloadForOffline = () => {
@@ -139,6 +135,41 @@ export default function FeaturedOfflineDemo() {
           </ul>
         </div>
       </CardContent>
+
+      {/* Video Popup Dialog */}
+      <Dialog open={videoPopupOpen} onOpenChange={setVideoPopupOpen}>
+        <DialogContent className="max-w-4xl w-full p-0">
+          <DialogHeader className="p-4 pb-0">
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-lg font-semibold">
+                {demoContent.title}
+              </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setVideoPopupOpen(false)}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+          <div className="aspect-video w-full">
+            <video
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+              controls
+              autoPlay
+              muted={false}
+              className="w-full h-full object-cover rounded-b-lg"
+              onLoadedData={(e) => {
+                const video = e.target as HTMLVideoElement;
+                video.muted = false;
+                video.controls = true;
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

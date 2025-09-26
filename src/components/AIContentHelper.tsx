@@ -13,9 +13,12 @@ import {
   Star,
   RefreshCw,
   Send,
-  Lightbulb
+  Lightbulb,
+  Play,
+  X
 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 
 interface AIRecommendation {
   id: string;
@@ -24,6 +27,7 @@ interface AIRecommendation {
   description: string;
   confidence: number;
   reason: string;
+  videoUrl?: string;
   metadata?: {
     category?: string;
     rating?: number;
@@ -49,6 +53,8 @@ export function AIContentHelper() {
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'recommendations' | 'suggestions' | 'chat'>('recommendations');
+  const [videoPopupOpen, setVideoPopupOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState<{ title: string; url: string } | null>(null);
   const { toast } = useToast();
 
   // Simulate AI recommendations
@@ -58,50 +64,75 @@ export function AIContentHelper() {
         {
           id: '1',
           type: 'content',
-          title: 'Sci-Fi Movie Collection',
-          description: 'Based on your viewing history, you might enjoy these space exploration films',
-          confidence: 0.87,
-          reason: 'High match with your previous sci-fi preferences',
+          title: 'Claude 3.5 Sonnet AI Demo',
+          description: 'Latest Claude AI model showcasing advanced reasoning and coding capabilities',
+          confidence: 0.94,
+          reason: 'Top-rated AI model for 2025, excellent for development',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
           metadata: {
-            category: 'Movies',
-            rating: 4.5,
-            popularity: 78,
+            category: 'AI Tools',
+            rating: 4.9,
+            popularity: 95,
             trustLevel: 'verified'
           }
         },
         {
           id: '2',
           type: 'channel',
-          title: 'Tech Review Network',
-          description: 'Private channel for latest technology reviews and discussions',
-          confidence: 0.75,
-          reason: 'Matches your tech interest profile',
+          title: 'ChatGPT-5 Showcase',
+          description: 'Latest OpenAI model with enhanced multimodal capabilities and reasoning',
+          confidence: 0.92,
+          reason: 'Most popular AI tool worldwide, 278M+ monthly users',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
           metadata: {
-            category: 'Technology',
-            trustLevel: 'private'
+            category: 'AI Tools',
+            rating: 4.8,
+            popularity: 98,
+            trustLevel: 'verified'
           }
         },
         {
           id: '3',
           type: 'trending',
-          title: 'Renkiva Gaming Hub',
-          description: 'Gaming content is trending 45% higher in your Renkiva network',
-          confidence: 0.92,
-          reason: 'Local network trending analysis',
+          title: 'Gemini Pro 2.0 Advanced',
+          description: 'Google\'s latest multimodal AI with superior image and video understanding',
+          confidence: 0.89,
+          reason: 'Leading AI for multimodal tasks and creative applications',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
           metadata: {
-            category: 'Gaming',
-            popularity: 145,
+            category: 'AI Tools',
+            rating: 4.7,
+            popularity: 87,
             trustLevel: 'verified'
           }
         },
         {
           id: '4',
           type: 'user',
-          title: 'Creative Collective',
-          description: 'Connect with verified content creators in your area',
-          confidence: 0.68,
-          reason: 'Geographic proximity + shared interests',
+          title: 'Perplexity AI Search',
+          description: 'Real-time AI search with citations and up-to-date information',
+          confidence: 0.85,
+          reason: 'Best AI for research and real-time information',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
           metadata: {
+            category: 'AI Tools',
+            rating: 4.6,
+            popularity: 82,
+            trustLevel: 'verified'
+          }
+        },
+        {
+          id: '5',
+          type: 'content',
+          title: 'Synthesia AI Video',
+          description: 'Create AI videos with 230+ avatars in 140+ languages',
+          confidence: 0.81,
+          reason: 'Leading AI video generation platform for 2025',
+          videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+          metadata: {
+            category: 'AI Tools',
+            rating: 4.5,
+            popularity: 79,
             trustLevel: 'verified'
           }
         }
@@ -110,26 +141,34 @@ export function AIContentHelper() {
       const mockSuggestions: ContentSuggestion[] = [
         {
           id: '1',
-          title: 'Local Renkiva Network Tutorial',
-          description: 'Create a guide on setting up BLE Renkiva networks for beginners',
-          tags: ['tutorial', 'networking', 'beginner'],
-          estimatedViews: 1200,
+          title: 'AI Tool Comparison 2025',
+          description: 'Compare Claude, ChatGPT, Gemini, and Perplexity for different use cases',
+          tags: ['ai', 'comparison', 'review'],
+          estimatedViews: 15000,
           difficulty: 'beginner'
         },
         {
           id: '2',
-          title: 'Privacy-First Streaming',
-          description: 'Showcase anonymous content sharing without compromising quality',
-          tags: ['privacy', 'streaming', 'security'],
-          estimatedViews: 850,
+          title: 'Building with AI APIs',
+          description: 'Tutorial on integrating modern AI APIs into web applications',
+          tags: ['ai', 'development', 'api'],
+          estimatedViews: 8500,
           difficulty: 'intermediate'
         },
         {
           id: '3',
-          title: 'Renkiva Network Art Project',
-          description: 'Collaborative digital art created across Renkiva networks',
-          tags: ['art', 'collaboration', 'creative'],
-          estimatedViews: 600,
+          title: 'AI Video Generation Guide',
+          description: 'Create professional videos using Synthesia and other AI platforms',
+          tags: ['ai', 'video', 'creative'],
+          estimatedViews: 12000,
+          difficulty: 'intermediate'
+        },
+        {
+          id: '4',
+          title: 'Advanced AI Prompting',
+          description: 'Master prompt engineering for Claude, GPT, and Gemini',
+          tags: ['ai', 'prompting', 'advanced'],
+          estimatedViews: 6800,
           difficulty: 'advanced'
         }
       ];
@@ -150,10 +189,11 @@ export function AIContentHelper() {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const responses = [
-        `Based on your Renkiva network activity, I'd recommend focusing on privacy-themed content. Your audience shows 73% preference for anonymous sharing features.`,
-        `I notice your content performs 34% better when posted during evening hours (6-9 PM). Consider scheduling your next upload accordingly.`,
-        `Your sci-fi content has the highest engagement rate (4.2x average). I suggest creating a series around space exploration themes.`,
-        `The Renkiva network near you is trending toward educational content. Tutorial-style videos could increase your reach by 60%.`
+        `Based on AI trends analysis, Claude 3.5 Sonnet is currently the top choice for coding tasks with 94% developer satisfaction. Consider creating content about AI development workflows.`,
+        `ChatGPT-5 leads in popularity with 278M+ monthly users. Your AI tutorial content could reach 60% more viewers by focusing on GPT integration guides.`,
+        `Perplexity AI is trending for research tasks. Content about AI-powered research methods could increase engagement by 85% in your network.`,
+        `Multimodal AI (Gemini Pro) content performs 150% better than text-only AI tutorials. Consider adding visual demonstrations to your AI content.`,
+        `AI video generation tools like Synthesia are growing 200% year-over-year. This could be a high-impact content niche for your channel.`
       ];
 
       const randomResponse = responses[Math.floor(Math.random() * responses.length)];
@@ -235,6 +275,24 @@ export function AIContentHelper() {
       title: "Content Creation",
       description: `Let's create "${suggestion.title}"! Upload your content to start streaming.`,
     });
+  };
+
+  const handleStreamNow = (rec: AIRecommendation) => {
+    if (rec.videoUrl) {
+      setCurrentVideo({ title: rec.title, url: rec.videoUrl });
+      setVideoPopupOpen(true);
+      
+      toast({
+        title: "Starting AI Demo",
+        description: `Playing ${rec.title} demonstration video.`,
+      });
+    } else {
+      toast({
+        title: "No Demo Available",
+        description: "This AI tool doesn't have a demo video yet.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -327,14 +385,27 @@ export function AIContentHelper() {
                      rec.type === 'user' ? '👤' : '📈'} {rec.type}
                   </Badge>
                   
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    className="text-xs h-6"
-                    onClick={() => handleExploreClick(rec)}
-                  >
-                    Explore
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="text-xs h-6"
+                      onClick={() => handleExploreClick(rec)}
+                    >
+                      Explore
+                    </Button>
+                    {rec.videoUrl && (
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        className="text-xs h-6"
+                        onClick={() => handleStreamNow(rec)}
+                      >
+                        <Play className="w-3 h-3 mr-1" />
+                        Stream Now
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -430,6 +501,43 @@ export function AIContentHelper() {
           </div>
         )}
       </CardContent>
+
+      {/* Video Popup Dialog */}
+      <Dialog open={videoPopupOpen} onOpenChange={setVideoPopupOpen}>
+        <DialogContent className="max-w-4xl w-full p-0">
+          <DialogHeader className="p-4 pb-0">
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-lg font-semibold">
+                {currentVideo?.title}
+              </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setVideoPopupOpen(false)}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+          <div className="aspect-video w-full">
+            {currentVideo && (
+              <video
+                src={currentVideo.url}
+                controls
+                autoPlay
+                muted={false}
+                className="w-full h-full object-cover rounded-b-lg"
+                onLoadedData={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  video.muted = false;
+                  video.controls = true;
+                }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
