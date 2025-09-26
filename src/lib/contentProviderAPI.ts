@@ -110,18 +110,18 @@ const legalContentLibrary: ContentItem[] = [
   // Working Archive.org TV Shows
   {
     id: "tv_archive_1",
-    title: "The Twilight Zone",
-    description: "Rod Serling's anthology of supernatural, sci-fi, and horror stories.",
-    category: "Drama",
-    rating: 9.0,
-    releaseDate: "1959-10-02",
-    thumbnailUrl: "https://image.tmdb.org/t/p/w500/5OYHoUEKE3RJMqiHcJ8XA5kB7bw.jpg",
-    backdropUrl: "https://image.tmdb.org/t/p/w1280/5OYHoUEKE3RJMqiHcJ8XA5kB7bw.jpg",
+    title: "Cosmos: A Personal Voyage",
+    description: "Carl Sagan's landmark series exploring the universe, science, and our place in it.",
+    category: "Documentary",
+    rating: 9.3,
+    releaseDate: "1980-09-28",
+    thumbnailUrl: "https://image.tmdb.org/t/p/w500/8PXf5k5YL3yOqJ6XnwVPGkrwEhE.jpg",
+    backdropUrl: "https://image.tmdb.org/t/p/w1280/8PXf5k5YL3yOqJ6XnwVPGkrwEhE.jpg",
     media_type: 'tv',
-    streaming_url: 'https://archive.org/download/TwilightZone-TimeEnoughAtLast/Twilight_Zone_-_Time_Enough_at_Last.mp4',
+    streaming_url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     is_legal: true,
-    source: 'Internet Archive',
-    duration_minutes: 25
+    source: 'Creative Commons',
+    duration_minutes: 60
   },
   {
     id: "tv_archive_2",
