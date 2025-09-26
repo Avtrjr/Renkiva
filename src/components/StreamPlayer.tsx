@@ -535,7 +535,7 @@ export default function StreamPlayer({
                 
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">Source</span>
-                  <span className="text-sm">{source || "Offline Mesh Network"}</span>
+                  <span className="text-sm">{source || "Offline Renkiva Network"}</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
