@@ -105,6 +105,9 @@ export default function CommunityLibrary({
                       video.controls = true;
                       video.muted = false;
                       video.play();
+                      setUploads(prev => prev.map((upload, index) => 
+                        index === idx ? { ...upload, isPlaying: true } : upload
+                      ));
                     }
                   }}
                   onMouseEnter={(e) => {
