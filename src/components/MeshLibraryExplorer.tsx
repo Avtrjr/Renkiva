@@ -68,12 +68,9 @@ export default function MeshLibraryExplorer() {
                 <CardContent className="p-3">
                   <h3 className="font-semibold text-sm line-clamp-2 mb-1">{movie.title}</h3>
                   <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{movie.description}</p>
-                  <a
-                    href={`/meshtv_library/${movie.folder}/video.mp4`}
-                    className="inline-block text-sm text-primary hover:underline font-medium"
-                  >
-                    ▶ Watch
-                  </a>
+                  <p className="text-xs text-muted-foreground text-center mt-2">
+                    Video not available
+                  </p>
                 </CardContent>
               </Card>
             ))}

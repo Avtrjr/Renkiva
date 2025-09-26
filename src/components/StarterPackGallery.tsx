@@ -16,7 +16,7 @@ interface StarterPackGalleryProps {
 }
 const starterPack: StarterPackItem[] = [{
   title: 'Tears of Steel',
-  path: '/assets/Tears_of_Steel.mp4',
+  path: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
   category: 'Sci-Fi',
   studio: 'Blender Foundation',
   release: '2012-09-26',
@@ -25,7 +25,7 @@ const starterPack: StarterPackItem[] = [{
   size: '189 MB'
 }, {
   title: 'Big Buck Bunny',
-  path: '/assets/Big_Buck_Bunny.mp4',
+  path: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
   category: 'Animation',
   studio: 'Blender Foundation',
   release: '2008-04-10',
@@ -33,14 +33,14 @@ const starterPack: StarterPackItem[] = [{
   duration: '10 min',
   size: '126 MB'
 }, {
-  title: 'Night of the Living Dead',
-  path: '/assets/Night_of_the_Living_Dead.mp4',
-  category: 'Horror',
-  studio: 'Public Domain',
-  release: '1968-10-01',
-  rating: '7.1⭐',
-  duration: '96 min',
-  size: '415 MB'
+  title: 'Sintel',
+  path: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+  category: 'Animation',
+  studio: 'Blender Foundation',
+  release: '2010-09-30',
+  rating: '7.4⭐',
+  duration: '14 min',
+  size: '156 MB'
 }];
 export default function StarterPackGallery({
   onSelect
