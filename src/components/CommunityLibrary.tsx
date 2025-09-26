@@ -79,7 +79,7 @@ export default function CommunityLibrary({
             disabled={isUploading}
             onClick={() => fileInputRef.current?.click()}
           >
-            {isUploading ? 'Processing...' : '📡 Share to Mesh'}
+            {isUploading ? 'Processing...' : '📡 Share to Renkiva'}
           </Button>
         </div>
         
