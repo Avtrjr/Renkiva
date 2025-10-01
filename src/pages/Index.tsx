@@ -9,7 +9,7 @@ import StreamCard from "@/components/StreamCard";
 import StreamPlayer from "@/components/StreamPlayer";
 import BroadcastToggle from "@/components/BroadcastToggle";
 import NearbyStreamsList from "@/components/NearbyStreamsList";
-import { AIContentHelper } from "@/components/AIContentHelper";
+
 import AdTracker from "@/components/AdTracker";
 import BroadcastSection from "@/components/BroadcastSection";
 import FingerprintCard from "@/components/FingerprintCard";
@@ -523,8 +523,7 @@ const Index = () => {
                 AI-powered content suggestions and encrypted invite-only renkiva networks
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
-              <AIContentHelper />
+            <div className="grid gap-6 md:grid-cols-1">
               <PrivateChannelManager />
             </div>
           </section>}
@@ -646,11 +645,6 @@ const Index = () => {
                 size: 1536
               }]);
             }} />
-          </div>
-          
-          {/* AI Content Helper */}
-          <div className="xl:col-span-1">
-            <AIContentHelper />
           </div>
         </section>
 
