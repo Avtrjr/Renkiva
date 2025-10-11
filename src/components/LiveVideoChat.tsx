@@ -1,64 +1,251 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Bluetooth, Globe, Video, Users, Key, Tv } from 'lucide-react';
+import { Bluetooth, Globe, Video, Users, Key, Tv, Mic, MicOff, VideoOff, Phone } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { WebRTCManager } from "@/utils/WebRTCManager";
+
 export const LiveVideoChat = () => {
   const [fingerprint, setFingerprint] = useState('');
   const [isJoining, setIsJoining] = useState(false);
   const [isHosting, setIsHosting] = useState(false);
-  const {
-    toast
-  } = useToast();
+  const [isInCall, setIsInCall] = useState(false);
+  const [connectionState, setConnectionState] = useState<RTCPeerConnectionState>('new');
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  
+  const localVideoRef = useRef<HTMLVideoElement>(null);
+  const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const webRTCManagerRef = useRef<WebRTCManager | null>(null);
+  
+  const { toast } = useToast();
+  useEffect(() => {
+    return () => {
+      // Cleanup on unmount
+      if (webRTCManagerRef.current) {
+        webRTCManagerRef.current.disconnect();
+      }
+    };
+  }, []);
+
   const handleJoinStream = async () => {
     if (!fingerprint.trim()) {
       toast({
-        title: "Missing Fingerprint",
-        description: "Please enter a peer's fingerprint to join their stream",
+        title: "Missing Channel ID",
+        description: "Please enter a channel ID to join",
         variant: "destructive"
       });
       return;
     }
+    
     setIsJoining(true);
     try {
-      // Simulate joining stream
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await startVideoChat(fingerprint, false);
       toast({
-        title: "Joining Live Stream",
-        description: `Connecting to peer: ${fingerprint}`
+        title: "Joining Stream",
+        description: `Connecting to channel: ${fingerprint}`
       });
     } catch (error) {
       toast({
         title: "Connection Failed",
-        description: "Unable to connect to peer. Please check the fingerprint.",
+        description: error instanceof Error ? error.message : "Unable to connect. Please check permissions.",
         variant: "destructive"
       });
-    } finally {
       setIsJoining(false);
     }
   };
+
   const handleHostStream = async () => {
     setIsHosting(true);
+    const channelId = `room-${Math.random().toString(36).substring(7)}`;
+    
     try {
-      // Simulate starting host stream
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await startVideoChat(channelId, true);
+      setFingerprint(channelId);
       toast({
         title: "Live Stream Started",
-        description: "Your group live stream is now broadcasting to the mesh network"
+        description: `Share this ID: ${channelId}`,
+        duration: 10000
       });
     } catch (error) {
       toast({
         title: "Stream Failed",
-        description: "Unable to start live stream. Please try again.",
+        description: error instanceof Error ? error.message : "Unable to start stream. Please check permissions.",
         variant: "destructive"
       });
-    } finally {
       setIsHosting(false);
     }
   };
+
+  const startVideoChat = async (channelId: string, isHost: boolean) => {
+    try {
+      webRTCManagerRef.current = new WebRTCManager({
+        channelId,
+        isHost,
+        onRemoteStream: (stream) => {
+          console.log('Remote stream received');
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = stream;
+          }
+        },
+        onError: (error) => {
+          console.error('WebRTC error:', error);
+          toast({
+            title: "Connection Error",
+            description: error.message,
+            variant: "destructive"
+          });
+        },
+        onConnectionStateChange: (state) => {
+          console.log('Connection state changed:', state);
+          setConnectionState(state);
+          
+          if (state === 'connected') {
+            toast({
+              title: "Connected",
+              description: "Video call established successfully"
+            });
+          } else if (state === 'disconnected' || state === 'failed') {
+            handleEndCall();
+          }
+        }
+      });
+
+      const localStream = await webRTCManagerRef.current.initialize();
+      
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = localStream;
+      }
+      
+      setIsInCall(true);
+      setIsJoining(false);
+      setIsHosting(false);
+    } catch (error) {
+      console.error('Error starting video chat:', error);
+      throw error;
+    }
+  };
+
+  const handleEndCall = async () => {
+    if (webRTCManagerRef.current) {
+      await webRTCManagerRef.current.disconnect();
+      webRTCManagerRef.current = null;
+    }
+    
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = null;
+    }
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = null;
+    }
+    
+    setIsInCall(false);
+    setConnectionState('new');
+    setIsVideoEnabled(true);
+    setIsAudioEnabled(true);
+    
+    toast({
+      title: "Call Ended",
+      description: "Video chat has been disconnected"
+    });
+  };
+
+  const toggleVideo = () => {
+    if (webRTCManagerRef.current) {
+      const newState = !isVideoEnabled;
+      webRTCManagerRef.current.toggleVideo(newState);
+      setIsVideoEnabled(newState);
+    }
+  };
+
+  const toggleAudio = () => {
+    if (webRTCManagerRef.current) {
+      const newState = !isAudioEnabled;
+      webRTCManagerRef.current.toggleAudio(newState);
+      setIsAudioEnabled(newState);
+    }
+  };
+  if (isInCall) {
+    return (
+      <Card className="h-full bg-gradient-to-br from-background/90 to-background/50 backdrop-blur-sm border-primary/20">
+        <CardContent className="p-4 h-full flex flex-col">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* Remote Video */}
+            <div className="relative bg-black rounded-lg overflow-hidden">
+              <video
+                ref={remoteVideoRef}
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              {connectionState !== 'connected' && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <div className="text-center text-white">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-2"></div>
+                    <p className="text-sm">Connecting...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Local Video */}
+            <div className="relative bg-black rounded-lg overflow-hidden">
+              <video
+                ref={localVideoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover mirror"
+              />
+              <Badge className="absolute top-2 left-2 bg-primary">You</Badge>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center justify-center gap-4">
+            <Button
+              variant={isAudioEnabled ? "default" : "destructive"}
+              size="lg"
+              onClick={toggleAudio}
+              className="rounded-full w-14 h-14"
+            >
+              {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+            </Button>
+            
+            <Button
+              variant={isVideoEnabled ? "default" : "destructive"}
+              size="lg"
+              onClick={toggleVideo}
+              className="rounded-full w-14 h-14"
+            >
+              {isVideoEnabled ? <Video className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+            </Button>
+            
+            <Button
+              variant="destructive"
+              size="lg"
+              onClick={handleEndCall}
+              className="rounded-full w-14 h-14"
+            >
+              <Phone className="w-6 h-6 rotate-135" />
+            </Button>
+          </div>
+
+          {/* Channel Info */}
+          {fingerprint && (
+            <div className="mt-4 text-center">
+              <p className="text-xs text-muted-foreground">Channel ID</p>
+              <p className="text-sm font-mono">{fingerprint}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
   return <Card className="h-full bg-gradient-to-br from-background/90 to-background/50 backdrop-blur-sm border-primary/20">
       <CardContent className="p-6 flex flex-col items-center justify-center h-full space-y-6">
         {/* TV Icon with Globe and Bluetooth */}
@@ -105,19 +292,19 @@ export const LiveVideoChat = () => {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Key className="w-5 h-5" />
-                    Join Local Stream
+                    Join Video Call
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">Peer Fingerprint</label>
-                    <Input placeholder="A1B2-C3D4-E5F6-G7H8" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="mt-1" />
+                    <label className="text-sm font-medium">Channel ID</label>
+                    <Input placeholder="room-abc123" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="mt-1" />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Local mesh peer fingerprint
+                      Enter the channel ID shared by the host
                     </p>
                   </div>
                   <Button onClick={handleJoinStream} disabled={isJoining} className="w-full">
-                    {isJoining ? 'Connecting...' : 'Join Local Stream'}
+                    {isJoining ? 'Connecting...' : 'Join Call'}
                   </Button>
                 </div>
               </DialogContent>
@@ -137,19 +324,19 @@ export const LiveVideoChat = () => {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Globe className="w-5 h-5" />
-                    Join Global Stream
+                    Join Global Call
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">Global Peer Fingerprint</label>
-                    <Input placeholder="A1B2-C3D4-E5F6-G7H8" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="mt-1" />
+                    <label className="text-sm font-medium">Channel ID</label>
+                    <Input placeholder="room-abc123" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="mt-1" />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Worldwide E2E encrypted connection
+                      Global peer-to-peer connection
                     </p>
                   </div>
                   <Button onClick={handleJoinStream} disabled={isJoining} className="w-full bg-gradient-to-r from-accent to-primary">
-                    {isJoining ? 'Connecting Globally...' : 'Join Global Stream'}
+                    {isJoining ? 'Connecting...' : 'Join Global Call'}
                   </Button>
                 </div>
               </DialogContent>
@@ -167,7 +354,7 @@ export const LiveVideoChat = () => {
 
         {/* Quick Connect Input */}
         <div className="w-full max-w-md">
-          <Input placeholder="Quick connect: paste fingerprint here" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="text-sm placeholder:text-sm border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm" onKeyPress={e => {
+          <Input placeholder="Quick connect: paste channel ID here" value={fingerprint} onChange={e => setFingerprint(e.target.value)} className="text-sm placeholder:text-sm border-primary/50 focus:border-primary bg-background/50 backdrop-blur-sm" onKeyPress={e => {
           if (e.key === 'Enter' && fingerprint.trim()) {
             handleJoinStream();
           }
