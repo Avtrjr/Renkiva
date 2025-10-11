@@ -253,5 +253,5 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
 
 // Helper function to convert Uint8Array back to Blob for playback
 export function uint8ArrayToBlob(data: Uint8Array, mimeType: string = 'video/mp4'): Blob {
-  return new Blob([data], { type: mimeType });
+  return new Blob([data.slice()], { type: mimeType });
 }

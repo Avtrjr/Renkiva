@@ -127,7 +127,7 @@ export class EncryptionLayer {
       const encrypted = await crypto.subtle.encrypt(
         { name: 'AES-GCM', iv: iv },
         state.encryptionKey,
-        payload
+        payload as BufferSource
       );
 
       // Combine IV + encrypted data
@@ -224,7 +224,7 @@ export class EncryptionLayer {
         ['sign']
       );
 
-      const signature = await crypto.subtle.sign('HMAC', key, message);
+      const signature = await crypto.subtle.sign('HMAC', key, message as BufferSource);
       return new Uint8Array(signature);
     } catch (error) {
       console.error('[MNMP Encryption] MAC generation failed:', error);

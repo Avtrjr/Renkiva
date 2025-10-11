@@ -86,7 +86,7 @@ export class CryptoPrimitives {
     try {
       // Web Crypto doesn't support BLAKE2s directly, use SHA-256 as fallback
       // In production, use a dedicated BLAKE2s implementation
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data as BufferSource);
       return new Uint8Array(hashBuffer);
     } catch (error) {
       throw new SecurityException(
@@ -110,7 +110,7 @@ export class CryptoPrimitives {
       // Import ChaCha20-Poly1305 key
       const cryptoKey = await crypto.subtle.importKey(
         'raw',
-        key,
+        key as BufferSource,
         { name: 'ChaCha20-Poly1305' },
         false,
         ['encrypt']
@@ -119,11 +119,11 @@ export class CryptoPrimitives {
       const encrypted = await crypto.subtle.encrypt(
         {
           name: 'ChaCha20-Poly1305',
-          iv: nonce,
-          additionalData
+          iv: nonce as BufferSource,
+          additionalData: additionalData as BufferSource | undefined
         },
         cryptoKey,
-        plaintext
+        plaintext as BufferSource
       );
 
       const encryptedBytes = new Uint8Array(encrypted);
@@ -153,7 +153,7 @@ export class CryptoPrimitives {
     try {
       const cryptoKey = await crypto.subtle.importKey(
         'raw',
-        key,
+        key as BufferSource,
         { name: 'ChaCha20-Poly1305' },
         false,
         ['decrypt']
@@ -167,11 +167,11 @@ export class CryptoPrimitives {
       const decrypted = await crypto.subtle.decrypt(
         {
           name: 'ChaCha20-Poly1305',
-          iv: nonce,
-          additionalData
+          iv: nonce as BufferSource,
+          additionalData: additionalData as BufferSource | undefined
         },
         cryptoKey,
-        combined
+        combined as BufferSource
       );
 
       return new Uint8Array(decrypted);
@@ -232,7 +232,7 @@ export class CryptoPrimitives {
     try {
       const cryptoKey = await crypto.subtle.importKey(
         'raw',
-        publicKey,
+        publicKey as BufferSource,
         { name: 'Ed25519' },
         false,
         ['verify']
@@ -241,8 +241,8 @@ export class CryptoPrimitives {
       return await crypto.subtle.verify(
         'Ed25519',
         cryptoKey,
-        signature,
-        message
+        signature as BufferSource,
+        message as BufferSource
       );
     } catch (error) {
       return false;

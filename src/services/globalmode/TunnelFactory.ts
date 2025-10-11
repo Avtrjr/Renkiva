@@ -177,7 +177,7 @@ export class RelayWebRtcTunnel extends Tunnel {
     }
 
     try {
-      this.dataChannel.send(data);
+      this.dataChannel.send(data.slice());
       this.stats.bytesSent += data.length;
       return true;
     } catch (error) {
