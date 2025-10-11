@@ -23,19 +23,31 @@ export class WebRTCManager {
 
   async initialize(): Promise<MediaStream> {
     try {
-      // Get local media stream
-      this.localStream = await navigator.mediaDevices.getUserMedia({
+      // Get local media stream with flexible constraints
+      // First try with ideal constraints, fall back to basic if that fails
+      let constraints = {
         video: {
           width: { ideal: 1280 },
-          height: { ideal: 720 },
-          facingMode: "user"
+          height: { ideal: 720 }
         },
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true
         }
-      });
+      };
+
+      try {
+        this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (error: any) {
+        // If specific constraints fail, try with basic constraints
+        console.log('Falling back to basic constraints');
+        constraints = {
+          video: true,
+          audio: true
+        } as any;
+        this.localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      }
 
       // Create peer connection
       this.peerConnection = new RTCPeerConnection({
@@ -78,10 +90,22 @@ export class WebRTCManager {
       await this.setupSignalingChannel();
 
       return this.localStream;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error initializing WebRTC:', error);
-      this.config.onError(error as Error);
-      throw error;
+      
+      // Provide more helpful error messages
+      let userMessage = 'Failed to access camera/microphone';
+      if (error.name === 'NotFoundError') {
+        userMessage = 'No camera or microphone found. Please connect a camera/microphone and try again.';
+      } else if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+        userMessage = 'Camera/microphone access denied. Please grant permissions in your browser settings.';
+      } else if (error.name === 'NotReadableError') {
+        userMessage = 'Camera/microphone is already in use by another application.';
+      }
+      
+      const enhancedError = new Error(userMessage);
+      this.config.onError(enhancedError);
+      throw enhancedError;
     }
   }
 
