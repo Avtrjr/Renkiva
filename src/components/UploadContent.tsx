@@ -166,6 +166,7 @@ const UploadContent = ({ onClose, onUploadComplete }: UploadContentProps) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter content title"
+                maxLength={200}
                 required
               />
             </div>
@@ -194,6 +195,7 @@ const UploadContent = ({ onClose, onUploadComplete }: UploadContentProps) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe your content..."
+              maxLength={2000}
               rows={3}
               required
             />

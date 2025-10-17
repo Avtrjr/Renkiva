@@ -1,22 +1,81 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { reportManager, ContentReport, ReportStatus, ReportReason, ReportUtils } from '@/security/report/ReportManager';
 import { bulletinStore, BulletinType, BulletinUtils } from '@/security/bulletin/ModerationBulletin';
 import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Ban, UserX } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 export function ModeratorDashboard() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [reports, setReports] = useState<ContentReport[]>([]);
   const [bulletins, setBulletins] = useState<any[]>([]);
   const [selectedReport, setSelectedReport] = useState<ContentReport | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModerator, setIsModerator] = useState<boolean>(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Check authentication and moderator role
+  useEffect(() => {
+    const checkModeratorAccess = async () => {
+      if (!user) {
+        setCheckingAuth(false);
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to access the moderator dashboard.",
+          variant: "destructive",
+        });
+        navigate('/auth');
+        return;
+      }
+
+      try {
+        // Check if user has moderator or admin role
+        const { data, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .in('role', ['moderator', 'admin'])
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error checking moderator role:', error);
+          setIsModerator(false);
+        } else if (data) {
+          setIsModerator(true);
+        } else {
+          setIsModerator(false);
+          toast({
+            title: "Access Denied",
+            description: "You do not have moderator permissions.",
+            variant: "destructive",
+          });
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Error checking moderator access:', error);
+        setIsModerator(false);
+        navigate('/');
+      } finally {
+        setCheckingAuth(false);
+      }
+    };
+
+    checkModeratorAccess();
+  }, [user, navigate, toast]);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (isModerator && !checkingAuth) {
+      loadData();
+    }
+  }, [isModerator, checkingAuth]);
 
   const loadData = async () => {
     setIsLoading(true);
@@ -117,15 +176,21 @@ export function ModeratorDashboard() {
       <UserX className="w-4 h-4 text-orange-500" />;
   };
 
-  if (isLoading) {
+  if (checkingAuth || isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          Loading moderator dashboard...
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Shield className="w-16 h-16 mx-auto mb-4 animate-pulse" />
+          <p className="text-lg text-muted-foreground">
+            {checkingAuth ? 'Verifying access...' : 'Loading dashboard...'}
+          </p>
         </div>
       </div>
     );
+  }
+
+  if (!isModerator) {
+    return null; // Navigation to home page handled in useEffect
   }
 
   return (

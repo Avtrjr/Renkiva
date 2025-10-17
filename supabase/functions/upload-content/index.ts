@@ -1,10 +1,60 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema to prevent injection attacks
+const uploadContentSchema = z.object({
+  title: z.string()
+    .min(1, "Title is required")
+    .max(200, "Title must be less than 200 characters")
+    .trim(),
+  description: z.string()
+    .max(2000, "Description must be less than 2000 characters")
+    .trim()
+    .optional(),
+  category: z.string()
+    .max(100, "Category must be less than 100 characters")
+    .trim()
+    .optional(),
+  video_url: z.string()
+    .url("Invalid video URL")
+    .refine(url => {
+      const validProtocols = ['http:', 'https:'];
+      try {
+        const parsedUrl = new URL(url);
+        return validProtocols.includes(parsedUrl.protocol);
+      } catch {
+        return false;
+      }
+    }, "Only HTTP and HTTPS URLs are allowed")
+    .optional(),
+  thumbnail_url: z.string()
+    .url("Invalid thumbnail URL")
+    .refine(url => {
+      const validProtocols = ['http:', 'https:'];
+      try {
+        const parsedUrl = new URL(url);
+        return validProtocols.includes(parsedUrl.protocol);
+      } catch {
+        return false;
+      }
+    }, "Only HTTP and HTTPS URLs are allowed")
+    .optional(),
+  duration_minutes: z.number()
+    .int("Duration must be an integer")
+    .min(0, "Duration must be positive")
+    .max(10000, "Duration is too large")
+    .optional(),
+  file_size_bytes: z.number()
+    .int("File size must be an integer")
+    .min(0, "File size must be positive")
+    .optional(),
+});
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -32,10 +82,28 @@ serve(async (req) => {
       throw new Error("Invalid authentication");
     }
 
-    // Parse request body
-    const body = await req.json();
-    console.log('Request body:', body);
-    const { title, description, category, video_url, thumbnail_url, duration_minutes, file_size_bytes } = body;
+    // Parse and validate request body
+    const rawBody = await req.json();
+    console.log('Request body:', rawBody);
+    
+    const validationResult = uploadContentSchema.safeParse(rawBody);
+    
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+      return new Response(
+        JSON.stringify({ 
+          success: false,
+          error: 'Validation failed',
+          details: errors
+        }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+    
+    const { title, description, category, video_url, thumbnail_url, duration_minutes, file_size_bytes } = validationResult.data;
 
     // Get user record to get internal user ID, create if doesn't exist
     console.log('Looking for user with auth_user_id:', user.id);
