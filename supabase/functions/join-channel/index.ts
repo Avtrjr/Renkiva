@@ -110,10 +110,10 @@ serve(async (req) => {
       console.log('Device already joined this channel');
     }
 
-    // Get channel details
+    // Get channel details (encryption_key is now derived client-side)
     const { data: channel, error: channelError } = await supabase
       .from('mesh_channels')
-      .select('id, channel_name, encryption_key, is_private')
+      .select('id, channel_name, description, is_private, passphrase_hint')
       .eq('id', invite.channel_id)
       .single();
 
@@ -133,14 +133,17 @@ serve(async (req) => {
       is_private: channel.is_private 
     });
 
+    // SECURITY: Never return encryption keys from the server
+    // Keys are derived client-side from user passphrases
     return new Response(JSON.stringify({
       success: true,
       channel_id: channel.id,
       channel_name: channel.channel_name,
-      encryption_key: channel.encryption_key,
+      description: channel.description,
+      passphrase_hint: channel.passphrase_hint,
       is_private: channel.is_private,
       already_joined: alreadyJoined
-    }), { 
+    }), {
       status: 200,
       headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });

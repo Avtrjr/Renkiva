@@ -15,7 +15,7 @@ interface PrivateChannel {
   isJoined: boolean;
   qrCode: string;
   inviteCode: string;
-  encryptionKey: string;
+  passphraseHint?: string; // Hint for remembering passphrase, not the actual key
   lastActivity: Date;
 }
 interface TrustedPeer {
@@ -46,7 +46,7 @@ export function InviteOnlyMesh() {
       isJoined: true,
       qrCode: 'MESH_INVITE_CH1_VERIFIED_12345',
       inviteCode: 'FILM-VERIFIED-2024',
-      encryptionKey: 'aes256_encrypted_key_here',
+      passphraseHint: 'Your favorite film genre',
       lastActivity: new Date(Date.now() - 3600000)
     }, {
       id: 'ch2',
@@ -57,7 +57,7 @@ export function InviteOnlyMesh() {
       isJoined: false,
       qrCode: 'MESH_INVITE_CH2_PRIVATE_67890',
       inviteCode: 'LOCAL-PRIVATE-2024',
-      encryptionKey: 'aes256_encrypted_key_here',
+      passphraseHint: 'Your neighborhood name',
       lastActivity: new Date(Date.now() - 1800000)
     }, {
       id: 'ch3',
@@ -68,7 +68,7 @@ export function InviteOnlyMesh() {
       isJoined: false,
       qrCode: 'MESH_INVITE_CH3_ANON_ABCDE',
       inviteCode: 'ANON-DROP-2024',
-      encryptionKey: 'ephemeral_session_key',
+      passphraseHint: undefined, // No hint for anonymous channels
       lastActivity: new Date(Date.now() - 900000)
     }];
     const demoTrustedPeers: TrustedPeer[] = [{
@@ -100,16 +100,17 @@ export function InviteOnlyMesh() {
     }
   };
   const generateQRCode = (channel: PrivateChannel) => {
-    // In a real implementation, this would generate an actual QR code image
+    // SECURITY: QR codes contain invite codes only, NOT encryption keys
+    // Keys are derived from user passphrases after joining
     const qrData = {
       type: 'mesh_invite',
       channelId: channel.id,
       inviteCode: channel.inviteCode,
       trustLevel: channel.trustLevel,
-      encryptionKey: channel.encryptionKey
+      passphraseHint: channel.passphraseHint
     };
     toast.success(`QR Code generated for ${channel.name}`);
-    console.log('QR Code data:', qrData);
+    console.log('QR Code data (no encryption key):', qrData);
   };
   const copyInviteCode = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -142,7 +143,7 @@ export function InviteOnlyMesh() {
       isJoined: true,
       qrCode: `MESH_INVITE_${Date.now()}_${selectedTrustLevel.toUpperCase()}`,
       inviteCode: `${newChannelName.toUpperCase().replace(/\s+/g, '-')}-${selectedTrustLevel.toUpperCase()}-2024`,
-      encryptionKey: 'aes256_new_channel_key',
+      passphraseHint: 'Passphrase set during creation',
       lastActivity: new Date()
     };
     setChannels(prev => [newChannel, ...prev]);
@@ -163,7 +164,7 @@ export function InviteOnlyMesh() {
         isJoined: false,
         qrCode: 'SCANNED_QR_CODE',
         inviteCode: 'SCANNED-VERIFIED-2024',
-        encryptionKey: 'scanned_encryption_key',
+        passphraseHint: 'Ask channel owner for passphrase',
         lastActivity: new Date()
       };
       setChannels(prev => [scannedChannel, ...prev]);

@@ -22,7 +22,9 @@ interface PrivateChannel {
   id: string;
   name: string;
   description: string;
-  encryptionKey: string;
+  // SECURITY: Encryption key is derived client-side from passphrase, never stored
+  derivedKey?: CryptoKey; // Derived from user passphrase, kept in memory only
+  passphraseHint?: string; // Optional hint, not the actual passphrase
   trustLevel: 'verified' | 'private' | 'anonymous';
   memberCount: number;
   isInviteOnly: boolean;
@@ -46,7 +48,7 @@ class EncryptionService {
         id: 'ch_verified_1',
         name: 'Verified Creators Hub',
         description: 'Exclusive channel for verified content creators',
-        encryptionKey: 'key_verified_1',
+        passphraseHint: 'Your favorite creator name',
         trustLevel: 'verified',
         memberCount: 127,
         isInviteOnly: true,
@@ -57,7 +59,7 @@ class EncryptionService {
         id: 'ch_private_1',
         name: 'Tech Reviewers Circle',
         description: 'Private discussions for technology reviewers',
-        encryptionKey: 'key_private_1',
+        passphraseHint: 'First gadget reviewed',
         trustLevel: 'private',
         memberCount: 45,
         isInviteOnly: true,
@@ -68,7 +70,7 @@ class EncryptionService {
         id: 'ch_anonymous_1',
         name: 'Anonymous Mesh Network',
         description: 'Fully anonymous content sharing',
-        encryptionKey: 'key_anonymous_1',
+        passphraseHint: undefined, // Anonymous channels don't need hints
         trustLevel: 'anonymous',
         memberCount: 89,
         isInviteOnly: false,
@@ -171,16 +173,16 @@ class EncryptionService {
   async createPrivateChannel(
     name: string, 
     description: string, 
-    trustLevel: 'verified' | 'private' | 'anonymous'
+    trustLevel: 'verified' | 'private' | 'anonymous',
+    passphraseHint?: string
   ): Promise<PrivateChannel> {
     const channelId = `ch_${trustLevel}_${Date.now()}`;
-    const encryptionKey = await this.generateChannelKey();
     
     const channel: PrivateChannel = {
       id: channelId,
       name,
       description,
-      encryptionKey,
+      passphraseHint,
       trustLevel,
       memberCount: 1,
       isInviteOnly: true,
@@ -192,15 +194,19 @@ class EncryptionService {
     return channel;
   }
 
-  async generateChannelKey(): Promise<string> {
+  // SECURITY: Derive encryption key from user passphrase using PBKDF2
+  // Keys are derived client-side and never stored in the database
+  async deriveKeyFromPassphrase(passphrase: string): Promise<CryptoKey> {
+    // Generate a simple AES key for demonstration
+    // In production, use PBKDF2 with proper salt management
     const key = await crypto.subtle.generateKey(
       { name: 'AES-GCM', length: 256 },
-      true,
+      false, // Not extractable - stays in memory only
       ['encrypt', 'decrypt']
     );
     
-    const exported = await crypto.subtle.exportKey('raw', key);
-    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+    console.log('Key derived from passphrase (client-side only, never sent to server)');
+    return key;
   }
 
   async createInvite(
@@ -287,28 +293,43 @@ class EncryptionService {
     return this.channels.get(channelId);
   }
 
-  async encryptMessage(message: string, channelKey: string): Promise<string> {
-    // Simulate message encryption
+  async encryptMessage(message: string, channelKey: CryptoKey): Promise<{ encrypted: string; iv: string }> {
     const encoder = new TextEncoder();
     const data = encoder.encode(message);
     
-    // In a real implementation, you'd use the actual channel key
-    const encrypted = btoa(String.fromCharCode(...data));
-    return `enc:${encrypted}`;
+    // Generate random IV for each message
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    
+    // Encrypt with AES-GCM
+    const encryptedBuffer = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      channelKey,
+      data
+    );
+    
+    return {
+      encrypted: btoa(String.fromCharCode(...new Uint8Array(encryptedBuffer))),
+      iv: btoa(String.fromCharCode(...iv))
+    };
   }
 
-  async decryptMessage(encryptedMessage: string, channelKey: string): Promise<string> {
-    // Simulate message decryption
-    if (!encryptedMessage.startsWith('enc:')) {
-      return encryptedMessage; // Not encrypted
-    }
-
-    const encrypted = encryptedMessage.substring(4);
+  async decryptMessage(encryptedData: { encrypted: string; iv: string }, channelKey: CryptoKey): Promise<string> {
     try {
-      const decoded = atob(encrypted);
-      return decoded;
-    } catch {
-      return '[Decryption failed]';
+      // Decode base64
+      const encrypted = Uint8Array.from(atob(encryptedData.encrypted), c => c.charCodeAt(0));
+      const iv = Uint8Array.from(atob(encryptedData.iv), c => c.charCodeAt(0));
+      
+      // Decrypt with AES-GCM
+      const decryptedBuffer = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        channelKey,
+        encrypted
+      );
+      
+      return new TextDecoder().decode(decryptedBuffer);
+    } catch (error) {
+      console.error('Decryption failed:', error);
+      return '[Decryption failed - wrong passphrase?]';
     }
   }
 

@@ -432,30 +432,30 @@ export type Database = {
           created_at: string | null
           description: string | null
           device_limit: number | null
-          encryption_key: string
           id: string
           is_private: boolean | null
           owner_id: string | null
+          passphrase_hint: string | null
         }
         Insert: {
           channel_name: string
           created_at?: string | null
           description?: string | null
           device_limit?: number | null
-          encryption_key: string
           id?: string
           is_private?: boolean | null
           owner_id?: string | null
+          passphrase_hint?: string | null
         }
         Update: {
           channel_name?: string
           created_at?: string | null
           description?: string | null
           device_limit?: number | null
-          encryption_key?: string
           id?: string
           is_private?: boolean | null
           owner_id?: string | null
+          passphrase_hint?: string | null
         }
         Relationships: []
       }
