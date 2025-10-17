@@ -1,9 +1,13 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { checkRateLimit, getRemainingRequests, getResetTime } from '../_shared/rateLimiter.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
+const MAX_UPLOADS_PER_DAY = 20;
 
 interface MovieMetadata {
   title: string

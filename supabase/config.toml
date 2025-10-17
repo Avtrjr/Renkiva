@@ -1,1 +1,10 @@
 project_id = "btsriforcmdugnuemlhx"
+
+[functions.mass-import]
+verify_jwt = true
+
+[functions.movie-import]
+verify_jwt = true
+
+[functions.join-channel]
+verify_jwt = true
