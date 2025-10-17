@@ -46,7 +46,7 @@ interface StreamPlayerProps {
 export default function StreamPlayer({ 
   title = "Now Streaming via Mesh",
   videoSource = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  poster = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
+  poster = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
   // Legacy props
   source,
   fragments = [],
