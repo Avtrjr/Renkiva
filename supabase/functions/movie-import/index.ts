@@ -31,17 +31,60 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    if (req.method === 'POST') {
-      const formData = await req.formData()
-      const videoFile = formData.get('video') as File
-      const metadataStr = formData.get('metadata') as string
-      
-      if (!videoFile || !metadataStr) {
-        return new Response(
-          JSON.stringify({ error: 'Video file and metadata are required' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
+  if (req.method === 'POST') {
+    // Get authenticated user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify JWT and get user
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Rate limiting: 20 uploads per day
+    if (!checkRateLimit(user.id, MAX_UPLOADS_PER_DAY)) {
+      const remaining = getRemainingRequests(user.id, MAX_UPLOADS_PER_DAY);
+      const resetTime = getResetTime(user.id);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Daily upload limit exceeded',
+          remaining,
+          resetInSeconds: resetTime
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const formData = await req.formData()
+    const videoFile = formData.get('video') as File
+    const metadataStr = formData.get('metadata') as string
+    
+    if (!videoFile || !metadataStr) {
+      return new Response(
+        JSON.stringify({ error: 'Video file and metadata are required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Check file size
+    if (videoFile.size > MAX_FILE_SIZE) {
+      return new Response(
+        JSON.stringify({ error: `File size exceeds maximum of ${MAX_FILE_SIZE / 1024 / 1024 / 1024}GB` }),
+        { status: 413, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
       const metadata: MovieMetadata = JSON.parse(metadataStr)
       console.log(`Processing movie: ${metadata.title}`)

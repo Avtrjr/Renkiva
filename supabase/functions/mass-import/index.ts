@@ -40,8 +40,58 @@ Deno.serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    if (req.method === 'POST') {
-      const { limit = 5 } = await req.json();
+  if (req.method === 'POST') {
+    // Get authenticated user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify JWT and get user
+    const { data: { user }, error: authError } = await supabase.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (authError || !user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check if user is admin
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .single();
+
+    if (!roles) {
+      return new Response(
+        JSON.stringify({ error: 'Admin access required for mass import' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Rate limiting: 10 imports per hour for admins
+    if (!checkRateLimit(user.id, 10)) {
+      const remaining = getRemainingRequests(user.id, 10);
+      const resetTime = getResetTime(user.id);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded',
+          remaining,
+          resetInSeconds: resetTime
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { limit = 5 } = await req.json();
       
       console.log(`🎬 Starting mass import of ${limit} movies...`);
       

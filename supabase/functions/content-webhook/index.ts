@@ -239,9 +239,19 @@ async function logContentEvent(supabase: any, event: {
 async function forwardToExternalWebhook(payload: ContentWebhookPayload) {
   if (!payload.external_webhook_url) return;
 
+  // Validate webhook URL to prevent SSRF
+  const validation = validateWebhookURL(payload.external_webhook_url);
+  if (!validation.valid) {
+    console.error('Webhook URL validation failed:', validation.error);
+    throw new Error(`Invalid webhook URL: ${validation.error}`);
+  }
+
   try {
     console.log('Forwarding to external webhook:', payload.external_webhook_url);
     
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(payload.external_webhook_url, {
       method: 'POST',
       headers: {
@@ -251,8 +261,12 @@ async function forwardToExternalWebhook(payload: ContentWebhookPayload) {
         ...payload,
         timestamp: new Date().toISOString(),
         source: 'MeshTV'
-      })
+      }),
+      signal: controller.signal,
+      redirect: 'manual', // Don't follow redirects
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error('External webhook failed:', response.status, response.statusText);
