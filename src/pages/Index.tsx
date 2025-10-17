@@ -40,6 +40,7 @@ import { useShows } from "@/hooks/useShows";
 import { useAuth } from "@/hooks/useAuth";
 import { useLegalAgreement } from "@/hooks/useLegalAgreement";
 import { LegalAgreementModal } from "@/components/LegalAgreementModal";
+import { SupportButton } from "@/components/SupportButton";
 import type { ContentItem } from "@/lib/contentProviderAPI";
 const Index = () => {
   const {
@@ -149,20 +150,28 @@ const Index = () => {
       {/* Renkiva TV Network Header */}
       <header className="relative z-20 glass-morphism border-b border-primary/20">
         <div className="container mx-auto px-6 py-4">
-          <a href="/" className="flex items-center justify-center lg:justify-start">
-            <div className="flex items-center space-x-3 group">
-              {/* Logo placeholder - will be replaced with actual image */}
-              <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
-                <img src="/renkiva-logo.png" alt="Renkiva TV Network" className="w-12 h-12 object-contain" />
+          <div className="flex items-center justify-between">
+            <a href="/" className="flex items-center">
+              <div className="flex items-center space-x-3 group">
+                {/* Logo placeholder - will be replaced with actual image */}
+                <div className="w-12 h-12 bg-gradient-cyber rounded-lg flex items-center justify-center shadow-cyber group-hover:shadow-pulse transition-all duration-300">
+                  <img src="/renkiva-logo.png" alt="Renkiva TV Network" className="w-12 h-12 object-contain" />
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
+                      Renkiva
+                    </h1>
+                    <span className="text-sm font-semibold text-muted-foreground">Beta</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
+                </div>
               </div>
-              <div className="text-left">
-          <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
-            Renkiva
-          </h1>
-                <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
-              </div>
+            </a>
+            <div className="hidden sm:block">
+              <SupportButton />
             </div>
-          </a>
+          </div>
         </div>
       </header>
       {/* Animated Renkiva Background */}
@@ -709,8 +718,14 @@ const Index = () => {
         <DiagnosticsOverlay />
         
         {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-border/30 text-center">
-          <div className="text-sm text-muted-foreground space-x-3">
+        <footer className="mt-16 pt-8 border-t border-border/30">
+          <div className="flex flex-col items-center gap-4 mb-6">
+            <SupportButton />
+            <p className="text-xs text-muted-foreground max-w-md text-center">
+              This is an early beta release. We're improving stability and adding new features — your feedback matters.
+            </p>
+          </div>
+          <div className="text-sm text-muted-foreground space-x-3 text-center">
             <a href="/legal/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               Terms of Use
             </a>
@@ -719,7 +734,7 @@ const Index = () => {
               Privacy Policy
             </a>
           </div>
-          <p className="text-xs text-muted-foreground/60 mt-2">
+          <p className="text-xs text-muted-foreground/60 mt-4 text-center">
             Copyright 2025 / Patent pending
           </p>
           <p className="text-xs text-muted-foreground/60 mt-1">
