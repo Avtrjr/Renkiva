@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { Search, Book, ArrowLeft, ExternalLink } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -116,7 +117,10 @@ export function HelpCenter({ isOpen, onClose, initialArticle }: HelpCenterProps)
             <ScrollArea className="flex-1">
               <div className="prose prose-sm max-w-none dark:prose-invert">
                 <div dangerouslySetInnerHTML={{ 
-                  __html: selectedArticle?.bodyMarkdown || '' 
+                  __html: DOMPurify.sanitize(selectedArticle?.bodyMarkdown || '', {
+                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote'],
+                    ALLOWED_ATTR: ['href', 'target', 'rel']
+                  })
                 }} />
               </div>
             </ScrollArea>

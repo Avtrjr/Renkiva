@@ -1087,6 +1087,10 @@ export type Database = {
           total_size: number
         }[]
       }
+      cleanup_old_view_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       discover_nearby_content: {
         Args: Record<PropertyKey, never>
         Returns: {
