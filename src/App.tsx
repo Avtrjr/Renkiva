@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,8 +26,16 @@ import { AuthProvider } from "./hooks/useAuth";
 import { LocationConsentModal } from "./components/LocationConsentModal";
 import { useLocationConsent } from "./hooks/useLocationConsent";
 import { LanguageDetectionToast } from "./components/LanguageDetectionToast";
+import { isRTL } from "./i18n";
+import i18n from "./i18n";
 
 const queryClient = new QueryClient();
+
+// Apply initial RTL direction based on stored/detected language
+if (typeof window !== 'undefined') {
+  document.documentElement.dir = isRTL(i18n.language) ? 'rtl' : 'ltr';
+  document.documentElement.lang = i18n.language;
+}
 
 function AppContent() {
   const { shouldShowConsentModal, grantConsent, revokeConsent } = useLocationConsent();

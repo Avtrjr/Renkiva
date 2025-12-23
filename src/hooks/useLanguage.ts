@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { changeLanguage, languageNames } from '@/i18n';
+import { changeLanguage, languageNames, isRTL } from '@/i18n';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -8,6 +8,14 @@ export const useLanguage = () => {
   const { i18n, t } = useTranslation();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+
+  // Apply RTL direction on language change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.dir = isRTL(i18n.language) ? 'rtl' : 'ltr';
+      document.documentElement.lang = i18n.language;
+    }
+  }, [i18n.language]);
 
   // Sync language with user's profile preference
   useEffect(() => {
@@ -64,5 +72,6 @@ export const useLanguage = () => {
     t,
     languageNames,
     isLoading,
+    isRTL: isRTL(i18n.language),
   };
 };
