@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { LogOut, Upload, User as UserIcon, Settings, Video } from 'lucide-react';
+import { LogOut, Upload, User as UserIcon, Settings, Video, Cog } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface UserMenuProps {
@@ -91,6 +91,12 @@ const UserMenu = ({ user }: UserMenuProps) => {
           <Link to="/mesh-library" className="flex items-center">
             <Video className="mr-2 h-4 w-4" />
             <span>Public Domain Library</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/settings" className="flex items-center">
+            <Cog className="mr-2 h-4 w-4" />
+            <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
