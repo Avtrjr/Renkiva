@@ -686,6 +686,36 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_violations: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          ip_address: string | null
+          user_agent: string | null
+          user_id: string | null
+          violation_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          violation_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          violation_count?: number | null
+        }
+        Relationships: []
+      }
       shows: {
         Row: {
           category: string | null
@@ -841,6 +871,39 @@ export type Database = {
           received_from_node?: string
           stream_id?: string
           total_fragments?: number
+        }
+        Relationships: []
+      }
+      user_activity_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1103,7 +1166,16 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_dashboard_stats: {
+        Row: {
+          active_nodes: number | null
+          activity_24h: number | null
+          total_shows: number | null
+          total_users: number | null
+          violations_24h: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_storage_usage: {
