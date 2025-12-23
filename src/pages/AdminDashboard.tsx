@@ -7,9 +7,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle, Activity, Users, Tv, Radio, ArrowLeft, RefreshCw, Shield } from 'lucide-react';
+import { AlertTriangle, Activity, Users, Tv, Radio, ArrowLeft, RefreshCw, Shield, UserCog } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import UserManagement from '@/components/admin/UserManagement';
 
 interface DashboardStats {
   total_users: number;
@@ -217,7 +218,7 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        {/* Tabs for Violations and Activity */}
+        {/* Tabs for Violations, Activity, and User Management */}
         <Tabs defaultValue="violations" className="space-y-4">
           <TabsList className="bg-muted">
             <TabsTrigger value="violations" className="data-[state=active]:bg-background">
@@ -227,6 +228,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="activity" className="data-[state=active]:bg-background">
               <Activity className="h-4 w-4 mr-2" />
               User Activity
+            </TabsTrigger>
+            <TabsTrigger value="users" className="data-[state=active]:bg-background">
+              <UserCog className="h-4 w-4 mr-2" />
+              User Management
             </TabsTrigger>
           </TabsList>
 
@@ -326,6 +331,10 @@ export default function AdminDashboard() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagement />
           </TabsContent>
         </Tabs>
       </div>
