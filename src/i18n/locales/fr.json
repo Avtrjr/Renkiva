@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "back": "Retour",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "more": "Plus",
+    "less": "Moins",
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer",
+    "enabled": "Activé",
+    "disabled": "Désactivé"
+  },
+  "nav": {
+    "home": "Accueil",
+    "library": "Bibliothèque",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "Gérez vos paramètres de compte, confidentialité et préférences.",
+    "profile": {
+      "title": "Profil",
+      "description": "Gérez les informations de votre profil public.",
+      "photo": "Photo de Profil",
+      "photoDescription": "Cliquez pour télécharger une nouvelle photo (max 2Mo)",
+      "displayName": "Nom d'affichage",
+      "displayNamePlaceholder": "Entrez votre nom",
+      "displayNameDescription": "C'est ainsi que vous apparaissez aux autres utilisateurs du réseau mesh.",
+      "bio": "À propos",
+      "bioPlaceholder": "Parlez un peu de vous...",
+      "bioDescription": "Une courte biographie visible sur votre profil.",
+      "socialLinks": "Liens Sociaux",
+      "socialLinksDescription": "Ajoutez des liens vers vos profils sociaux ou votre site web personnel.",
+      "twitterPlaceholder": "https://twitter.com/utilisateur",
+      "githubPlaceholder": "https://github.com/utilisateur",
+      "websitePlaceholder": "https://votresite.com",
+      "saveProfile": "Enregistrer le Profil"
+    },
+    "privacy": {
+      "title": "Confidentialité",
+      "description": "Contrôlez vos données et paramètres de confidentialité.",
+      "location": "Partage de Localisation",
+      "locationDescription": "Autorisez le partage de votre localisation pour la découverte du réseau mesh. Cela aide les appareils à proximité à vous trouver et se connecter.",
+      "consentGiven": "Consentement donné le {{date}}",
+      "dataExport": "Exporter vos Données",
+      "dataExportDescription": "Téléchargez une copie de toutes vos données personnelles stockées dans nos systèmes.",
+      "deleteAccount": "Supprimer le Compte",
+      "deleteAccountDescription": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configurez comment vous souhaitez recevoir les mises à jour.",
+      "email": "Notifications par Email",
+      "emailDescription": "Recevez des mises à jour sur votre contenu et l'activité du réseau mesh par email.",
+      "push": "Notifications Push",
+      "pushDescription": "Recevez des notifications instantanées sur votre appareil pour les nouveaux messages et alertes."
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez l'apparence de l'application.",
+      "theme": "Thème",
+      "themeDescription": "Choisissez votre schéma de couleurs préféré ou suivez les paramètres du système.",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système",
+      "language": "Langue",
+      "languageDescription": "Sélectionnez votre langue préférée pour l'interface de l'application."
+    },
+    "account": {
+      "title": "Compte",
+      "description": "Gérez les paramètres de votre compte.",
+      "email": "Adresse Email",
+      "signedInAs": "Vous êtes connecté en tant que"
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Gérez vos paramètres de sécurité.",
+      "changePassword": "Changer le Mot de Passe",
+      "changePasswordDescription": "Mettez à jour votre mot de passe pour sécuriser votre compte.",
+      "twoFactor": "Authentification à Deux Facteurs",
+      "twoFactorDescription": "Ajoutez une couche de sécurité supplémentaire à votre compte."
+    }
+  },
+  "auth": {
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "signOut": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "createAccount": "Créer un Compte"
+  },
+  "library": {
+    "title": "Bibliothèque",
+    "myVideos": "Mes Vidéos",
+    "uploaded": "Téléchargées",
+    "downloaded": "Téléchargées",
+    "favorites": "Favoris",
+    "noVideos": "Aucune vidéo trouvée",
+    "upload": "Télécharger une Vidéo"
+  },
+  "mesh": {
+    "status": "État du Réseau",
+    "connected": "Connecté",
+    "disconnected": "Déconnecté",
+    "nearbyNodes": "Nœuds Proches",
+    "broadcasting": "Diffusion",
+    "receiving": "Réception"
+  },
+  "toast": {
+    "profileUpdated": "Profil mis à jour avec succès",
+    "profileError": "Échec de la mise à jour du profil",
+    "languageChanged": "Langue définie sur {{language}}",
+    "themeLight": "Mode clair activé",
+    "themeDark": "Mode sombre activé",
+    "themeSystem": "Suivi du thème système",
+    "emailNotificationsEnabled": "Notifications email activées",
+    "emailNotificationsDisabled": "Notifications email désactivées",
+    "pushNotificationsEnabled": "Notifications push activées",
+    "pushNotificationsDisabled": "Notifications push désactivées",
+    "urlError": "Veuillez corriger les erreurs d'URL avant d'enregistrer"
+  },
+  "validation": {
+    "invalidUrl": "Veuillez entrer une URL valide",
+    "invalidTwitterUrl": "Veuillez entrer une URL Twitter/X valide",
+    "invalidGithubUrl": "Veuillez entrer une URL GitHub valide"
+  }
+}

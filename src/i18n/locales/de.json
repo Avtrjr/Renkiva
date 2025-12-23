@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "back": "Zurück",
+    "close": "Schließen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "more": "Mehr",
+    "less": "Weniger",
+    "yes": "Ja",
+    "no": "Nein",
+    "confirm": "Bestätigen",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert"
+  },
+  "nav": {
+    "home": "Startseite",
+    "library": "Bibliothek",
+    "settings": "Einstellungen",
+    "profile": "Profil",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Verwalten Sie Ihre Kontoeinstellungen, Datenschutz und Präferenzen.",
+    "profile": {
+      "title": "Profil",
+      "description": "Verwalten Sie Ihre öffentlichen Profilinformationen.",
+      "photo": "Profilfoto",
+      "photoDescription": "Klicken Sie, um ein neues Foto hochzuladen (max 2MB)",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Geben Sie Ihren Namen ein",
+      "displayNameDescription": "So erscheinen Sie anderen Benutzern im Mesh-Netzwerk.",
+      "bio": "Über mich",
+      "bioPlaceholder": "Erzählen Sie anderen etwas über sich...",
+      "bioDescription": "Eine kurze Biografie, die auf Ihrem Profil sichtbar ist.",
+      "socialLinks": "Soziale Links",
+      "socialLinksDescription": "Fügen Sie Links zu Ihren sozialen Profilen oder Ihrer persönlichen Website hinzu.",
+      "twitterPlaceholder": "https://twitter.com/benutzername",
+      "githubPlaceholder": "https://github.com/benutzername",
+      "websitePlaceholder": "https://ihrewebsite.de",
+      "saveProfile": "Profil Speichern"
+    },
+    "privacy": {
+      "title": "Datenschutz",
+      "description": "Kontrollieren Sie Ihre Daten und Datenschutzeinstellungen.",
+      "location": "Standortfreigabe",
+      "locationDescription": "Erlauben Sie die Freigabe Ihres Standorts für die Mesh-Netzwerk-Erkennung. Dies hilft Geräten in der Nähe, Sie zu finden und sich zu verbinden.",
+      "consentGiven": "Einwilligung erteilt am {{date}}",
+      "dataExport": "Ihre Daten Exportieren",
+      "dataExportDescription": "Laden Sie eine Kopie aller Ihrer persönlichen Daten herunter, die in unseren Systemen gespeichert sind.",
+      "deleteAccount": "Konto Löschen",
+      "deleteAccountDescription": "Löschen Sie Ihr Konto und alle zugehörigen Daten dauerhaft. Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "description": "Konfigurieren Sie, wie Sie Updates erhalten möchten.",
+      "email": "E-Mail-Benachrichtigungen",
+      "emailDescription": "Erhalten Sie Updates über Ihre Inhalte und Mesh-Netzwerk-Aktivitäten per E-Mail.",
+      "push": "Push-Benachrichtigungen",
+      "pushDescription": "Erhalten Sie sofortige Benachrichtigungen auf Ihrem Gerät für neue Nachrichten und Warnungen."
+    },
+    "appearance": {
+      "title": "Erscheinungsbild",
+      "description": "Passen Sie das Aussehen der App an.",
+      "theme": "Thema",
+      "themeDescription": "Wählen Sie Ihr bevorzugtes Farbschema oder folgen Sie den Systemeinstellungen.",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System",
+      "language": "Sprache",
+      "languageDescription": "Wählen Sie Ihre bevorzugte Sprache für die App-Oberfläche."
+    },
+    "account": {
+      "title": "Konto",
+      "description": "Verwalten Sie Ihre Kontoeinstellungen.",
+      "email": "E-Mail-Adresse",
+      "signedInAs": "Sie sind angemeldet als"
+    },
+    "security": {
+      "title": "Sicherheit",
+      "description": "Verwalten Sie Ihre Sicherheitseinstellungen.",
+      "changePassword": "Passwort Ändern",
+      "changePasswordDescription": "Aktualisieren Sie Ihr Passwort, um Ihr Konto sicher zu halten.",
+      "twoFactor": "Zwei-Faktor-Authentifizierung",
+      "twoFactorDescription": "Fügen Sie Ihrem Konto eine zusätzliche Sicherheitsebene hinzu."
+    }
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Sie haben noch kein Konto?",
+    "hasAccount": "Sie haben bereits ein Konto?",
+    "createAccount": "Konto Erstellen"
+  },
+  "library": {
+    "title": "Bibliothek",
+    "myVideos": "Meine Videos",
+    "uploaded": "Hochgeladen",
+    "downloaded": "Heruntergeladen",
+    "favorites": "Favoriten",
+    "noVideos": "Keine Videos gefunden",
+    "upload": "Video Hochladen"
+  },
+  "mesh": {
+    "status": "Netzwerkstatus",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "nearbyNodes": "Knoten in der Nähe",
+    "broadcasting": "Übertragung",
+    "receiving": "Empfang"
+  },
+  "toast": {
+    "profileUpdated": "Profil erfolgreich aktualisiert",
+    "profileError": "Fehler beim Aktualisieren des Profils",
+    "languageChanged": "Sprache auf {{language}} eingestellt",
+    "themeLight": "Heller Modus aktiviert",
+    "themeDark": "Dunkler Modus aktiviert",
+    "themeSystem": "Folge Systemthema",
+    "emailNotificationsEnabled": "E-Mail-Benachrichtigungen aktiviert",
+    "emailNotificationsDisabled": "E-Mail-Benachrichtigungen deaktiviert",
+    "pushNotificationsEnabled": "Push-Benachrichtigungen aktiviert",
+    "pushNotificationsDisabled": "Push-Benachrichtigungen deaktiviert",
+    "urlError": "Bitte beheben Sie die URL-Fehler vor dem Speichern"
+  },
+  "validation": {
+    "invalidUrl": "Bitte geben Sie eine gültige URL ein",
+    "invalidTwitterUrl": "Bitte geben Sie eine gültige Twitter/X URL ein",
+    "invalidGithubUrl": "Bitte geben Sie eine gültige GitHub URL ein"
+  }
+}

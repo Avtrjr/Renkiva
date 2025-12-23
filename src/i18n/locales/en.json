@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "back": "Back",
+    "close": "Close",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "more": "More",
+    "less": "Less",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "nav": {
+    "home": "Home",
+    "library": "Library",
+    "settings": "Settings",
+    "profile": "Profile",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings, privacy, and preferences.",
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your public profile information.",
+      "photo": "Profile Photo",
+      "photoDescription": "Click to upload a new photo (max 2MB)",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "Enter your display name",
+      "displayNameDescription": "This is how you appear to other users in the mesh network.",
+      "bio": "About",
+      "bioPlaceholder": "Tell others a bit about yourself...",
+      "bioDescription": "A short bio visible on your profile.",
+      "socialLinks": "Social Links",
+      "socialLinksDescription": "Add links to your social profiles or personal website.",
+      "twitterPlaceholder": "https://twitter.com/username",
+      "githubPlaceholder": "https://github.com/username",
+      "websitePlaceholder": "https://yourwebsite.com",
+      "saveProfile": "Save Profile"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "description": "Control your data and privacy settings.",
+      "location": "Location Sharing",
+      "locationDescription": "Allow sharing your location for mesh network discovery. This helps nearby devices find and connect with you.",
+      "consentGiven": "Consent given on {{date}}",
+      "dataExport": "Export Your Data",
+      "dataExportDescription": "Download a copy of all your personal data stored in our systems.",
+      "deleteAccount": "Delete Account",
+      "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configure how you want to receive updates.",
+      "email": "Email Notifications",
+      "emailDescription": "Receive updates about your content and mesh network activity via email.",
+      "push": "Push Notifications",
+      "pushDescription": "Get instant notifications on your device for new messages and alerts."
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize how the app looks.",
+      "theme": "Theme",
+      "themeDescription": "Choose your preferred color scheme or follow your system settings.",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "language": "Language",
+      "languageDescription": "Select your preferred language for the app interface."
+    },
+    "account": {
+      "title": "Account",
+      "description": "Manage your account settings.",
+      "email": "Email Address",
+      "signedInAs": "You are signed in as"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Manage your security settings.",
+      "changePassword": "Change Password",
+      "changePasswordDescription": "Update your password to keep your account secure.",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDescription": "Add an extra layer of security to your account."
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "createAccount": "Create Account"
+  },
+  "library": {
+    "title": "Library",
+    "myVideos": "My Videos",
+    "uploaded": "Uploaded",
+    "downloaded": "Downloaded",
+    "favorites": "Favorites",
+    "noVideos": "No videos found",
+    "upload": "Upload Video"
+  },
+  "mesh": {
+    "status": "Mesh Status",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "nearbyNodes": "Nearby Nodes",
+    "broadcasting": "Broadcasting",
+    "receiving": "Receiving"
+  },
+  "toast": {
+    "profileUpdated": "Profile updated successfully",
+    "profileError": "Failed to update profile",
+    "languageChanged": "Language set to {{language}}",
+    "themeLight": "Light mode enabled",
+    "themeDark": "Dark mode enabled",
+    "themeSystem": "Following system theme",
+    "emailNotificationsEnabled": "Email notifications enabled",
+    "emailNotificationsDisabled": "Email notifications disabled",
+    "pushNotificationsEnabled": "Push notifications enabled",
+    "pushNotificationsDisabled": "Push notifications disabled",
+    "urlError": "Please fix the URL errors before saving"
+  },
+  "validation": {
+    "invalidUrl": "Please enter a valid URL",
+    "invalidTwitterUrl": "Please enter a valid Twitter/X URL",
+    "invalidGithubUrl": "Please enter a valid GitHub URL"
+  }
+}
