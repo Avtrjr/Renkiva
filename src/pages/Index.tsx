@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Hero from "@/components/Hero";
 import { LiveVideoChat } from "@/components/LiveVideoChat";
 import DiagnosticsOverlay from "@/components/DiagnosticsOverlay";
@@ -43,7 +44,9 @@ import { LegalAgreementModal } from "@/components/LegalAgreementModal";
 import { SupportButton } from "@/components/SupportButton";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { ContentItem } from "@/lib/contentProviderAPI";
+
 const Index = () => {
+  const { t } = useTranslation();
   const {
     shows,
     loading,
@@ -163,9 +166,9 @@ const Index = () => {
                     <h1 className="text-2xl font-bold bg-gradient-cyber bg-clip-text text-transparent">
                       Renkiva
                     </h1>
-                    <span className="text-sm font-semibold text-muted-foreground">Beta</span>
+                    <span className="text-sm font-semibold text-muted-foreground">{t('index.beta')}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Decentralized Streaming</p>
+                  <p className="text-xs text-muted-foreground">{t('index.decentralizedStreaming')}</p>
                 </div>
               </div>
             </a>
@@ -244,7 +247,7 @@ const Index = () => {
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto animate-fade-in" style={{
               animationDelay: '0.2s'
             }}>
-                Experience decentralized streaming without traditional internet infrastructure
+                {t('index.heroTagline')}
               </p>
               
               {/* Authentication Section */}
@@ -253,19 +256,19 @@ const Index = () => {
                   animationDelay: '0.3s'
                 }}>
                   <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold text-primary mb-2">Join Renkiva Network</h3>
+                    <h3 className="text-xl font-bold text-primary mb-2">{t('index.joinNetwork')}</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Create your account to upload content and join the decentralized streaming revolution
+                      {t('index.joinNetworkDesc')}
                     </p>
                     <Link to="/auth">
                       <Button size="lg" className="w-full bg-gradient-neon hover:shadow-glow text-lg mb-3">
-                        🚀 Sign Up Now
+                        🚀 {t('index.signUpNow')}
                       </Button>
                     </Link>
                     <p className="text-xs text-muted-foreground">
-                      Already have an account?{' '}
+                      {t('index.alreadyHaveAccount')}{' '}
                       <Link to="/auth" className="text-primary hover:underline">
-                        Sign in here
+                        {t('index.signInHere')}
                       </Link>
                     </p>
                   </CardContent>
@@ -275,7 +278,7 @@ const Index = () => {
                   animationDelay: '0.3s'
                 }}>
                   <p className="text-lg text-muted-foreground mb-4">
-                    Welcome back, <span className="text-primary font-medium">{user.email}</span>!
+                    {t('index.welcomeBack')} <span className="text-primary font-medium">{user.email}</span>!
                   </p>
                 </div>
               )}
@@ -286,17 +289,17 @@ const Index = () => {
             }}>
                 <Link to="/creator">
                   <Button size="lg" className="bg-gradient-neon hover:shadow-glow text-lg px-6 md:px-8">
-                    🎥 Start Sharing
+                    🎥 {t('index.startSharing')}
                   </Button>
                 </Link>
                 <Link to="/sponsor">
                   <Button size="lg" variant="outline" className="renkiva-button border-primary/50 hover:border-primary text-lg px-6 md:px-8">
-                    🎯 Sponsor Campaign
+                    🎯 {t('index.sponsorCampaign')}
                   </Button>
                 </Link>
                 <Link to="/library">
                   <Button size="lg" variant="outline" className="renkiva-button border-secondary/50 hover:border-secondary text-lg px-6 md:px-8">
-                    📚 Browse Library
+                    📚 {t('index.browseLibrary')}
                   </Button>
                 </Link>
               </div>
@@ -310,11 +313,11 @@ const Index = () => {
                   <CardContent className="p-4 lg:p-6">
                     <div className="mb-4 flex items-center justify-between">
                       <div>
-                        <h3 className="text-xl font-bold text-primary mb-1">🔴 Now Playing</h3>
-                        <p className="text-sm text-muted-foreground">Live from Renkiva Network</p>
+                        <h3 className="text-xl font-bold text-primary mb-1">🔴 {t('index.nowPlaying')}</h3>
+                        <p className="text-sm text-muted-foreground">{t('index.liveFromNetwork')}</p>
                       </div>
                       <Badge className="bg-red-500/20 text-red-400 border-red-500/30 animate-pulse">
-                        LIVE
+                        {t('index.live')}
                       </Badge>
                     </div>
                     
@@ -337,7 +340,7 @@ const Index = () => {
                     <div className="mt-4 text-center">
                       <p className="text-sm text-muted-foreground/80 flex items-center justify-center gap-2">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                        <strong>Zero Internet Required</strong> • Renkiva Powered
+                        <strong>{t('index.zeroInternetRequired')}</strong> • {t('index.meshPowered')}
                       </p>
                     </div>
                   </CardContent>
@@ -351,23 +354,23 @@ const Index = () => {
                 animationDelay: '0.6s'
               }}>
                   <CardContent className="p-4">
-                    <h4 className="font-bold text-secondary mb-3">📊 Live Network Stats</h4>
+                    <h4 className="font-bold text-secondary mb-3">📊 {t('index.liveNetworkStats')}</h4>
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Active Nodes:</span>
+                        <span className="text-muted-foreground">{t('index.activeNodes')}:</span>
                         <span className="font-medium text-green-400">12</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Data Streaming:</span>
+                        <span className="text-muted-foreground">{t('index.dataStreaming')}:</span>
                         <span className="font-medium text-blue-400">2.4 MB/s</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Coverage:</span>
+                        <span className="text-muted-foreground">{t('index.coverage')}:</span>
                         <span className="font-medium text-purple-400">500m radius</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Viewers:</span>
-                        <span className="font-medium text-primary">8 concurrent</span>
+                        <span className="text-muted-foreground">{t('index.viewers')}:</span>
+                        <span className="font-medium text-primary">8 {t('index.concurrent')}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -378,16 +381,16 @@ const Index = () => {
                 animationDelay: '0.8s'
               }}>
                   <CardContent className="p-4">
-                    <h4 className="font-bold text-accent mb-3">⚡ Quick Actions</h4>
+                    <h4 className="font-bold text-accent mb-3">⚡ {t('index.quickActions')}</h4>
                     <div className="space-y-2">
                       <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
-                        📱 Join as Viewer
+                        📱 {t('index.joinAsViewer')}
                       </Button>
                       <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
-                        🔗 Share Network
+                        🔗 {t('index.shareNetwork')}
                       </Button>
                       <Button size="sm" variant="outline" className="w-full justify-start renkiva-button h-7 px-2 py-1 text-xs">
-                        📡 Boost Signal
+                        📡 {t('index.boostSignal')}
                       </Button>
                     </div>
                   </CardContent>

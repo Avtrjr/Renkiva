@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,8 +9,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const Auth = () => {
+  const { t } = useTranslation();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,14 +46,14 @@ const Auth = () => {
         
         if (error) {
           if (error.message.includes('already registered')) {
-            setError('This email is already registered. Try signing in instead.');
+            setError(t('auth.emailAlreadyRegistered'));
           } else {
             setError(error.message);
           }
         } else {
           toast({
-            title: "Account Created!",
-            description: "Please check your email to verify your account.",
+            title: t('auth.accountCreated'),
+            description: t('auth.checkEmail'),
             duration: 5000,
           });
         }
@@ -59,20 +62,20 @@ const Auth = () => {
         
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
-            setError('Invalid email or password. Please try again.');
+            setError(t('auth.invalidCredentials'));
           } else {
             setError(error.message);
           }
         } else {
           toast({
-            title: "Welcome back!",
-            description: "Successfully signed in to MeshTV.",
+            title: t('auth.welcomeBack'),
+            description: t('auth.signedInSuccess'),
             duration: 3000,
           });
         }
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError(t('auth.unexpectedError'));
     } finally {
       setLoading(false);
     }
@@ -85,24 +88,27 @@ const Auth = () => {
       <div className="absolute top-32 right-20 w-6 h-6 bg-secondary rounded-full animate-float opacity-40"></div>
       <div className="absolute bottom-32 left-20 w-3 h-3 bg-primary-glow rounded-full animate-pulse-mesh opacity-50"></div>
       
-      {/* Back to Home Badge */}
-      <Badge 
-        variant="outline" 
-        className="absolute top-4 left-4 md:top-8 md:left-8 bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset cursor-pointer hover:bg-card/90 transition-colors text-xs md:text-sm"
-        onClick={() => navigate('/')}
-      >
-        ← Back to Renkiva
-      </Badge>
+      {/* Top bar with back button and language switcher */}
+      <div className="absolute top-4 left-4 right-4 md:top-8 md:left-8 md:right-8 flex justify-between items-center">
+        <Badge 
+          variant="outline" 
+          className="bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset cursor-pointer hover:bg-card/90 transition-colors text-xs md:text-sm"
+          onClick={() => navigate('/')}
+        >
+          ← {t('auth.backToRenkiva')}
+        </Badge>
+        <LanguageSwitcher />
+      </div>
 
       <Card className="w-full max-w-sm md:max-w-md bg-card/80 backdrop-blur-lg border-border/50 shadow-clay-inset mx-4">
         <CardHeader className="text-center px-4 md:px-6">
           <CardTitle className="text-xl md:text-2xl bg-aurora-1 bg-clip-text text-transparent">
-            📺 {isSignUp ? 'Join' : 'Welcome to'} Renkiva
+            📺 {isSignUp ? t('auth.joinRenkiva') : t('auth.welcomeToRenkiva')}
           </CardTitle>
           <CardDescription className="text-sm md:text-base">
             {isSignUp 
-              ? 'Create your account to start uploading and sharing content on the decentralized network'
-              : 'Sign in to upload content and join the mesh network'
+              ? t('auth.signUpDescription')
+              : t('auth.signInDescription')
             }
           </CardDescription>
         </CardHeader>
@@ -118,11 +124,11 @@ const Auth = () => {
             {isSignUp && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
+                  <Label htmlFor="username">{t('auth.username')}</Label>
                   <Input
                     id="username"
                     type="text"
-                    placeholder="Choose a username"
+                    placeholder={t('auth.usernamePlaceholder')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required={isSignUp}
@@ -131,11 +137,11 @@ const Auth = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="displayName">Display Name (Optional)</Label>
+                  <Label htmlFor="displayName">{t('auth.displayName')}</Label>
                   <Input
                     id="displayName"
                     type="text"
-                    placeholder="How should others see you?"
+                    placeholder={t('auth.displayNamePlaceholder')}
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     className="bg-background/50"
@@ -145,11 +151,11 @@ const Auth = () => {
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth.email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('auth.emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -158,11 +164,11 @@ const Auth = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.password')}</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t('auth.passwordPlaceholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -176,8 +182,8 @@ const Auth = () => {
               disabled={loading}
             >
               {loading 
-                ? (isSignUp ? 'Creating Account...' : 'Signing In...') 
-                : (isSignUp ? '🚀 Create Account' : '🔑 Sign In')
+                ? (isSignUp ? t('auth.creatingAccount') : t('auth.signingIn')) 
+                : (isSignUp ? `🚀 ${t('auth.createAccount')}` : `🔑 ${t('auth.signIn')}`)
               }
             </Button>
           </form>
@@ -196,8 +202,8 @@ const Auth = () => {
               className="text-sm md:text-base w-full"
             >
               {isSignUp 
-                ? 'Already have an account? Sign in' 
-                : "Don't have an account? Sign up"
+                ? `${t('auth.hasAccount')} ${t('auth.signIn')}` 
+                : `${t('auth.noAccount')} ${t('auth.signUp')}`
               }
             </Button>
           </div>
@@ -205,7 +211,7 @@ const Auth = () => {
           {/* Additional Info */}
           <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
             <p className="text-xs md:text-sm text-center text-muted-foreground">
-              🔒 Secure authentication with encrypted data storage
+              🔒 {t('auth.secureAuth')}
             </p>
           </div>
         </CardContent>
