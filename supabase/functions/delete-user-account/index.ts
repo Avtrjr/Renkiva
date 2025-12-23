@@ -1,9 +1,13 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit, getRemainingRequests, getResetTime } from '../_shared/rateLimiter.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Rate limit: 3 deletion attempts per hour per user (very strict for this sensitive operation)
+const MAX_DELETE_ATTEMPTS_PER_HOUR = 3;
 
 Deno.serve(async (req) => {
   // Handle CORS preflight
@@ -36,6 +40,30 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Invalid authentication' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check rate limit for this user
+    if (!checkRateLimit(user.id, MAX_DELETE_ATTEMPTS_PER_HOUR)) {
+      const remaining = getRemainingRequests(user.id, MAX_DELETE_ATTEMPTS_PER_HOUR);
+      const resetSeconds = getResetTime(user.id);
+      console.warn(`Rate limit exceeded for user: ${user.id}`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded',
+          message: 'Too many deletion attempts. Please try again later.',
+          retryAfterSeconds: resetSeconds
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': String(resetSeconds),
+            'X-RateLimit-Remaining': String(remaining),
+            'X-RateLimit-Reset': String(resetSeconds)
+          } 
+        }
       );
     }
 
