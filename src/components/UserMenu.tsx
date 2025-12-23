@@ -1,6 +1,6 @@
 import { User } from '@supabase/supabase-js';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
+  const { t } = useTranslation();
   const { signOut } = useAuth();
   const { toast } = useToast();
 
@@ -27,14 +28,14 @@ const UserMenu = ({ user }: UserMenuProps) => {
     const { error } = await signOut();
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to sign out. Please try again.",
+        title: t('common.error'),
+        description: t('userMenu.signOutError'),
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Signed out",
-        description: "You've been successfully signed out.",
+        title: t('userMenu.signedOut'),
+        description: t('userMenu.signedOutDesc'),
       });
     }
   };
@@ -59,7 +60,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.user_metadata?.display_name || user.user_metadata?.username || 'User'}
+              {user.user_metadata?.display_name || user.user_metadata?.username || t('userMenu.user')}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
@@ -70,39 +71,39 @@ const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuItem asChild>
           <Link to="/dashboard" className="flex items-center">
             <Settings className="mr-2 h-4 w-4" />
-            <span>Dashboard</span>
+            <span>{t('nav.dashboard')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <UserIcon className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          <span>{t('nav.profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Upload className="mr-2 h-4 w-4" />
-          <span>Upload Content</span>
+          <span>{t('nav.uploadContent')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/library" className="flex items-center">
             <Video className="mr-2 h-4 w-4" />
-            <span>Content Library</span>
+            <span>{t('nav.contentLibrary')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/mesh-library" className="flex items-center">
             <Video className="mr-2 h-4 w-4" />
-            <span>Public Domain Library</span>
+            <span>{t('nav.publicDomainLibrary')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/settings" className="flex items-center">
             <Cog className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>{t('nav.settings')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign out</span>
+          <span>{t('nav.signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
