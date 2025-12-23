@@ -47,7 +47,11 @@
       "twitterPlaceholder": "https://twitter.com/usuario",
       "githubPlaceholder": "https://github.com/usuario",
       "websitePlaceholder": "https://seusite.com.br",
-      "saveProfile": "Salvar Perfil"
+      "saveProfile": "Salvar Perfil",
+      "invalidFileType": "Por favor, selecione um arquivo de imagem",
+      "fileTooLarge": "A imagem deve ter menos de 2MB",
+      "avatarUpdated": "Avatar atualizado com sucesso",
+      "avatarError": "Falha ao enviar avatar"
     },
     "privacy": {
       "title": "Privacidade",
@@ -55,6 +59,8 @@
       "location": "Compartilhamento de Localização",
       "locationDescription": "Permita compartilhar sua localização para descoberta na rede mesh. Isso ajuda dispositivos próximos a encontrá-lo e conectar-se.",
       "consentGiven": "Consentimento dado em {{date}}",
+      "dataRetention": "Retenção de Dados",
+      "dataRetentionDescription": "Os dados de localização são automaticamente excluídos após 90 dias. Suas coordenadas são arredondadas para ~1km de precisão para proteger sua privacidade.",
       "dataExport": "Exportar seus Dados",
       "dataExportDescription": "Baixe uma cópia de todos os seus dados pessoais armazenados em nossos sistemas.",
       "deleteAccount": "Excluir Conta",
@@ -92,6 +98,11 @@
       "changePasswordDescription": "Atualize sua senha para manter sua conta segura.",
       "twoFactor": "Autenticação de Dois Fatores",
       "twoFactorDescription": "Adicione uma camada extra de segurança à sua conta."
+    },
+    "legal": {
+      "title": "Legal",
+      "privacyPolicy": "Política de Privacidade",
+      "termsOfUse": "Termos de Uso"
     }
   },
   "auth": {

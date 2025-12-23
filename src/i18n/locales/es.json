@@ -47,7 +47,11 @@
       "twitterPlaceholder": "https://twitter.com/usuario",
       "githubPlaceholder": "https://github.com/usuario",
       "websitePlaceholder": "https://tusitio.com",
-      "saveProfile": "Guardar Perfil"
+      "saveProfile": "Guardar Perfil",
+      "invalidFileType": "Por favor selecciona un archivo de imagen",
+      "fileTooLarge": "La imagen debe ser menor a 2MB",
+      "avatarUpdated": "Avatar actualizado exitosamente",
+      "avatarError": "Error al subir el avatar"
     },
     "privacy": {
       "title": "Privacidad",
@@ -55,6 +59,8 @@
       "location": "Compartir Ubicación",
       "locationDescription": "Permite compartir tu ubicación para el descubrimiento en la red mesh. Esto ayuda a que dispositivos cercanos te encuentren y conecten.",
       "consentGiven": "Consentimiento dado el {{date}}",
+      "dataRetention": "Retención de Datos",
+      "dataRetentionDescription": "Los datos de ubicación se eliminan automáticamente después de 90 días. Tus coordenadas se redondean a ~1km de precisión para proteger tu privacidad.",
       "dataExport": "Exportar tus Datos",
       "dataExportDescription": "Descarga una copia de todos tus datos personales almacenados en nuestros sistemas.",
       "deleteAccount": "Eliminar Cuenta",
@@ -92,6 +98,11 @@
       "changePasswordDescription": "Actualiza tu contraseña para mantener tu cuenta segura.",
       "twoFactor": "Autenticación de Dos Factores",
       "twoFactorDescription": "Agrega una capa extra de seguridad a tu cuenta."
+    },
+    "legal": {
+      "title": "Legal",
+      "privacyPolicy": "Política de Privacidad",
+      "termsOfUse": "Términos de Uso"
     }
   },
   "auth": {
