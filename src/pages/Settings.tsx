@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from 'next-themes';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocationConsent } from '@/hooks/useLocationConsent';
 import { DataExportButton } from '@/components/DataExportButton';
@@ -11,12 +12,13 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function Settings() {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
   const { user, loading: authLoading } = useAuth();
   const { hasConsent, loading: consentLoading, grantConsent, revokeConsent, consentGivenAt } = useLocationConsent();
   const [locationToggle, setLocationToggle] = useState(false);
@@ -309,6 +311,46 @@ export default function Settings() {
             </CardContent>
           </Card>
         )}
+
+        {/* Appearance Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="h-5 w-5" />
+              Appearance
+            </CardTitle>
+            <CardDescription>
+              Customize how RENKIVA looks
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                {theme === 'dark' ? (
+                  <Moon className="h-5 w-5 text-primary mt-0.5" />
+                ) : (
+                  <Sun className="h-5 w-5 text-primary mt-0.5" />
+                )}
+                <div className="space-y-1">
+                  <Label htmlFor="theme-toggle" className="font-medium">
+                    Dark Mode
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Switch between light and dark themes for comfortable viewing.
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="theme-toggle"
+                checked={theme === 'dark'}
+                onCheckedChange={(checked) => {
+                  setTheme(checked ? 'dark' : 'light');
+                  toast.success(checked ? 'Dark mode enabled' : 'Light mode enabled');
+                }}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Account Section */}
         <Card>
