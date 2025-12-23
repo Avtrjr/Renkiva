@@ -7,6 +7,7 @@ import { fetchAllContent } from "@/lib/contentProviderAPI";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import UserMenu from "@/components/UserMenu";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Hero = () => {
   const [isDiscovering, setIsDiscovering] = useState(false);
@@ -89,7 +90,9 @@ const Hero = () => {
       <div className="container mx-auto px-6 pt-8">
         <div className="flex flex-col items-center text-center mb-16">
           {/* Auth Controls */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center gap-3 mb-8">
+            <LanguageSwitcher />
+            
             <Badge 
               variant="outline" 
               className="bg-card/80 backdrop-blur-lg border-border/50 text-foreground shadow-clay-inset"
