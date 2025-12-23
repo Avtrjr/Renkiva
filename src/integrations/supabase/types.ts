@@ -633,12 +633,15 @@ export type Database = {
           data_export_requested_at: string | null
           display_name: string | null
           email_notifications: boolean | null
+          github_url: string | null
           id: string
           legal_accepted_at: string | null
           location_consent: boolean | null
           push_notifications: boolean | null
+          twitter_url: string | null
           updated_at: string
           username: string
+          website_url: string | null
         }
         Insert: {
           accepted_legal?: boolean | null
@@ -649,12 +652,15 @@ export type Database = {
           data_export_requested_at?: string | null
           display_name?: string | null
           email_notifications?: boolean | null
+          github_url?: string | null
           id: string
           legal_accepted_at?: string | null
           location_consent?: boolean | null
           push_notifications?: boolean | null
+          twitter_url?: string | null
           updated_at?: string
           username: string
+          website_url?: string | null
         }
         Update: {
           accepted_legal?: boolean | null
@@ -665,12 +671,15 @@ export type Database = {
           data_export_requested_at?: string | null
           display_name?: string | null
           email_notifications?: boolean | null
+          github_url?: string | null
           id?: string
           legal_accepted_at?: string | null
           location_consent?: boolean | null
           push_notifications?: boolean | null
+          twitter_url?: string | null
           updated_at?: string
           username?: string
+          website_url?: string | null
         }
         Relationships: []
       }
