@@ -24,6 +24,7 @@ import Settings from "./pages/Settings";
 import { AuthProvider } from "./hooks/useAuth";
 import { LocationConsentModal } from "./components/LocationConsentModal";
 import { useLocationConsent } from "./hooks/useLocationConsent";
+import { LanguageDetectionToast } from "./components/LanguageDetectionToast";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ function AppContent() {
     <>
       <Toaster />
       <Sonner />
+      <LanguageDetectionToast />
       <LocationConsentModal
         open={shouldShowConsentModal}
         onConsent={grantConsent}

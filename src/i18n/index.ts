@@ -22,12 +22,12 @@ const resources = {
 };
 
 // Get initial language from localStorage, browser preferences, or default to 'en'
-const getInitialLanguage = (): string => {
+const getInitialLanguage = (): { language: string; wasAutoDetected: boolean } => {
   if (typeof window !== 'undefined') {
     // First check localStorage for user preference
     const stored = localStorage.getItem('i18n-language');
     if (stored && resources[stored as keyof typeof resources]) {
-      return stored;
+      return { language: stored, wasAutoDetected: false };
     }
     
     // Then try to detect from browser preferences
@@ -36,18 +36,24 @@ const getInitialLanguage = (): string => {
       // Check exact match first (e.g., 'en-US' -> 'en')
       const shortLang = lang.split('-')[0].toLowerCase();
       if (resources[shortLang as keyof typeof resources]) {
-        return shortLang;
+        // Mark as auto-detected for first-time notification
+        if (!sessionStorage.getItem('i18n-auto-detected-shown')) {
+          sessionStorage.setItem('i18n-auto-detected', shortLang);
+        }
+        return { language: shortLang, wasAutoDetected: true };
       }
     }
   }
-  return 'en';
+  return { language: 'en', wasAutoDetected: false };
 };
+
+const initialLanguageResult = getInitialLanguage();
 
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: getInitialLanguage(),
+    lng: initialLanguageResult.language,
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false, // React already escapes values

@@ -188,6 +188,8 @@
     "profileUpdated": "Profile updated successfully",
     "profileError": "Failed to update profile",
     "languageChanged": "Language set to {{language}}",
+    "languageDetected": "Language set to {{language}}",
+    "languageDetectedDescription": "We detected your browser language. You can change this in Settings.",
     "themeLight": "Light mode enabled",
     "themeDark": "Dark mode enabled",
     "themeSystem": "Following system theme",
