@@ -41,6 +41,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLegalAgreement } from "@/hooks/useLegalAgreement";
 import { LegalAgreementModal } from "@/components/LegalAgreementModal";
 import { SupportButton } from "@/components/SupportButton";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { ContentItem } from "@/lib/contentProviderAPI";
 const Index = () => {
   const {
@@ -168,8 +169,11 @@ const Index = () => {
                 </div>
               </div>
             </a>
-            <div className="hidden sm:block">
-              <SupportButton />
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <div className="hidden sm:block">
+                <SupportButton />
+              </div>
             </div>
           </div>
         </div>
