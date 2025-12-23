@@ -19,14 +19,24 @@ import { CreatorOnboarding } from "./components/CreatorOnboarding";
 import { SponsorOnboarding } from "./components/SponsorOnboarding";
 import TermsOfUse from "./pages/TermsOfUse";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import { AuthProvider } from "./hooks/useAuth";
+import { LocationConsentModal } from "./components/LocationConsentModal";
+import { useLocationConsent } from "./hooks/useLocationConsent";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+function AppContent() {
+  const { shouldShowConsentModal, grantConsent, revokeConsent } = useLocationConsent();
+
+  return (
+    <>
       <Toaster />
       <Sonner />
+      <LocationConsentModal
+        open={shouldShowConsentModal}
+        onConsent={grantConsent}
+        onDecline={revokeConsent}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -36,13 +46,12 @@ const App = () => (
           <Route path="/library/:genre" element={<LibraryPage />} />
           <Route path="/mesh-library" element={<MeshLibraryExplorer />} />
           <Route path="/renkiva" element={<RENKIVAApp />} />
-        <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
-        <Route path="/mass-import" element={<MassImportDashboard />} />
-        <Route path="/storage" element={<StorageDashboard />} />
+          <Route path="/mesh-network" element={<MeshNetworkDashboard />} />
+          <Route path="/mass-import" element={<MassImportDashboard />} />
+          <Route path="/storage" element={<StorageDashboard />} />
           <Route path="/pitch" element={<PitchDeck />} />
-        <Route path="/creator" element={<CreatorOnboarding />} />
-        <Route path="/sponsor" element={<SponsorOnboarding />} />
-        <Route path="/library" element={<LibraryPage />} />
+          <Route path="/creator" element={<CreatorOnboarding />} />
+          <Route path="/sponsor" element={<SponsorOnboarding />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           <Route path="/legal/terms-of-use" element={<TermsOfUse />} />
           <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
@@ -50,6 +59,16 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+    </>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
