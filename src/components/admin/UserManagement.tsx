@@ -6,6 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { UserPlus, Trash2, Search, Crown, Shield, User as UserIcon, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
@@ -35,6 +45,7 @@ export default function UserManagement() {
   const [assigningRole, setAssigningRole] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [confirmRemove, setConfirmRemove] = useState<{ userId: string; role: AppRole; username: string } | null>(null);
 
   useEffect(() => {
     loadUsers();
@@ -126,9 +137,18 @@ export default function UserManagement() {
     }
   };
 
+  const handleRemoveRoleClick = (userId: string, role: AppRole, username: string) => {
+    if (role === 'admin') {
+      setConfirmRemove({ userId, role, username });
+    } else {
+      removeRole(userId, role);
+    }
+  };
+
   const removeRole = async (userId: string, role: AppRole) => {
     try {
       setAssigningRole(userId);
+      setConfirmRemove(null);
       
       const { error } = await supabase
         .from('user_roles')
@@ -307,7 +327,7 @@ export default function UserManagement() {
                             {getRoleIcon(role)}
                             {role}
                             <button
-                              onClick={() => removeRole(user.id, role)}
+                              onClick={() => handleRemoveRoleClick(user.id, role, user.display_name || user.username)}
                               disabled={assigningRole === user.id}
                               className="ml-1 hover:text-destructive transition-colors"
                               aria-label={`Remove ${role} role`}
@@ -380,6 +400,33 @@ export default function UserManagement() {
           </div>
         )}
       </CardContent>
+
+      {/* Admin Role Removal Confirmation Dialog */}
+      <AlertDialog open={!!confirmRemove} onOpenChange={(open) => !open && setConfirmRemove(null)}>
+        <AlertDialogContent className="bg-background">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Crown className="h-5 w-5 text-destructive" />
+              Remove Admin Role?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              You are about to remove the <strong>admin</strong> role from{' '}
+              <strong>{confirmRemove?.username}</strong>. This will revoke their administrative privileges.
+              <br /><br />
+              This action can be undone by reassigning the role later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => confirmRemove && removeRole(confirmRemove.userId, confirmRemove.role)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remove Admin Role
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }
