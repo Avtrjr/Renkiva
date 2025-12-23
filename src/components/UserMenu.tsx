@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { LogOut, Upload, User as UserIcon, Settings, Video, Cog } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { LogOut, Upload, User as UserIcon, Settings, Video, Cog, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface UserMenuProps {
@@ -23,6 +25,23 @@ const UserMenu = ({ user }: UserMenuProps) => {
   const { t } = useTranslation();
   const { signOut } = useAuth();
   const { toast } = useToast();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminRole = async () => {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .in('role', ['admin', 'moderator']);
+      
+      if (!error && data && data.length > 0) {
+        setIsAdmin(true);
+      }
+    };
+
+    checkAdminRole();
+  }, [user.id]);
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -100,6 +119,17 @@ const UserMenu = ({ user }: UserMenuProps) => {
             <span>{t('nav.settings')}</span>
           </Link>
         </DropdownMenuItem>
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/admin" className="flex items-center text-primary">
+                <Shield className="me-2 h-4 w-4" />
+                <span>{t('nav.adminDashboard', 'Admin Dashboard')}</span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="me-2 h-4 w-4" />
