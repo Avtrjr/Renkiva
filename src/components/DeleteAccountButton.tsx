@@ -34,8 +34,30 @@ export function DeleteAccountButton() {
     setLoading(true);
 
     try {
-      // Sign out first
-      await supabase.auth.signOut();
+      // Get the current session for authorization
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('No active session');
+      }
+
+      // Call the edge function to delete all user data
+      const response = await fetch(
+        'https://btsriforcmdugnuemlhx.supabase.co/functions/v1/delete-user-account',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete account');
+      }
 
       // Clear all local storage
       localStorage.clear();
@@ -54,8 +76,8 @@ export function DeleteAccountButton() {
       }
 
       toast({
-        title: "Account deletion initiated",
-        description: "Your account and all associated data will be removed within 30 days.",
+        title: "Account deleted",
+        description: "Your account and all associated data have been permanently removed.",
       });
 
       setOpen(false);
@@ -64,7 +86,7 @@ export function DeleteAccountButton() {
       console.error('Delete error:', error);
       toast({
         title: "Deletion failed",
-        description: "Unable to delete your account. Please contact support.",
+        description: error instanceof Error ? error.message : "Unable to delete your account. Please contact support.",
         variant: "destructive",
       });
     } finally {
