@@ -22,6 +22,7 @@ import { SponsorOnboarding } from "./components/SponsorOnboarding";
 import TermsOfUse from "./pages/TermsOfUse";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Settings from "./pages/Settings";
+import AdminDashboard from "./pages/AdminDashboard";
 import { AuthProvider } from "./hooks/useAuth";
 import { LocationConsentModal } from "./components/LocationConsentModal";
 import { useLocationConsent } from "./hooks/useLocationConsent";
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/sponsor" element={<SponsorOnboarding />} />
           <Route path="/stream/:id" element={<StreamPage />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/legal/terms-of-use" element={<TermsOfUse />} />
           <Route path="/legal/privacy-policy" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -43,11 +43,24 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Use service role client for logging
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
     // Check rate limit for this user
     if (!checkRateLimit(user.id, MAX_DELETE_ATTEMPTS_PER_HOUR)) {
       const remaining = getRemainingRequests(user.id, MAX_DELETE_ATTEMPTS_PER_HOUR);
       const resetSeconds = getResetTime(user.id);
       console.warn(`Rate limit exceeded for user: ${user.id}`);
+      
+      // Log the rate limit violation
+      await supabaseAdmin.from('rate_limit_violations').insert({
+        user_id: user.id,
+        endpoint: 'delete-user-account',
+        ip_address: req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || null,
+        user_agent: req.headers.get('user-agent') || null,
+        violation_count: 1
+      });
+
       return new Response(
         JSON.stringify({ 
           error: 'Rate limit exceeded',
@@ -67,10 +80,17 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log(`Starting account deletion for user: ${user.id}`);
+    // Log the account deletion activity
+    await supabaseAdmin.from('user_activity_logs').insert({
+      user_id: user.id,
+      action: 'account_deletion_initiated',
+      resource_type: 'account',
+      resource_id: user.id,
+      ip_address: req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || null,
+      metadata: { timestamp: new Date().toISOString() }
+    });
 
-    // Use service role client to delete all user data
-    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+    console.log(`Starting account deletion for user: ${user.id}`);
 
     // First, get the internal user ID from the users table
     const { data: internalUser } = await supabaseAdmin

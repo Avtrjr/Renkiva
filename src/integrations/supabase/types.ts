@@ -1166,16 +1166,7 @@ export type Database = {
       }
     }
     Views: {
-      admin_dashboard_stats: {
-        Row: {
-          active_nodes: number | null
-          activity_24h: number | null
-          total_shows: number | null
-          total_users: number | null
-          violations_24h: number | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       calculate_storage_usage: {
@@ -1204,6 +1195,7 @@ export type Database = {
           video_url: string
         }[]
       }
+      get_admin_dashboard_stats: { Args: never; Returns: Json }
       get_sponsor_stats: { Args: { sponsor_user_id: string }; Returns: Json }
       has_role: {
         Args: {
