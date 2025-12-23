@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette } from 'lucide-react';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -29,6 +29,9 @@ export default function Settings() {
   // Profile state
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
+  const [twitterUrl, setTwitterUrl] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -50,7 +53,7 @@ export default function Settings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('display_name, avatar_url, bio, email_notifications, push_notifications')
+          .select('display_name, avatar_url, bio, twitter_url, github_url, website_url, email_notifications, push_notifications')
           .eq('id', user.id)
           .maybeSingle();
         
@@ -61,6 +64,9 @@ export default function Settings() {
         if (data) {
           setDisplayName(data.display_name || '');
           setBio(data.bio || '');
+          setTwitterUrl(data.twitter_url || '');
+          setGithubUrl(data.github_url || '');
+          setWebsiteUrl(data.website_url || '');
           setAvatarUrl(data.avatar_url);
           setEmailNotifications(data.email_notifications ?? true);
           setPushNotifications(data.push_notifications ?? false);
@@ -132,6 +138,9 @@ export default function Settings() {
         .update({ 
           display_name: displayName.trim(),
           bio: bio.trim(),
+          twitter_url: twitterUrl.trim() || null,
+          github_url: githubUrl.trim() || null,
+          website_url: websiteUrl.trim() || null,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
@@ -336,17 +345,66 @@ export default function Settings() {
                     {bio.length}/300
                   </p>
                 </div>
-                <Button 
-                  onClick={handleSaveProfile} 
-                  disabled={saving || profileLoading}
-                  className="w-full"
-                >
-                  {saving ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : null}
-                  Save Profile
-                </Button>
               </div>
+
+              <Separator />
+
+              {/* Social Links */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Link className="h-4 w-4 text-muted-foreground" />
+                  <Label className="font-medium">Social Links</Label>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Twitter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <Input
+                      value={twitterUrl}
+                      onChange={(e) => setTwitterUrl(e.target.value)}
+                      placeholder="https://twitter.com/username"
+                      disabled={profileLoading}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Github className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <Input
+                      value={githubUrl}
+                      onChange={(e) => setGithubUrl(e.target.value)}
+                      placeholder="https://github.com/username"
+                      disabled={profileLoading}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <Input
+                      value={websiteUrl}
+                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                      placeholder="https://yourwebsite.com"
+                      disabled={profileLoading}
+                    />
+                  </div>
+                </div>
+                
+                <p className="text-xs text-muted-foreground">
+                  Add links to your social profiles or personal website.
+                </p>
+              </div>
+
+              <Separator />
+
+              <Button 
+                onClick={handleSaveProfile} 
+                disabled={saving || profileLoading}
+                className="w-full"
+              >
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : null}
+                Save Profile
+              </Button>
             </CardContent>
           </Card>
         )}
