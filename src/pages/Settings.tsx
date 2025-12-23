@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocationConsent } from '@/hooks/useLocationConsent';
 import { DataExportButton } from '@/components/DataExportButton';
@@ -17,10 +18,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link, Monitor, Languages } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { changeLanguage, languageNames } from '@/i18n';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+  const { t, i18n } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const { hasConsent, loading: consentLoading, grantConsent, revokeConsent, consentGivenAt } = useLocationConsent();
   const [locationToggle, setLocationToggle] = useState(false);
@@ -141,11 +144,11 @@ export default function Settings() {
         .eq('id', user.id);
       
       if (error) throw error;
-      toast.success(checked ? 'Email notifications enabled' : 'Email notifications disabled');
+      toast.success(checked ? t('toast.emailNotificationsEnabled') : t('toast.emailNotificationsDisabled'));
     } catch (err) {
       console.error('Error updating email notifications:', err);
       setEmailNotifications(!checked); // Revert on error
-      toast.error('Failed to update notification preference');
+      toast.error(t('toast.profileError'));
     }
   };
 
@@ -160,11 +163,11 @@ export default function Settings() {
         .eq('id', user.id);
       
       if (error) throw error;
-      toast.success(checked ? 'Push notifications enabled' : 'Push notifications disabled');
+      toast.success(checked ? t('toast.pushNotificationsEnabled') : t('toast.pushNotificationsDisabled'));
     } catch (err) {
       console.error('Error updating push notifications:', err);
       setPushNotifications(!checked); // Revert on error
-      toast.error('Failed to update notification preference');
+      toast.error(t('toast.profileError'));
     }
   };
 
@@ -174,6 +177,9 @@ export default function Settings() {
     const previousValue = languagePreference;
     setLanguagePreference(value);
     
+    // Update i18n immediately
+    changeLanguage(value);
+    
     try {
       const { error } = await supabase
         .from('profiles')
@@ -182,21 +188,12 @@ export default function Settings() {
       
       if (error) throw error;
       
-      const languageLabels: Record<string, string> = {
-        en: 'English',
-        es: 'Español',
-        fr: 'Français',
-        de: 'Deutsch',
-        pt: 'Português',
-        zh: '中文',
-        ja: '日本語',
-        ko: '한국어'
-      };
-      toast.success(`Language set to ${languageLabels[value] || value}`);
+      toast.success(t('toast.languageChanged', { language: languageNames[value] || value }));
     } catch (err) {
       console.error('Error updating language preference:', err);
       setLanguagePreference(previousValue);
-      toast.error('Failed to update language preference');
+      changeLanguage(previousValue);
+      toast.error(t('toast.profileError'));
     }
   };
 
@@ -215,7 +212,7 @@ export default function Settings() {
     });
     
     if (twitterError || githubError || websiteError) {
-      toast.error('Please fix the URL errors before saving');
+      toast.error(t('toast.urlError'));
       return;
     }
     
@@ -235,10 +232,10 @@ export default function Settings() {
       
       if (error) throw error;
       
-      toast.success('Profile updated successfully');
+      toast.success(t('toast.profileUpdated'));
     } catch (err) {
       console.error('Error updating profile:', err);
-      toast.error('Failed to update profile');
+      toast.error(t('toast.profileError'));
     } finally {
       setSaving(false);
     }
@@ -315,7 +312,7 @@ export default function Settings() {
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="animate-pulse text-muted-foreground">{t('common.loading')}</div>
       </div>
     );
   }
@@ -328,7 +325,7 @@ export default function Settings() {
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-semibold">Settings</h1>
+          <h1 className="text-xl font-semibold">{t('settings.title')}</h1>
         </div>
       </header>
 
@@ -339,10 +336,10 @@ export default function Settings() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5" />
-                Profile
+                {t('settings.profile.title')}
               </CardTitle>
               <CardDescription>
-                Customize your public profile
+                {t('settings.profile.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -373,9 +370,9 @@ export default function Settings() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <p className="font-medium text-sm">Profile Photo</p>
+                  <p className="font-medium text-sm">{t('settings.profile.photo')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Click to upload a new photo (max 2MB)
+                    {t('settings.profile.photoDescription')}
                   </p>
                 </div>
               </div>
@@ -384,13 +381,13 @@ export default function Settings() {
 
               {/* Display Name */}
               <div className="space-y-2">
-                <Label htmlFor="display-name">Display Name</Label>
+                <Label htmlFor="display-name">{t('settings.profile.displayName')}</Label>
                 <div className="flex gap-2">
                   <Input
                     id="display-name"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Enter your display name"
+                    placeholder={t('settings.profile.displayNamePlaceholder')}
                     disabled={profileLoading}
                     maxLength={50}
                   />
@@ -401,12 +398,12 @@ export default function Settings() {
                     {saving ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      'Save'
+                      t('common.save')
                     )}
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  This is how you appear to other users in the mesh network.
+                  {t('settings.profile.displayNameDescription')}
                 </p>
               </div>
 
@@ -414,12 +411,12 @@ export default function Settings() {
 
               {/* Bio */}
               <div className="space-y-2">
-                <Label htmlFor="bio">About</Label>
+                <Label htmlFor="bio">{t('settings.profile.bio')}</Label>
                 <Textarea
                   id="bio"
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Tell others a bit about yourself..."
+                  placeholder={t('settings.profile.bioPlaceholder')}
                   disabled={profileLoading}
                   maxLength={300}
                   rows={4}
@@ -427,7 +424,7 @@ export default function Settings() {
                 />
                 <div className="flex justify-between items-center">
                   <p className="text-xs text-muted-foreground">
-                    A short bio visible on your profile.
+                    {t('settings.profile.bioDescription')}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {bio.length}/300
@@ -441,7 +438,7 @@ export default function Settings() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Link className="h-4 w-4 text-muted-foreground" />
-                  <Label className="font-medium">Social Links</Label>
+                  <Label className="font-medium">{t('settings.profile.socialLinks')}</Label>
                 </div>
                 
                 <div className="space-y-3">
@@ -451,7 +448,7 @@ export default function Settings() {
                       <Input
                         value={twitterUrl}
                         onChange={(e) => handleSocialUrlChange(e.target.value, 'twitter')}
-                        placeholder="https://twitter.com/username"
+                        placeholder={t('settings.profile.twitterPlaceholder')}
                         disabled={profileLoading}
                         className={urlErrors.twitter ? 'border-destructive' : ''}
                       />
@@ -467,7 +464,7 @@ export default function Settings() {
                       <Input
                         value={githubUrl}
                         onChange={(e) => handleSocialUrlChange(e.target.value, 'github')}
-                        placeholder="https://github.com/username"
+                        placeholder={t('settings.profile.githubPlaceholder')}
                         disabled={profileLoading}
                         className={urlErrors.github ? 'border-destructive' : ''}
                       />
@@ -483,7 +480,7 @@ export default function Settings() {
                       <Input
                         value={websiteUrl}
                         onChange={(e) => handleSocialUrlChange(e.target.value, 'website')}
-                        placeholder="https://yourwebsite.com"
+                        placeholder={t('settings.profile.websitePlaceholder')}
                         disabled={profileLoading}
                         className={urlErrors.website ? 'border-destructive' : ''}
                       />
@@ -495,7 +492,7 @@ export default function Settings() {
                 </div>
                 
                 <p className="text-xs text-muted-foreground">
-                  Add links to your social profiles or personal website.
+                  {t('settings.profile.socialLinksDescription')}
                 </p>
               </div>
 
@@ -509,7 +506,7 @@ export default function Settings() {
                 {saving ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 ) : null}
-                Save Profile
+                {t('settings.profile.saveProfile')}
               </Button>
             </CardContent>
           </Card>
@@ -520,10 +517,10 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Palette className="h-5 w-5" />
-              Appearance
+              {t('settings.appearance.title')}
             </CardTitle>
             <CardDescription>
-              Customize how RENKIVA looks
+              {t('settings.appearance.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -538,10 +535,10 @@ export default function Settings() {
                 )}
                 <div className="space-y-1">
                   <Label htmlFor="theme-select" className="font-medium">
-                    Theme
+                    {t('settings.appearance.theme')}
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Choose your preferred color scheme or follow your system settings.
+                    {t('settings.appearance.themeDescription')}
                   </p>
                 </div>
               </div>
@@ -549,34 +546,30 @@ export default function Settings() {
                 value={theme}
                 onValueChange={(value) => {
                   setTheme(value);
-                  const labels: Record<string, string> = {
-                    light: 'Light mode enabled',
-                    dark: 'Dark mode enabled',
-                    system: 'Following system theme'
-                  };
-                  toast.success(labels[value] || 'Theme updated');
+                  const toastKey = value === 'light' ? 'themeLight' : value === 'dark' ? 'themeDark' : 'themeSystem';
+                  toast.success(t(`toast.${toastKey}`));
                 }}
               >
                 <SelectTrigger id="theme-select" className="w-[130px]">
-                  <SelectValue placeholder="Select theme" />
+                  <SelectValue placeholder={t('settings.appearance.theme')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="light">
                     <div className="flex items-center gap-2">
                       <Sun className="h-4 w-4" />
-                      Light
+                      {t('settings.appearance.light')}
                     </div>
                   </SelectItem>
                   <SelectItem value="dark">
                     <div className="flex items-center gap-2">
                       <Moon className="h-4 w-4" />
-                      Dark
+                      {t('settings.appearance.dark')}
                     </div>
                   </SelectItem>
                   <SelectItem value="system">
                     <div className="flex items-center gap-2">
                       <Monitor className="h-4 w-4" />
-                      System
+                      {t('settings.appearance.system')}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -589,10 +582,10 @@ export default function Settings() {
                 <Languages className="h-5 w-5 text-primary mt-0.5" />
                 <div className="space-y-1">
                   <Label htmlFor="language-select" className="font-medium">
-                    Language
+                    {t('settings.appearance.language')}
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Select your preferred language for the app interface.
+                    {t('settings.appearance.languageDescription')}
                   </p>
                 </div>
               </div>
@@ -623,22 +616,22 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
-              Account
+              {t('settings.account.title')}
             </CardTitle>
             <CardDescription>
-              Manage your account information
+              {t('settings.account.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {user ? (
               <div className="space-y-2">
-                <div className="text-sm text-muted-foreground">Email</div>
+                <div className="text-sm text-muted-foreground">{t('settings.account.email')}</div>
                 <div className="font-medium">{user.email}</div>
               </div>
             ) : (
               <div className="text-sm text-muted-foreground">
                 <Button variant="outline" onClick={() => navigate('/auth')}>
-                  Sign in to manage your account
+                  {t('auth.signIn')}
                 </Button>
               </div>
             )}
@@ -650,10 +643,10 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Notifications
+              {t('settings.notifications.title')}
             </CardTitle>
             <CardDescription>
-              Manage how you receive updates and alerts
+              {t('settings.notifications.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -663,10 +656,10 @@ export default function Settings() {
                 <Mail className="h-5 w-5 text-primary mt-0.5" />
                 <div className="space-y-1">
                   <Label htmlFor="email-notifications" className="font-medium">
-                    Email Notifications
+                    {t('settings.notifications.email')}
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Receive updates about new content, network activity, and important announcements via email.
+                    {t('settings.notifications.emailDescription')}
                   </p>
                 </div>
               </div>
@@ -685,10 +678,10 @@ export default function Settings() {
                 <Smartphone className="h-5 w-5 text-primary mt-0.5" />
                 <div className="space-y-1">
                   <Label htmlFor="push-notifications" className="font-medium">
-                    Push Notifications
+                    {t('settings.notifications.push')}
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Get real-time alerts on your device when nearby content becomes available or when your broadcasts are viewed.
+                    {t('settings.notifications.pushDescription')}
                   </p>
                 </div>
               </div>
@@ -706,10 +699,10 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5" />
-              Privacy & Data
+              {t('settings.privacy.title')}
             </CardTitle>
             <CardDescription>
-              Control how your data is collected and used
+              {t('settings.privacy.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -719,14 +712,14 @@ export default function Settings() {
                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
                 <div className="space-y-1">
                   <Label htmlFor="location-consent" className="font-medium">
-                    Location Access
+                    {t('settings.privacy.location')}
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Allow RENKIVA to use your approximate location (~1km precision) for mesh network optimization and regional content.
+                    {t('settings.privacy.locationDescription')}
                   </p>
                   {consentGivenAt && hasConsent && (
                     <p className="text-xs text-muted-foreground">
-                      Enabled on {consentGivenAt.toLocaleDateString()}
+                      {t('settings.privacy.consentGiven', { date: consentGivenAt.toLocaleDateString() })}
                     </p>
                   )}
                 </div>
@@ -759,9 +752,9 @@ export default function Settings() {
               <div className="flex items-start gap-3">
                 <Download className="h-5 w-5 text-blue-500 mt-0.5" />
                 <div className="space-y-1">
-                  <p className="font-medium text-sm">Export Your Data</p>
+                  <p className="font-medium text-sm">{t('settings.privacy.dataExport')}</p>
                   <p className="text-sm text-muted-foreground">
-                    Download a copy of all your data in machine-readable JSON format (GDPR Article 20).
+                    {t('settings.privacy.dataExportDescription')}
                   </p>
                 </div>
               </div>
@@ -775,18 +768,18 @@ export default function Settings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-destructive">
               <Trash2 className="h-5 w-5" />
-              Danger Zone
+              {t('settings.privacy.deleteAccount')}
             </CardTitle>
             <CardDescription>
-              Irreversible actions that affect your account
+              {t('settings.privacy.deleteAccountDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
-                <p className="font-medium text-sm">Delete Account</p>
+                <p className="font-medium text-sm">{t('settings.privacy.deleteAccount')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Permanently delete your account and all associated data. This action cannot be undone.
+                  {t('settings.privacy.deleteAccountDescription')}
                 </p>
               </div>
               <DeleteAccountButton />
