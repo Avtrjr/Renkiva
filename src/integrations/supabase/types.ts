@@ -632,9 +632,11 @@ export type Database = {
           created_at: string
           data_export_requested_at: string | null
           display_name: string | null
+          email_notifications: boolean | null
           id: string
           legal_accepted_at: string | null
           location_consent: boolean | null
+          push_notifications: boolean | null
           updated_at: string
           username: string
         }
@@ -646,9 +648,11 @@ export type Database = {
           created_at?: string
           data_export_requested_at?: string | null
           display_name?: string | null
+          email_notifications?: boolean | null
           id: string
           legal_accepted_at?: string | null
           location_consent?: boolean | null
+          push_notifications?: boolean | null
           updated_at?: string
           username: string
         }
@@ -660,9 +664,11 @@ export type Database = {
           created_at?: string
           data_export_requested_at?: string | null
           display_name?: string | null
+          email_notifications?: boolean | null
           id?: string
           legal_accepted_at?: string | null
           location_consent?: boolean | null
+          push_notifications?: boolean | null
           updated_at?: string
           username?: string
         }
