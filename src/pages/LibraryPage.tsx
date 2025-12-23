@@ -18,7 +18,7 @@ const LibraryPage = () => {
     if (genre) {
       setPageTitle(`${genre.charAt(0).toUpperCase() + genre.slice(1)} ${t('library.title')}`);
     } else if (category) {
-      setPageTitle(`${category} Content`);
+      setPageTitle(`${category} ${t('library.content')}`);
     } else {
       setPageTitle(t('library.contentLibrary'));
     }

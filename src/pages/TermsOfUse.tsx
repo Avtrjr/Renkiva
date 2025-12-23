@@ -1,10 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 export default function TermsOfUse() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -13,65 +15,60 @@ export default function TermsOfUse() {
         <div className="flex items-center gap-4 mb-6">
           <Button variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
+            {t('common.back')}
           </Button>
-          <h1 className="text-3xl font-bold text-foreground">Terms of Use</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('legal.termsOfUse')}</h1>
         </div>
 
         <Card className="bg-card/80 backdrop-blur-lg border-border/50">
           <CardHeader>
-            <CardTitle className="text-xl text-foreground">Renkiva Terms of Service</CardTitle>
-            <p className="text-sm text-muted-foreground">Last updated: January 2025</p>
+            <CardTitle className="text-xl text-foreground">{t('legal.termsTitle')}</CardTitle>
+            <p className="text-sm text-muted-foreground">{t('legal.lastUpdated')}</p>
           </CardHeader>
           <CardContent className="prose prose-sm max-w-none text-foreground space-y-6">
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">1. Acceptance of Terms</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.acceptance.title')}</h3>
               <p className="text-muted-foreground">
-                By accessing and using Renkiva, you accept and agree to be bound by the terms and provision of this agreement.
-                Renkiva is a decentralized, offline-first content sharing platform that operates via Bluetooth Low Energy (BLE) mesh networking.
+                {t('legal.terms.acceptance.content')}
               </p>
             </section>
 
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">2. Content Guidelines</h3>
-              <p className="text-muted-foreground mb-2">Users agree to:</p>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.content.title')}</h3>
+              <p className="text-muted-foreground mb-2">{t('legal.terms.content.intro')}</p>
               <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                <li>Only share content they own or have permission to distribute</li>
-                <li>Respect copyright and intellectual property rights</li>
-                <li>Not share illegal, harmful, or inappropriate content</li>
-                <li>Use the platform responsibly within their local mesh network</li>
+                <li>{t('legal.terms.content.item1')}</li>
+                <li>{t('legal.terms.content.item2')}</li>
+                <li>{t('legal.terms.content.item3')}</li>
+                <li>{t('legal.terms.content.item4')}</li>
               </ul>
             </section>
 
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">3. Offline & Decentralized Nature</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.offline.title')}</h3>
               <p className="text-muted-foreground">
-                Renkiva operates primarily offline through BLE mesh networking. Users acknowledge that:
-                content is shared peer-to-peer, the platform cannot monitor all shared content in real-time,
-                and users are responsible for content they choose to download and share.
+                {t('legal.terms.offline.content')}
               </p>
             </section>
 
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">4. Privacy & Data</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.privacyData.title')}</h3>
               <p className="text-muted-foreground">
-                Renkiva is designed with privacy-first principles. Most data stays on your device.
-                See our Privacy Policy for detailed information about data handling.
+                {t('legal.terms.privacyData.content')}
               </p>
             </section>
 
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">5. Limitation of Liability</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.liability.title')}</h3>
               <p className="text-muted-foreground">
-                Renkiva is provided "as is" without warranties. The platform facilitates peer-to-peer sharing
-                and cannot be held liable for content shared between users or technical issues with mesh networking.
+                {t('legal.terms.liability.content')}
               </p>
             </section>
 
             <section>
-              <h3 className="text-lg font-semibold text-foreground mb-3">6. Changes to Terms</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-3">{t('legal.terms.changes.title')}</h3>
               <p className="text-muted-foreground">
-                These terms may be updated periodically. Continued use of Renkiva constitutes acceptance of updated terms.
+                {t('legal.terms.changes.content')}
               </p>
             </section>
           </CardContent>

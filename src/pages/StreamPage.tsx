@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import StreamPlayer from "@/components/StreamPlayer";
 import { fetchContentById, type ContentItem } from "@/lib/contentProviderAPI";
 
 const StreamPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [content, setContent] = useState<ContentItem | null>(null);
@@ -15,7 +17,7 @@ const StreamPage = () => {
   useEffect(() => {
     const loadContent = async () => {
       if (!id) {
-        setError("No content ID provided");
+        setError(t('stream.noContentId'));
         setLoading(false);
         return;
       }
@@ -25,20 +27,20 @@ const StreamPage = () => {
         const contentData = await fetchContentById(id);
         
         if (!contentData) {
-          setError("Content not found");
+          setError(t('stream.contentNotFound'));
         } else {
           setContent(contentData);
         }
       } catch (err) {
         console.error('Error loading content:', err);
-        setError("Failed to load content");
+        setError(t('stream.loadFailed'));
       } finally {
         setLoading(false);
       }
     };
 
     loadContent();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return (
@@ -49,7 +51,7 @@ const StreamPage = () => {
               📺
             </div>
           </div>
-          <p className="text-muted-foreground">Loading stream...</p>
+          <p className="text-muted-foreground">{t('stream.loading')}</p>
         </div>
       </div>
     );
@@ -60,11 +62,11 @@ const StreamPage = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">❌</div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Content Not Found</h1>
-          <p className="text-muted-foreground mb-6">{error || "The requested content could not be found."}</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('stream.notFoundTitle')}</h1>
+          <p className="text-muted-foreground mb-6">{error || t('stream.notFoundMessage')}</p>
           <Button onClick={() => navigate("/")} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Library
+            {t('stream.backToLibrary')}
           </Button>
         </div>
       </div>
@@ -76,11 +78,11 @@ const StreamPage = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">🔒</div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Stream Not Available</h1>
-          <p className="text-muted-foreground mb-6">This content doesn't have a streaming URL available.</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('stream.notAvailableTitle')}</h1>
+          <p className="text-muted-foreground mb-6">{t('stream.notAvailableMessage')}</p>
           <Button onClick={() => navigate("/")} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Library
+            {t('stream.backToLibrary')}
           </Button>
         </div>
       </div>
@@ -100,13 +102,13 @@ const StreamPage = () => {
               className="text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Library
+              {t('stream.backToLibrary')}
             </Button>
             <div className="flex-1">
               <h1 className="text-xl font-semibold text-foreground">{content.title}</h1>
               <p className="text-sm text-muted-foreground">
                 {content.category} • {content.rating}⭐ • {content.releaseDate}
-                {content.duration_minutes && ` • ${content.duration_minutes}min`}
+                {content.duration_minutes && ` • ${content.duration_minutes}${t('stream.min')}`}
               </p>
             </div>
           </div>
@@ -135,28 +137,28 @@ const StreamPage = () => {
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Description */}
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold text-foreground mb-4">About</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">{t('stream.about')}</h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 {content.description}
               </p>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <p className="text-muted-foreground">Category</p>
+                  <p className="text-muted-foreground">{t('stream.category')}</p>
                   <p className="font-medium text-foreground">{content.category}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Rating</p>
+                  <p className="text-muted-foreground">{t('stream.rating')}</p>
                   <p className="font-medium text-foreground">{content.rating}⭐</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Release</p>
+                  <p className="text-muted-foreground">{t('stream.release')}</p>
                   <p className="font-medium text-foreground">{content.releaseDate}</p>
                 </div>
                 {content.duration_minutes && (
                   <div>
-                    <p className="text-muted-foreground">Duration</p>
-                    <p className="font-medium text-foreground">{content.duration_minutes}min</p>
+                    <p className="text-muted-foreground">{t('stream.duration')}</p>
+                    <p className="font-medium text-foreground">{content.duration_minutes}{t('stream.min')}</p>
                   </div>
                 )}
               </div>
@@ -180,12 +182,12 @@ const StreamPage = () => {
                 </div>
                 
                 <div className="mt-4 p-4 bg-card/50 rounded-lg border border-border/30">
-                  <p className="text-sm text-muted-foreground mb-2">Source</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t('stream.source')}</p>
                   <p className="font-medium text-foreground">{content.source}</p>
                   
                   {content.file_size_bytes && (
                     <>
-                      <p className="text-sm text-muted-foreground mb-2 mt-3">File Size</p>
+                      <p className="text-sm text-muted-foreground mb-2 mt-3">{t('stream.fileSize')}</p>
                       <p className="font-medium text-foreground">
                         {(content.file_size_bytes / (1024 * 1024)).toFixed(0)} MB
                       </p>
