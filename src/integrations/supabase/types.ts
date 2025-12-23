@@ -1080,19 +1080,16 @@ export type Database = {
     }
     Functions: {
       calculate_storage_usage: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           bucket_name: string
           file_count: number
           total_size: number
         }[]
       }
-      cleanup_old_view_stats: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      cleanup_old_view_stats: { Args: never; Returns: undefined }
       discover_nearby_content: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           category: string
           description: string
@@ -1107,10 +1104,7 @@ export type Database = {
           video_url: string
         }[]
       }
-      get_sponsor_stats: {
-        Args: { sponsor_user_id: string }
-        Returns: Json
-      }
+      get_sponsor_stats: { Args: { sponsor_user_id: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
