@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "back": "戻る",
+    "close": "閉じる",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "search": "検索",
+    "filter": "フィルター",
+    "more": "もっと見る",
+    "less": "閉じる",
+    "yes": "はい",
+    "no": "いいえ",
+    "confirm": "確認",
+    "enabled": "有効",
+    "disabled": "無効"
+  },
+  "nav": {
+    "home": "ホーム",
+    "library": "ライブラリ",
+    "settings": "設定",
+    "profile": "プロフィール",
+    "signIn": "ログイン",
+    "signOut": "ログアウト"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "アカウント設定、プライバシー、設定を管理します。",
+    "profile": {
+      "title": "プロフィール",
+      "description": "公開プロフィール情報を管理します。",
+      "photo": "プロフィール写真",
+      "photoDescription": "クリックして新しい写真をアップロード（最大2MB）",
+      "displayName": "表示名",
+      "displayNamePlaceholder": "名前を入力",
+      "displayNameDescription": "メッシュネットワークで他のユーザーに表示される名前です。",
+      "bio": "自己紹介",
+      "bioPlaceholder": "自分について少し教えてください...",
+      "bioDescription": "プロフィールに表示される短い自己紹介。",
+      "socialLinks": "ソーシャルリンク",
+      "socialLinksDescription": "ソーシャルプロフィールまたは個人サイトへのリンクを追加します。",
+      "twitterPlaceholder": "https://twitter.com/ユーザー名",
+      "githubPlaceholder": "https://github.com/ユーザー名",
+      "websitePlaceholder": "https://あなたのサイト.com",
+      "saveProfile": "プロフィールを保存"
+    },
+    "privacy": {
+      "title": "プライバシー",
+      "description": "データとプライバシー設定を制御します。",
+      "location": "位置情報の共有",
+      "locationDescription": "メッシュネットワーク検出のための位置情報共有を許可します。これにより、近くのデバイスがあなたを見つけて接続できるようになります。",
+      "consentGiven": "{{date}}に同意済み",
+      "dataExport": "データをエクスポート",
+      "dataExportDescription": "システムに保存されているすべての個人データのコピーをダウンロードします。",
+      "deleteAccount": "アカウントを削除",
+      "deleteAccountDescription": "アカウントと関連するすべてのデータを完全に削除します。この操作は元に戻せません。"
+    },
+    "notifications": {
+      "title": "通知",
+      "description": "更新の受け取り方法を設定します。",
+      "email": "メール通知",
+      "emailDescription": "コンテンツとメッシュネットワークのアクティビティに関する更新をメールで受け取ります。",
+      "push": "プッシュ通知",
+      "pushDescription": "新しいメッセージやアラートの即時通知をデバイスで受け取ります。"
+    },
+    "appearance": {
+      "title": "外観",
+      "description": "アプリの見た目をカスタマイズします。",
+      "theme": "テーマ",
+      "themeDescription": "お好みの配色を選択するか、システム設定に従います。",
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム",
+      "language": "言語",
+      "languageDescription": "アプリインターフェースの優先言語を選択します。"
+    },
+    "account": {
+      "title": "アカウント",
+      "description": "アカウント設定を管理します。",
+      "email": "メールアドレス",
+      "signedInAs": "ログイン中："
+    },
+    "security": {
+      "title": "セキュリティ",
+      "description": "セキュリティ設定を管理します。",
+      "changePassword": "パスワードを変更",
+      "changePasswordDescription": "アカウントを安全に保つためにパスワードを更新します。",
+      "twoFactor": "二要素認証",
+      "twoFactorDescription": "アカウントにセキュリティの追加レイヤーを追加します。"
+    }
+  },
+  "auth": {
+    "signIn": "ログイン",
+    "signUp": "新規登録",
+    "signOut": "ログアウト",
+    "email": "メール",
+    "password": "パスワード",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "hasAccount": "すでにアカウントをお持ちですか？",
+    "createAccount": "アカウントを作成"
+  },
+  "library": {
+    "title": "ライブラリ",
+    "myVideos": "マイビデオ",
+    "uploaded": "アップロード済み",
+    "downloaded": "ダウンロード済み",
+    "favorites": "お気に入り",
+    "noVideos": "ビデオが見つかりません",
+    "upload": "ビデオをアップロード"
+  },
+  "mesh": {
+    "status": "ネットワーク状態",
+    "connected": "接続済み",
+    "disconnected": "切断",
+    "nearbyNodes": "近くのノード",
+    "broadcasting": "配信中",
+    "receiving": "受信中"
+  },
+  "toast": {
+    "profileUpdated": "プロフィールが正常に更新されました",
+    "profileError": "プロフィールの更新に失敗しました",
+    "languageChanged": "言語を{{language}}に設定しました",
+    "themeLight": "ライトモードが有効になりました",
+    "themeDark": "ダークモードが有効になりました",
+    "themeSystem": "システムテーマに従っています",
+    "emailNotificationsEnabled": "メール通知が有効になりました",
+    "emailNotificationsDisabled": "メール通知が無効になりました",
+    "pushNotificationsEnabled": "プッシュ通知が有効になりました",
+    "pushNotificationsDisabled": "プッシュ通知が無効になりました",
+    "urlError": "保存する前にURLエラーを修正してください"
+  },
+  "validation": {
+    "invalidUrl": "有効なURLを入力してください",
+    "invalidTwitterUrl": "有効なTwitter/X URLを入力してください",
+    "invalidGithubUrl": "有効なGitHub URLを入力してください"
+  }
+}

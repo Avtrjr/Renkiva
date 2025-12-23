@@ -1,0 +1,143 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "back": "Voltar",
+    "close": "Fechar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "search": "Pesquisar",
+    "filter": "Filtrar",
+    "more": "Mais",
+    "less": "Menos",
+    "yes": "Sim",
+    "no": "Não",
+    "confirm": "Confirmar",
+    "enabled": "Ativado",
+    "disabled": "Desativado"
+  },
+  "nav": {
+    "home": "Início",
+    "library": "Biblioteca",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "signIn": "Entrar",
+    "signOut": "Sair"
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Gerencie suas configurações de conta, privacidade e preferências.",
+    "profile": {
+      "title": "Perfil",
+      "description": "Gerencie as informações do seu perfil público.",
+      "photo": "Foto de Perfil",
+      "photoDescription": "Clique para enviar uma nova foto (máx 2MB)",
+      "displayName": "Nome de Exibição",
+      "displayNamePlaceholder": "Digite seu nome",
+      "displayNameDescription": "É assim que você aparece para outros usuários na rede mesh.",
+      "bio": "Sobre",
+      "bioPlaceholder": "Conte um pouco sobre você...",
+      "bioDescription": "Uma breve biografia visível no seu perfil.",
+      "socialLinks": "Links Sociais",
+      "socialLinksDescription": "Adicione links para seus perfis sociais ou site pessoal.",
+      "twitterPlaceholder": "https://twitter.com/usuario",
+      "githubPlaceholder": "https://github.com/usuario",
+      "websitePlaceholder": "https://seusite.com.br",
+      "saveProfile": "Salvar Perfil"
+    },
+    "privacy": {
+      "title": "Privacidade",
+      "description": "Controle seus dados e configurações de privacidade.",
+      "location": "Compartilhamento de Localização",
+      "locationDescription": "Permita compartilhar sua localização para descoberta na rede mesh. Isso ajuda dispositivos próximos a encontrá-lo e conectar-se.",
+      "consentGiven": "Consentimento dado em {{date}}",
+      "dataExport": "Exportar seus Dados",
+      "dataExportDescription": "Baixe uma cópia de todos os seus dados pessoais armazenados em nossos sistemas.",
+      "deleteAccount": "Excluir Conta",
+      "deleteAccountDescription": "Exclua permanentemente sua conta e todos os dados associados. Esta ação não pode ser desfeita."
+    },
+    "notifications": {
+      "title": "Notificações",
+      "description": "Configure como você deseja receber atualizações.",
+      "email": "Notificações por Email",
+      "emailDescription": "Receba atualizações sobre seu conteúdo e atividade da rede mesh por email.",
+      "push": "Notificações Push",
+      "pushDescription": "Receba notificações instantâneas no seu dispositivo para novas mensagens e alertas."
+    },
+    "appearance": {
+      "title": "Aparência",
+      "description": "Personalize como o aplicativo se parece.",
+      "theme": "Tema",
+      "themeDescription": "Escolha seu esquema de cores preferido ou siga as configurações do sistema.",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema",
+      "language": "Idioma",
+      "languageDescription": "Selecione seu idioma preferido para a interface do aplicativo."
+    },
+    "account": {
+      "title": "Conta",
+      "description": "Gerencie as configurações da sua conta.",
+      "email": "Endereço de Email",
+      "signedInAs": "Você está conectado como"
+    },
+    "security": {
+      "title": "Segurança",
+      "description": "Gerencie suas configurações de segurança.",
+      "changePassword": "Alterar Senha",
+      "changePasswordDescription": "Atualize sua senha para manter sua conta segura.",
+      "twoFactor": "Autenticação de Dois Fatores",
+      "twoFactorDescription": "Adicione uma camada extra de segurança à sua conta."
+    }
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "signUp": "Cadastrar",
+    "signOut": "Sair",
+    "email": "Email",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu a senha?",
+    "noAccount": "Não tem uma conta?",
+    "hasAccount": "Já tem uma conta?",
+    "createAccount": "Criar Conta"
+  },
+  "library": {
+    "title": "Biblioteca",
+    "myVideos": "Meus Vídeos",
+    "uploaded": "Enviados",
+    "downloaded": "Baixados",
+    "favorites": "Favoritos",
+    "noVideos": "Nenhum vídeo encontrado",
+    "upload": "Enviar Vídeo"
+  },
+  "mesh": {
+    "status": "Status da Rede",
+    "connected": "Conectado",
+    "disconnected": "Desconectado",
+    "nearbyNodes": "Nós Próximos",
+    "broadcasting": "Transmitindo",
+    "receiving": "Recebendo"
+  },
+  "toast": {
+    "profileUpdated": "Perfil atualizado com sucesso",
+    "profileError": "Falha ao atualizar o perfil",
+    "languageChanged": "Idioma definido para {{language}}",
+    "themeLight": "Modo claro ativado",
+    "themeDark": "Modo escuro ativado",
+    "themeSystem": "Seguindo tema do sistema",
+    "emailNotificationsEnabled": "Notificações por email ativadas",
+    "emailNotificationsDisabled": "Notificações por email desativadas",
+    "pushNotificationsEnabled": "Notificações push ativadas",
+    "pushNotificationsDisabled": "Notificações push desativadas",
+    "urlError": "Por favor, corrija os erros de URL antes de salvar"
+  },
+  "validation": {
+    "invalidUrl": "Por favor, insira uma URL válida",
+    "invalidTwitterUrl": "Por favor, insira uma URL do Twitter/X válida",
+    "invalidGithubUrl": "Por favor, insira uma URL do GitHub válida"
+  }
+}
