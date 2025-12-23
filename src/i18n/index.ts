@@ -9,6 +9,8 @@ import pt from './locales/pt.json';
 import zh from './locales/zh.json';
 import ja from './locales/ja.json';
 import ko from './locales/ko.json';
+import ar from './locales/ar.json';
+import he from './locales/he.json';
 
 const resources = {
   en: { translation: en },
@@ -19,7 +21,14 @@ const resources = {
   zh: { translation: zh },
   ja: { translation: ja },
   ko: { translation: ko },
+  ar: { translation: ar },
+  he: { translation: he },
 };
+
+// RTL languages
+export const rtlLanguages = ['ar', 'he'];
+
+export const isRTL = (lang: string): boolean => rtlLanguages.includes(lang);
 
 // Get initial language from localStorage, browser preferences, or default to 'en'
 const getInitialLanguage = (): { language: string; wasAutoDetected: boolean } => {
@@ -74,11 +83,16 @@ export const languageNames: Record<string, string> = {
   zh: '中文',
   ja: '日本語',
   ko: '한국어',
+  ar: 'العربية',
+  he: 'עברית',
 };
 
 export const changeLanguage = (lng: string) => {
   i18n.changeLanguage(lng);
   if (typeof window !== 'undefined') {
     localStorage.setItem('i18n-language', lng);
+    // Update document direction for RTL languages
+    document.documentElement.dir = isRTL(lng) ? 'rtl' : 'ltr';
+    document.documentElement.lang = lng;
   }
 };
