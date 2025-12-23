@@ -118,12 +118,37 @@
   },
   "library": {
     "title": "Bibliothek",
+    "contentLibrary": "Inhaltsbibliothek",
+    "content": "Inhalt",
     "myVideos": "Meine Videos",
     "uploaded": "Hochgeladen",
     "downloaded": "Heruntergeladen",
     "favorites": "Favoriten",
     "noVideos": "Keine Videos gefunden",
     "upload": "Video Hochladen"
+  },
+  "notFound": {
+    "message": "Hoppla! Seite nicht gefunden",
+    "returnHome": "Zur Startseite"
+  },
+  "stream": {
+    "loading": "Stream wird geladen...",
+    "noContentId": "Keine Inhalts-ID angegeben",
+    "contentNotFound": "Inhalt nicht gefunden",
+    "loadFailed": "Inhalt konnte nicht geladen werden",
+    "notFoundTitle": "Inhalt Nicht Gefunden",
+    "notFoundMessage": "Der angeforderte Inhalt konnte nicht gefunden werden.",
+    "notAvailableTitle": "Stream Nicht Verfügbar",
+    "notAvailableMessage": "Dieser Inhalt hat keine verfügbare Streaming-URL.",
+    "backToLibrary": "Zurück zur Bibliothek",
+    "about": "Über",
+    "category": "Kategorie",
+    "rating": "Bewertung",
+    "release": "Veröffentlichung",
+    "duration": "Dauer",
+    "min": "min",
+    "source": "Quelle",
+    "fileSize": "Dateigröße"
   },
   "mesh": {
     "status": "Netzwerkstatus",

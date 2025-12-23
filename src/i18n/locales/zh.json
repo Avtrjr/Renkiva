@@ -195,6 +195,29 @@
     "broadcasting": "广播中",
     "receiving": "接收中"
   },
+  "notFound": {
+    "message": "页面未找到",
+    "returnHome": "返回首页"
+  },
+  "stream": {
+    "loading": "加载流媒体...",
+    "noContentId": "未提供内容ID",
+    "contentNotFound": "内容未找到",
+    "loadFailed": "加载内容失败",
+    "notFoundTitle": "内容未找到",
+    "notFoundMessage": "请求的内容无法找到。",
+    "notAvailableTitle": "流媒体不可用",
+    "notAvailableMessage": "此内容没有可用的流媒体URL。",
+    "backToLibrary": "返回媒体库",
+    "about": "关于",
+    "category": "类别",
+    "rating": "评分",
+    "release": "发布日期",
+    "duration": "时长",
+    "min": "分钟",
+    "source": "来源",
+    "fileSize": "文件大小"
+  },
   "toast": {
     "profileUpdated": "个人资料更新成功",
     "profileError": "更新个人资料失败",

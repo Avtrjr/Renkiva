@@ -118,12 +118,37 @@
   },
   "library": {
     "title": "Biblioteca",
+    "contentLibrary": "Biblioteca de Contenido",
+    "content": "Contenido",
     "myVideos": "Mis Videos",
     "uploaded": "Subidos",
     "downloaded": "Descargados",
     "favorites": "Favoritos",
     "noVideos": "No se encontraron videos",
     "upload": "Subir Video"
+  },
+  "notFound": {
+    "message": "¡Ups! Página no encontrada",
+    "returnHome": "Volver al Inicio"
+  },
+  "stream": {
+    "loading": "Cargando stream...",
+    "noContentId": "No se proporcionó ID de contenido",
+    "contentNotFound": "Contenido no encontrado",
+    "loadFailed": "Error al cargar el contenido",
+    "notFoundTitle": "Contenido No Encontrado",
+    "notFoundMessage": "El contenido solicitado no se pudo encontrar.",
+    "notAvailableTitle": "Stream No Disponible",
+    "notAvailableMessage": "Este contenido no tiene una URL de streaming disponible.",
+    "backToLibrary": "Volver a la Biblioteca",
+    "about": "Acerca de",
+    "category": "Categoría",
+    "rating": "Calificación",
+    "release": "Estreno",
+    "duration": "Duración",
+    "min": "min",
+    "source": "Fuente",
+    "fileSize": "Tamaño del Archivo"
   },
   "mesh": {
     "status": "Estado de la Red",

@@ -118,12 +118,37 @@
   },
   "library": {
     "title": "ライブラリ",
+    "contentLibrary": "コンテンツライブラリ",
+    "content": "コンテンツ",
     "myVideos": "マイビデオ",
     "uploaded": "アップロード済み",
     "downloaded": "ダウンロード済み",
     "favorites": "お気に入り",
     "noVideos": "ビデオが見つかりません",
     "upload": "ビデオをアップロード"
+  },
+  "notFound": {
+    "message": "ページが見つかりません",
+    "returnHome": "ホームに戻る"
+  },
+  "stream": {
+    "loading": "ストリームを読み込み中...",
+    "noContentId": "コンテンツIDが提供されていません",
+    "contentNotFound": "コンテンツが見つかりません",
+    "loadFailed": "コンテンツの読み込みに失敗しました",
+    "notFoundTitle": "コンテンツが見つかりません",
+    "notFoundMessage": "リクエストされたコンテンツが見つかりませんでした。",
+    "notAvailableTitle": "ストリームは利用できません",
+    "notAvailableMessage": "このコンテンツにはストリーミングURLがありません。",
+    "backToLibrary": "ライブラリに戻る",
+    "about": "概要",
+    "category": "カテゴリ",
+    "rating": "評価",
+    "release": "公開日",
+    "duration": "再生時間",
+    "min": "分",
+    "source": "ソース",
+    "fileSize": "ファイルサイズ"
   },
   "mesh": {
     "status": "ネットワーク状態",

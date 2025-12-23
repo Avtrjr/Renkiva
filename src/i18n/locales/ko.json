@@ -118,12 +118,37 @@
   },
   "library": {
     "title": "라이브러리",
+    "contentLibrary": "콘텐츠 라이브러리",
+    "content": "콘텐츠",
     "myVideos": "내 동영상",
     "uploaded": "업로드됨",
     "downloaded": "다운로드됨",
     "favorites": "즐겨찾기",
     "noVideos": "동영상을 찾을 수 없습니다",
     "upload": "동영상 업로드"
+  },
+  "notFound": {
+    "message": "페이지를 찾을 수 없습니다",
+    "returnHome": "홈으로 돌아가기"
+  },
+  "stream": {
+    "loading": "스트림 로딩 중...",
+    "noContentId": "콘텐츠 ID가 제공되지 않았습니다",
+    "contentNotFound": "콘텐츠를 찾을 수 없습니다",
+    "loadFailed": "콘텐츠를 로드하지 못했습니다",
+    "notFoundTitle": "콘텐츠를 찾을 수 없음",
+    "notFoundMessage": "요청한 콘텐츠를 찾을 수 없습니다.",
+    "notAvailableTitle": "스트림을 사용할 수 없음",
+    "notAvailableMessage": "이 콘텐츠에는 스트리밍 URL이 없습니다.",
+    "backToLibrary": "라이브러리로 돌아가기",
+    "about": "소개",
+    "category": "카테고리",
+    "rating": "평점",
+    "release": "출시일",
+    "duration": "재생 시간",
+    "min": "분",
+    "source": "소스",
+    "fileSize": "파일 크기"
   },
   "mesh": {
     "status": "네트워크 상태",
