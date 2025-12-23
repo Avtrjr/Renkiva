@@ -46,17 +46,19 @@ export default function Settings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('display_name, avatar_url')
+          .select('display_name, avatar_url, email_notifications, push_notifications')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
         
-        if (error && error.code !== 'PGRST116') {
+        if (error) {
           console.error('Error fetching profile:', error);
         }
         
         if (data) {
           setDisplayName(data.display_name || '');
           setAvatarUrl(data.avatar_url);
+          setEmailNotifications(data.email_notifications ?? true);
+          setPushNotifications(data.push_notifications ?? false);
         }
       } catch (err) {
         console.error('Error:', err);
@@ -77,14 +79,42 @@ export default function Settings() {
     }
   };
 
-  const handleEmailNotificationsToggle = (checked: boolean) => {
+  const handleEmailNotificationsToggle = async (checked: boolean) => {
+    if (!user) return;
+    
     setEmailNotifications(checked);
-    toast.success(checked ? 'Email notifications enabled' : 'Email notifications disabled');
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ email_notifications: checked, updated_at: new Date().toISOString() })
+        .eq('id', user.id);
+      
+      if (error) throw error;
+      toast.success(checked ? 'Email notifications enabled' : 'Email notifications disabled');
+    } catch (err) {
+      console.error('Error updating email notifications:', err);
+      setEmailNotifications(!checked); // Revert on error
+      toast.error('Failed to update notification preference');
+    }
   };
 
-  const handlePushNotificationsToggle = (checked: boolean) => {
+  const handlePushNotificationsToggle = async (checked: boolean) => {
+    if (!user) return;
+    
     setPushNotifications(checked);
-    toast.success(checked ? 'Push notifications enabled' : 'Push notifications disabled');
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ push_notifications: checked, updated_at: new Date().toISOString() })
+        .eq('id', user.id);
+      
+      if (error) throw error;
+      toast.success(checked ? 'Push notifications enabled' : 'Push notifications disabled');
+    } catch (err) {
+      console.error('Error updating push notifications:', err);
+      setPushNotifications(!checked); // Revert on error
+      toast.error('Failed to update notification preference');
+    }
   };
 
   const handleSaveProfile = async () => {
