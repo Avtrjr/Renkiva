@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +28,7 @@ export default function Settings() {
   
   // Profile state
   const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -48,7 +50,7 @@ export default function Settings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('display_name, avatar_url, email_notifications, push_notifications')
+          .select('display_name, avatar_url, bio, email_notifications, push_notifications')
           .eq('id', user.id)
           .maybeSingle();
         
@@ -58,6 +60,7 @@ export default function Settings() {
         
         if (data) {
           setDisplayName(data.display_name || '');
+          setBio(data.bio || '');
           setAvatarUrl(data.avatar_url);
           setEmailNotifications(data.email_notifications ?? true);
           setPushNotifications(data.push_notifications ?? false);
@@ -128,6 +131,7 @@ export default function Settings() {
         .from('profiles')
         .update({ 
           display_name: displayName.trim(),
+          bio: bio.trim(),
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
@@ -305,8 +309,43 @@ export default function Settings() {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  This is how you'll appear to other users in the mesh network.
+                  This is how you appear to other users in the mesh network.
                 </p>
+              </div>
+
+              <Separator />
+
+              {/* Bio */}
+              <div className="space-y-2">
+                <Label htmlFor="bio">About</Label>
+                <Textarea
+                  id="bio"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder="Tell others a bit about yourself..."
+                  disabled={profileLoading}
+                  maxLength={300}
+                  rows={4}
+                  className="resize-none"
+                />
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-muted-foreground">
+                    A short bio visible on your profile.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {bio.length}/300
+                  </p>
+                </div>
+                <Button 
+                  onClick={handleSaveProfile} 
+                  disabled={saving || profileLoading}
+                  className="w-full"
+                >
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : null}
+                  Save Profile
+                </Button>
               </div>
             </CardContent>
           </Card>
