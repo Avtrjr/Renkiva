@@ -9,13 +9,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock } from 'lucide-react';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Settings() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const { hasConsent, loading: consentLoading, grantConsent, revokeConsent, consentGivenAt } = useLocationConsent();
   const [locationToggle, setLocationToggle] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(false);
 
   useEffect(() => {
     if (hasConsent !== null) {
@@ -30,6 +33,16 @@ export default function Settings() {
     } else {
       await revokeConsent();
     }
+  };
+
+  const handleEmailNotificationsToggle = (checked: boolean) => {
+    setEmailNotifications(checked);
+    toast.success(checked ? 'Email notifications enabled' : 'Email notifications disabled');
+  };
+
+  const handlePushNotificationsToggle = (checked: boolean) => {
+    setPushNotifications(checked);
+    toast.success(checked ? 'Push notifications enabled' : 'Push notifications disabled');
   };
 
   if (authLoading) {
@@ -77,6 +90,62 @@ export default function Settings() {
                 </Button>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Notifications Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              Notifications
+            </CardTitle>
+            <CardDescription>
+              Manage how you receive updates and alerts
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Email Notifications */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <Mail className="h-5 w-5 text-primary mt-0.5" />
+                <div className="space-y-1">
+                  <Label htmlFor="email-notifications" className="font-medium">
+                    Email Notifications
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Receive updates about new content, network activity, and important announcements via email.
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="email-notifications"
+                checked={emailNotifications}
+                onCheckedChange={handleEmailNotificationsToggle}
+              />
+            </div>
+
+            <Separator />
+
+            {/* Push Notifications */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <Smartphone className="h-5 w-5 text-primary mt-0.5" />
+                <div className="space-y-1">
+                  <Label htmlFor="push-notifications" className="font-medium">
+                    Push Notifications
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Get real-time alerts on your device when nearby content becomes available or when your broadcasts are viewed.
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="push-notifications"
+                checked={pushNotifications}
+                onCheckedChange={handlePushNotificationsToggle}
+              />
+            </div>
           </CardContent>
         </Card>
 
