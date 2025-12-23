@@ -126,6 +126,8 @@
     "profileUpdated": "Profil erfolgreich aktualisiert",
     "profileError": "Fehler beim Aktualisieren des Profils",
     "languageChanged": "Sprache auf {{language}} eingestellt",
+    "languageDetected": "Sprache auf {{language}} eingestellt",
+    "languageDetectedDescription": "Wir haben die Sprache Ihres Browsers erkannt. Sie können dies in den Einstellungen ändern.",
     "themeLight": "Heller Modus aktiviert",
     "themeDark": "Dunkler Modus aktiviert",
     "themeSystem": "Folge Systemthema",

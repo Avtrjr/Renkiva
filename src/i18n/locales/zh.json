@@ -188,6 +188,8 @@
     "profileUpdated": "个人资料更新成功",
     "profileError": "更新个人资料失败",
     "languageChanged": "语言已设置为{{language}}",
+    "languageDetected": "语言已设置为{{language}}",
+    "languageDetectedDescription": "我们检测到了您的浏览器语言。您可以在设置中更改。",
     "themeLight": "浅色模式已启用",
     "themeDark": "深色模式已启用",
     "themeSystem": "跟随系统主题",

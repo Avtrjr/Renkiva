@@ -126,6 +126,8 @@
     "profileUpdated": "プロフィールが正常に更新されました",
     "profileError": "プロフィールの更新に失敗しました",
     "languageChanged": "言語を{{language}}に設定しました",
+    "languageDetected": "言語を{{language}}に設定しました",
+    "languageDetectedDescription": "ブラウザの言語を検出しました。設定で変更できます。",
     "themeLight": "ライトモードが有効になりました",
     "themeDark": "ダークモードが有効になりました",
     "themeSystem": "システムテーマに従っています",
