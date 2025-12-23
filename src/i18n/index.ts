@@ -21,12 +21,23 @@ const resources = {
   ko: { translation: ko },
 };
 
-// Get initial language from localStorage or default to 'en'
+// Get initial language from localStorage, browser preferences, or default to 'en'
 const getInitialLanguage = (): string => {
   if (typeof window !== 'undefined') {
+    // First check localStorage for user preference
     const stored = localStorage.getItem('i18n-language');
     if (stored && resources[stored as keyof typeof resources]) {
       return stored;
+    }
+    
+    // Then try to detect from browser preferences
+    const browserLanguages = navigator.languages || [navigator.language];
+    for (const lang of browserLanguages) {
+      // Check exact match first (e.g., 'en-US' -> 'en')
+      const shortLang = lang.split('-')[0].toLowerCase();
+      if (resources[shortLang as keyof typeof resources]) {
+        return shortLang;
+      }
     }
   }
   return 'en';
