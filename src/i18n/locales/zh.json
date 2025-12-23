@@ -269,7 +269,7 @@
       },
       "liability": {
         "title": "5. 责任限制",
-        "content": "Renkiva 按"原样"提供，不作任何保证。该平台促进点对点共享，不对用户之间共享的内容或网状网络的技术问题承担责任。"
+        "content": "Renkiva 按「原样」提供，不作任何保证。该平台促进点对点共享，不对用户之间共享的内容或网状网络的技术问题承担责任。"
       },
       "changes": {
         "title": "6. 条款变更",
@@ -351,7 +351,7 @@
         "rectification": "更正权",
         "rectificationDesc": "更正任何不准确的个人数据",
         "erasure": "删除权",
-        "erasureDesc": "请求删除您的个人数据（"被遗忘权"）",
+        "erasureDesc": "请求删除您的个人数据（「被遗忘权」）",
         "restriction": "限制权",
         "restrictionDesc": "限制我们如何处理您的数据",
         "object": "反对权",
