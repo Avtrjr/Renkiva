@@ -70,39 +70,39 @@ const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to="/dashboard" className="flex items-center">
-            <Settings className="mr-2 h-4 w-4" />
+            <Settings className="me-2 h-4 w-4" />
             <span>{t('nav.dashboard')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <UserIcon className="mr-2 h-4 w-4" />
+          <UserIcon className="me-2 h-4 w-4" />
           <span>{t('nav.profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Upload className="mr-2 h-4 w-4" />
+          <Upload className="me-2 h-4 w-4" />
           <span>{t('nav.uploadContent')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/library" className="flex items-center">
-            <Video className="mr-2 h-4 w-4" />
+            <Video className="me-2 h-4 w-4" />
             <span>{t('nav.contentLibrary')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/mesh-library" className="flex items-center">
-            <Video className="mr-2 h-4 w-4" />
+            <Video className="me-2 h-4 w-4" />
             <span>{t('nav.publicDomainLibrary')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/settings" className="flex items-center">
-            <Cog className="mr-2 h-4 w-4" />
+            <Cog className="me-2 h-4 w-4" />
             <span>{t('nav.settings')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" />
+          <LogOut className="me-2 h-4 w-4" />
           <span>{t('nav.signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
