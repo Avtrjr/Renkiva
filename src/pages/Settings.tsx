@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocationConsent } from '@/hooks/useLocationConsent';
@@ -9,8 +9,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -19,12 +22,51 @@ export default function Settings() {
   const [locationToggle, setLocationToggle] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(false);
+  
+  // Profile state
+  const [displayName, setDisplayName] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (hasConsent !== null) {
       setLocationToggle(hasConsent);
     }
   }, [hasConsent]);
+
+  // Fetch profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+      
+      setProfileLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('display_name, avatar_url')
+          .eq('id', user.id)
+          .single();
+        
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching profile:', error);
+        }
+        
+        if (data) {
+          setDisplayName(data.display_name || '');
+          setAvatarUrl(data.avatar_url);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   const handleLocationToggle = async (checked: boolean) => {
     setLocationToggle(checked);
@@ -43,6 +85,98 @@ export default function Settings() {
   const handlePushNotificationsToggle = (checked: boolean) => {
     setPushNotifications(checked);
     toast.success(checked ? 'Push notifications enabled' : 'Push notifications disabled');
+  };
+
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ 
+          display_name: displayName.trim(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+      
+      if (error) throw error;
+      
+      toast.success('Profile updated successfully');
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      toast.error('Failed to update profile');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be less than 2MB');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${user.id}/avatar.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('meshtv-library')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('meshtv-library')
+        .getPublicUrl(filePath);
+
+      // Update profile
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          avatar_url: publicUrl,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl(publicUrl);
+      toast.success('Avatar updated successfully');
+    } catch (err) {
+      console.error('Error uploading avatar:', err);
+      toast.error('Failed to upload avatar');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const getInitials = () => {
+    if (displayName) {
+      return displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+    if (user?.email) {
+      return user.email[0].toUpperCase();
+    }
+    return 'U';
   };
 
   if (authLoading) {
@@ -66,6 +200,86 @@ export default function Settings() {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-2xl space-y-6">
+        {/* Profile Section */}
+        {user && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Profile
+              </CardTitle>
+              <CardDescription>
+                Customize your public profile
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Avatar */}
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <Avatar className="h-20 w-20 cursor-pointer" onClick={handleAvatarClick}>
+                    <AvatarImage src={avatarUrl || undefined} alt="Avatar" />
+                    <AvatarFallback className="text-lg">{getInitials()}</AvatarFallback>
+                  </Avatar>
+                  <button
+                    onClick={handleAvatarClick}
+                    disabled={uploading}
+                    className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-1.5 shadow-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  >
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Camera className="h-4 w-4" />
+                    )}
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    className="hidden"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <p className="font-medium text-sm">Profile Photo</p>
+                  <p className="text-xs text-muted-foreground">
+                    Click to upload a new photo (max 2MB)
+                  </p>
+                </div>
+              </div>
+
+              <Separator />
+
+              {/* Display Name */}
+              <div className="space-y-2">
+                <Label htmlFor="display-name">Display Name</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="display-name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Enter your display name"
+                    disabled={profileLoading}
+                    maxLength={50}
+                  />
+                  <Button 
+                    onClick={handleSaveProfile} 
+                    disabled={saving || profileLoading}
+                  >
+                    {saving ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Save'
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  This is how you'll appear to other users in the mesh network.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Account Section */}
         <Card>
           <CardHeader>
