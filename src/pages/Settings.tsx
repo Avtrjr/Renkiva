@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link, Monitor, Languages } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { changeLanguage, languageNames } from '@/i18n';
+import { changeLanguage, languageNames, isRTL } from '@/i18n';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -593,18 +593,22 @@ export default function Settings() {
                 value={languagePreference}
                 onValueChange={handleLanguageChange}
               >
-                <SelectTrigger id="language-select" className="w-[130px]">
+                <SelectTrigger id="language-select" className="w-[160px]">
                   <SelectValue placeholder="Select language" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="es">Español</SelectItem>
-                  <SelectItem value="fr">Français</SelectItem>
-                  <SelectItem value="de">Deutsch</SelectItem>
-                  <SelectItem value="pt">Português</SelectItem>
-                  <SelectItem value="zh">中文</SelectItem>
-                  <SelectItem value="ja">日本語</SelectItem>
-                  <SelectItem value="ko">한국어</SelectItem>
+                  {Object.entries(languageNames).map(([code, name]) => (
+                    <SelectItem key={code} value={code}>
+                      <div className="flex items-center gap-2">
+                        <span>{name}</span>
+                        {isRTL(code) && (
+                          <span className="text-xs text-muted-foreground px-1 py-0.5 bg-muted rounded">
+                            RTL
+                          </span>
+                        )}
+                      </div>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
