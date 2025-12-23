@@ -13,7 +13,8 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link, Monitor } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -425,26 +426,56 @@ export default function Settings() {
               <div className="flex items-start gap-3">
                 {theme === 'dark' ? (
                   <Moon className="h-5 w-5 text-primary mt-0.5" />
-                ) : (
+                ) : theme === 'light' ? (
                   <Sun className="h-5 w-5 text-primary mt-0.5" />
+                ) : (
+                  <Monitor className="h-5 w-5 text-primary mt-0.5" />
                 )}
                 <div className="space-y-1">
-                  <Label htmlFor="theme-toggle" className="font-medium">
-                    Dark Mode
+                  <Label htmlFor="theme-select" className="font-medium">
+                    Theme
                   </Label>
                   <p className="text-sm text-muted-foreground">
-                    Switch between light and dark themes for comfortable viewing.
+                    Choose your preferred color scheme or follow your system settings.
                   </p>
                 </div>
               </div>
-              <Switch
-                id="theme-toggle"
-                checked={theme === 'dark'}
-                onCheckedChange={(checked) => {
-                  setTheme(checked ? 'dark' : 'light');
-                  toast.success(checked ? 'Dark mode enabled' : 'Light mode enabled');
+              <Select
+                value={theme}
+                onValueChange={(value) => {
+                  setTheme(value);
+                  const labels: Record<string, string> = {
+                    light: 'Light mode enabled',
+                    dark: 'Dark mode enabled',
+                    system: 'Following system theme'
+                  };
+                  toast.success(labels[value] || 'Theme updated');
                 }}
-              />
+              >
+                <SelectTrigger id="theme-select" className="w-[130px]">
+                  <SelectValue placeholder="Select theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4" />
+                      Light
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dark">
+                    <div className="flex items-center gap-2">
+                      <Moon className="h-4 w-4" />
+                      Dark
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="system">
+                    <div className="flex items-center gap-2">
+                      <Monitor className="h-4 w-4" />
+                      System
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
