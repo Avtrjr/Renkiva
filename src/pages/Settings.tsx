@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link, Monitor } from 'lucide-react';
+import { ArrowLeft, MapPin, Shield, Download, Trash2, User, Bell, Lock, Mail, Smartphone, Camera, Loader2, Sun, Moon, Palette, Twitter, Github, Globe, Link, Monitor, Languages } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -33,6 +33,7 @@ export default function Settings() {
   const [twitterUrl, setTwitterUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
+  const [languagePreference, setLanguagePreference] = useState('en');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -91,7 +92,7 @@ export default function Settings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('display_name, avatar_url, bio, twitter_url, github_url, website_url, email_notifications, push_notifications')
+          .select('display_name, avatar_url, bio, twitter_url, github_url, website_url, email_notifications, push_notifications, language_preference')
           .eq('id', user.id)
           .maybeSingle();
         
@@ -108,6 +109,7 @@ export default function Settings() {
           setAvatarUrl(data.avatar_url);
           setEmailNotifications(data.email_notifications ?? true);
           setPushNotifications(data.push_notifications ?? false);
+          setLanguagePreference(data.language_preference || 'en');
         }
       } catch (err) {
         console.error('Error:', err);
@@ -163,6 +165,38 @@ export default function Settings() {
       console.error('Error updating push notifications:', err);
       setPushNotifications(!checked); // Revert on error
       toast.error('Failed to update notification preference');
+    }
+  };
+
+  const handleLanguageChange = async (value: string) => {
+    if (!user) return;
+    
+    const previousValue = languagePreference;
+    setLanguagePreference(value);
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ language_preference: value, updated_at: new Date().toISOString() })
+        .eq('id', user.id);
+      
+      if (error) throw error;
+      
+      const languageLabels: Record<string, string> = {
+        en: 'English',
+        es: 'Español',
+        fr: 'Français',
+        de: 'Deutsch',
+        pt: 'Português',
+        zh: '中文',
+        ja: '日本語',
+        ko: '한국어'
+      };
+      toast.success(`Language set to ${languageLabels[value] || value}`);
+    } catch (err) {
+      console.error('Error updating language preference:', err);
+      setLanguagePreference(previousValue);
+      toast.error('Failed to update language preference');
     }
   };
 
@@ -545,6 +579,39 @@ export default function Settings() {
                       System
                     </div>
                   </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Language Preference */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <Languages className="h-5 w-5 text-primary mt-0.5" />
+                <div className="space-y-1">
+                  <Label htmlFor="language-select" className="font-medium">
+                    Language
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Select your preferred language for the app interface.
+                  </p>
+                </div>
+              </div>
+              <Select
+                value={languagePreference}
+                onValueChange={handleLanguageChange}
+              >
+                <SelectTrigger id="language-select" className="w-[130px]">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="es">Español</SelectItem>
+                  <SelectItem value="fr">Français</SelectItem>
+                  <SelectItem value="de">Deutsch</SelectItem>
+                  <SelectItem value="pt">Português</SelectItem>
+                  <SelectItem value="zh">中文</SelectItem>
+                  <SelectItem value="ja">日本語</SelectItem>
+                  <SelectItem value="ko">한국어</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -635,6 +635,7 @@ export type Database = {
           email_notifications: boolean | null
           github_url: string | null
           id: string
+          language_preference: string | null
           legal_accepted_at: string | null
           location_consent: boolean | null
           push_notifications: boolean | null
@@ -654,6 +655,7 @@ export type Database = {
           email_notifications?: boolean | null
           github_url?: string | null
           id: string
+          language_preference?: string | null
           legal_accepted_at?: string | null
           location_consent?: boolean | null
           push_notifications?: boolean | null
@@ -673,6 +675,7 @@ export type Database = {
           email_notifications?: boolean | null
           github_url?: string | null
           id?: string
+          language_preference?: string | null
           legal_accepted_at?: string | null
           location_consent?: boolean | null
           push_notifications?: boolean | null
