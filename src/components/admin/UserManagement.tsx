@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { UserPlus, Trash2, Search, Crown, Shield, User as UserIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { UserPlus, Trash2, Search, Crown, Shield, User as UserIcon, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import type { Database } from '@/integrations/supabase/types';
 
 type AppRole = Database['public']['Enums']['app_role'];
@@ -24,11 +24,14 @@ interface UserWithRoles {
 
 const USERS_PER_PAGE = 10;
 
+type RoleFilter = 'all' | AppRole | 'none';
+
 export default function UserManagement() {
   const [users, setUsers] = useState<UserWithRoles[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState<AppRole>('user');
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
   const [assigningRole, setAssigningRole] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -37,10 +40,10 @@ export default function UserManagement() {
     loadUsers();
   }, [currentPage]);
 
-  // Reset to page 1 when search changes
+  // Reset to page 1 when search or filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery]);
+  }, [searchQuery, roleFilter]);
 
   const loadUsers = async () => {
     try {
@@ -167,11 +170,19 @@ export default function UserManagement() {
     }
   };
 
-  const filteredUsers = users.filter(
+  // Filter by search query
+  const searchFilteredUsers = users.filter(
     (user) =>
       user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (user.display_name?.toLowerCase() || '').includes(searchQuery.toLowerCase())
   );
+
+  // Filter by role
+  const filteredUsers = searchFilteredUsers.filter((user) => {
+    if (roleFilter === 'all') return true;
+    if (roleFilter === 'none') return user.roles.length === 0;
+    return user.roles.includes(roleFilter);
+  });
 
   const totalPages = Math.ceil(totalCount / USERS_PER_PAGE);
 
@@ -204,6 +215,22 @@ export default function UserManagement() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <Select
+              value={roleFilter}
+              onValueChange={(value) => setRoleFilter(value as RoleFilter)}
+            >
+              <SelectTrigger className="w-36">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by role" />
+              </SelectTrigger>
+              <SelectContent className="bg-popover">
+                <SelectItem value="all">All Users</SelectItem>
+                <SelectItem value="admin">Admins</SelectItem>
+                <SelectItem value="moderator">Moderators</SelectItem>
+                <SelectItem value="user">Users</SelectItem>
+                <SelectItem value="none">No Roles</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -219,7 +246,9 @@ export default function UserManagement() {
       <CardContent>
         {filteredUsers.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">
-            {searchQuery ? 'No users found matching your search' : 'No users found'}
+            {searchQuery || roleFilter !== 'all' 
+              ? 'No users found matching your filters' 
+              : 'No users found'}
           </p>
         ) : (
           <Table>
