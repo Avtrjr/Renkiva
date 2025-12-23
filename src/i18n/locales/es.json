@@ -177,5 +177,160 @@
     "invalidUrl": "Por favor ingresa una URL válida",
     "invalidTwitterUrl": "Por favor ingresa una URL de Twitter/X válida",
     "invalidGithubUrl": "Por favor ingresa una URL de GitHub válida"
+  },
+  "legal": {
+    "termsOfUse": "Términos de Uso",
+    "privacyPolicy": "Política de Privacidad",
+    "termsTitle": "Términos de Servicio de Renkiva",
+    "privacyTitle": "Política de Privacidad de Renkiva",
+    "lastUpdated": "Última actualización: Enero 2025",
+    "compliance": "Cumple con RGPD (UE), CCPA (California) y otras regulaciones de privacidad.",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "terms": {
+      "acceptance": {
+        "title": "1. Aceptación de los Términos",
+        "content": "Al acceder y usar Renkiva, aceptas y te comprometes a cumplir con los términos y disposiciones de este acuerdo. Renkiva es una plataforma descentralizada de compartición de contenido que opera sin conexión a través de redes mesh Bluetooth de Baja Energía (BLE)."
+      },
+      "content": {
+        "title": "2. Directrices de Contenido",
+        "intro": "Los usuarios aceptan:",
+        "item1": "Solo compartir contenido que posean o tengan permiso para distribuir",
+        "item2": "Respetar los derechos de autor y propiedad intelectual",
+        "item3": "No compartir contenido ilegal, dañino o inapropiado",
+        "item4": "Usar la plataforma responsablemente dentro de su red mesh local"
+      },
+      "offline": {
+        "title": "3. Naturaleza Sin Conexión y Descentralizada",
+        "content": "Renkiva opera principalmente sin conexión a través de redes mesh BLE. Los usuarios reconocen que: el contenido se comparte de igual a igual, la plataforma no puede monitorear todo el contenido compartido en tiempo real, y los usuarios son responsables del contenido que eligen descargar y compartir."
+      },
+      "privacyData": {
+        "title": "4. Privacidad y Datos",
+        "content": "Renkiva está diseñado con principios de privacidad primero. La mayoría de los datos permanecen en tu dispositivo. Consulta nuestra Política de Privacidad para información detallada sobre el manejo de datos."
+      },
+      "liability": {
+        "title": "5. Limitación de Responsabilidad",
+        "content": "Renkiva se proporciona \"tal cual\" sin garantías. La plataforma facilita el intercambio entre pares y no puede ser responsable del contenido compartido entre usuarios o problemas técnicos con las redes mesh."
+      },
+      "changes": {
+        "title": "6. Cambios en los Términos",
+        "content": "Estos términos pueden actualizarse periódicamente. El uso continuado de Renkiva constituye la aceptación de los términos actualizados."
+      }
+    },
+    "privacy": {
+      "privacyFirst": {
+        "title": "1. Diseño con Privacidad Primero",
+        "content": "Renkiva está construido con la privacidad como principio fundamental. La mayoría de tus datos permanecen en tu dispositivo y solo se comparten a través de redes mesh Bluetooth locales. Recopilamos datos mínimos y nunca vendemos tu información."
+      },
+      "locationData": {
+        "title": "2. Datos de Ubicación",
+        "notice": "Aviso de Recopilación (CCPA): Podemos recopilar datos de ubicación para proporcionar servicios de red mesh.",
+        "consent": "Consentimiento Requerido",
+        "consentDesc": "El acceso a la ubicación requiere tu consentimiento explícito antes de recopilar cualquier dato.",
+        "minimization": "Minimización de Datos",
+        "minimizationDesc": "Solo almacenamos ubicación aproximada (~1km de precisión), nunca tus coordenadas GPS exactas.",
+        "purpose": "Propósito",
+        "purposeDesc": "Se utiliza para descubrimiento de nodos mesh, entrega de contenido regional y optimización de red.",
+        "retention": "Retención",
+        "retentionDesc": "Los datos de ubicación se eliminan automáticamente después de 90 días.",
+        "revocation": "Revocación",
+        "revocationDesc": "Puedes revocar el consentimiento de ubicación en cualquier momento en la configuración de tu cuenta."
+      },
+      "dataCollected": {
+        "title": "3. Datos que Recopilamos",
+        "intro": "Renkiva solo recopila información esencial:",
+        "account": "Datos de Cuenta",
+        "accountDesc": "Nombre de usuario, nombre para mostrar, avatar opcional",
+        "content": "Metadatos de Contenido",
+        "contentDesc": "Títulos de videos, descripciones, categorías (no los videos en sí)",
+        "usage": "Analíticas de Uso",
+        "usageDesc": "Estadísticas de visualización anónimas para optimización de contenido",
+        "device": "Información del Dispositivo",
+        "deviceDesc": "Huella digital básica del dispositivo para operación de red mesh (hasheada y anonimizada)",
+        "location": "Datos de Ubicación",
+        "locationDesc": "Coordenadas aproximadas (si se da consentimiento) para descubrimiento mesh"
+      },
+      "retentionPeriods": {
+        "title": "4. Períodos de Retención de Datos",
+        "account": "Datos de Cuenta",
+        "accountDesc": "Se conservan hasta que elimines tu cuenta",
+        "location": "Datos de Ubicación",
+        "locationDesc": "Se eliminan automáticamente después de 90 días",
+        "viewStats": "Estadísticas de Visualización",
+        "viewStatsDesc": "Se eliminan automáticamente después de 90 días",
+        "content": "Metadatos de Contenido",
+        "contentDesc": "Se conservan mientras existe el contenido, se eliminan con el contenido",
+        "mesh": "Datos de Red Mesh",
+        "meshDesc": "Se conservan mientras el nodo está activo, se eliminan después de 90 días de inactividad"
+      },
+      "dataStorage": {
+        "title": "5. Almacenamiento y Compartición de Datos",
+        "local": "Almacenamiento Local",
+        "localDesc": "Los videos y datos personales permanecen en tu dispositivo.",
+        "mesh": "Compartición Mesh",
+        "meshDesc": "El contenido se comparte solo con dispositivos cercanos con los que elijas conectarte.",
+        "cloud": "Sincronización en la Nube",
+        "cloudDesc": "Sincronización opcional de cuenta solo para configuraciones y metadatos (nunca archivos de video).",
+        "thirdParty": "Terceros",
+        "thirdPartyDesc": "No vendemos ni compartimos tus datos personales con terceros para fines de marketing."
+      },
+      "noTracking": {
+        "title": "6. Sin Rastreo ni Anuncios Dirigidos",
+        "content": "Renkiva no utiliza cookies de rastreo, analíticas que identifiquen individuos, ni publicidad dirigida. El contenido patrocinado se distribuye a través de la red mesh sin recopilación de datos personales."
+      },
+      "offline": {
+        "title": "7. Operación Sin Conexión",
+        "content": "La mayoría de las funcionalidades de Renkiva funcionan completamente sin conexión. Cuando se habilita la sincronización en línea, solo se transmiten metadatos esenciales, nunca tu contenido de video real."
+      },
+      "yourRights": {
+        "title": "8. Tus Derechos (RGPD Artículo 12-23)",
+        "intro": "Bajo el RGPD, CCPA y otras leyes de privacidad, tienes derecho a:",
+        "access": "Acceso",
+        "accessDesc": "Solicitar una copia de todos los datos personales que tenemos sobre ti",
+        "portability": "Portabilidad",
+        "portabilityDesc": "Descargar tus datos en un formato legible por máquina (JSON)",
+        "rectification": "Rectificación",
+        "rectificationDesc": "Corregir cualquier dato personal inexacto",
+        "erasure": "Supresión",
+        "erasureDesc": "Solicitar la eliminación de tus datos personales (\"derecho al olvido\")",
+        "restriction": "Restricción",
+        "restrictionDesc": "Limitar cómo procesamos tus datos",
+        "object": "Oposición",
+        "objectDesc": "Oponerte al procesamiento de tus datos para ciertos propósitos",
+        "withdraw": "Retirar Consentimiento",
+        "withdrawDesc": "Revocar cualquier consentimiento que hayas dado en cualquier momento",
+        "exercise": "Ejercita tus derechos:"
+      },
+      "ccpa": {
+        "title": "9. Derechos de Privacidad de California (CCPA)",
+        "intro": "Los residentes de California tienen derechos adicionales:",
+        "know": "Derecho a Saber",
+        "knowDesc": "Qué información personal se recopila, usa, comparte o vende",
+        "delete": "Derecho a Eliminar",
+        "deleteDesc": "Solicitar la eliminación de información personal",
+        "optOut": "Derecho a Optar por No Participar",
+        "optOutDesc": "No vendemos información personal",
+        "nonDiscrim": "Derecho a No Discriminación",
+        "nonDiscrimDesc": "Servicio igual independientemente de las opciones de privacidad"
+      },
+      "security": {
+        "title": "10. Seguridad de Datos",
+        "content": "Implementamos medidas de seguridad estándar de la industria, incluyendo cifrado en tránsito y en reposo, autenticación segura y auditorías de seguridad regulares. Las comunicaciones de tu red mesh están cifradas de extremo a extremo."
+      },
+      "children": {
+        "title": "11. Privacidad de Menores",
+        "content": "Renkiva no está destinado a niños menores de 13 años. No recopilamos conscientemente información personal de niños menores de 13 años. Si crees que hemos recopilado dicha información, contáctanos inmediatamente."
+      },
+      "contact": {
+        "title": "12. Contacto y Oficial de Protección de Datos",
+        "content": "Para preguntas de privacidad, solicitudes de datos o para ejercer tus derechos:",
+        "email": "Correo Electrónico",
+        "response": "Tiempo de Respuesta",
+        "responseDesc": "Respondemos a todas las solicitudes dentro de 30 días según lo requiere el RGPD."
+      },
+      "updates": {
+        "title": "13. Actualizaciones de la Política",
+        "content": "Podemos actualizar esta política periódicamente. Los cambios significativos se notificarán a través de la aplicación. El uso continuado después de los cambios constituye la aceptación de la política actualizada."
+      }
+    }
   }
 }

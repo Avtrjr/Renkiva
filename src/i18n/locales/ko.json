@@ -177,5 +177,160 @@
     "invalidUrl": "유효한 URL을 입력하세요",
     "invalidTwitterUrl": "유효한 Twitter/X URL을 입력하세요",
     "invalidGithubUrl": "유효한 GitHub URL을 입력하세요"
+  },
+  "legal": {
+    "termsOfUse": "이용약관",
+    "privacyPolicy": "개인정보 처리방침",
+    "termsTitle": "Renkiva 서비스 이용약관",
+    "privacyTitle": "Renkiva 개인정보 처리방침",
+    "lastUpdated": "최종 업데이트: 2025년 1월",
+    "compliance": "GDPR(EU), CCPA(캘리포니아) 및 기타 개인정보 보호 규정 준수.",
+    "allRightsReserved": "모든 권리 보유.",
+    "terms": {
+      "acceptance": {
+        "title": "1. 약관 동의",
+        "content": "Renkiva에 접속하고 사용함으로써 본 계약의 조건에 동의하고 구속됩니다. Renkiva는 블루투스 저에너지(BLE) 메시 네트워킹을 통해 작동하는 분산형 오프라인 우선 콘텐츠 공유 플랫폼입니다."
+      },
+      "content": {
+        "title": "2. 콘텐츠 가이드라인",
+        "intro": "사용자는 다음에 동의합니다:",
+        "item1": "소유하거나 배포 권한이 있는 콘텐츠만 공유",
+        "item2": "저작권 및 지적재산권 존중",
+        "item3": "불법적, 유해하거나 부적절한 콘텐츠를 공유하지 않음",
+        "item4": "로컬 메시 네트워크 내에서 책임감 있게 플랫폼 사용"
+      },
+      "offline": {
+        "title": "3. 오프라인 및 분산 특성",
+        "content": "Renkiva는 주로 BLE 메시 네트워킹을 통해 오프라인으로 작동합니다. 사용자는 다음을 인정합니다: 콘텐츠는 피어 투 피어로 공유되며, 플랫폼은 실시간으로 모든 공유 콘텐츠를 모니터링할 수 없으며, 사용자는 다운로드 및 공유를 선택한 콘텐츠에 대해 책임을 집니다."
+      },
+      "privacyData": {
+        "title": "4. 개인정보 및 데이터",
+        "content": "Renkiva는 개인정보 보호 우선 원칙으로 설계되었습니다. 대부분의 데이터는 기기에 남아 있습니다. 데이터 처리에 대한 자세한 정보는 개인정보 처리방침을 참조하세요."
+      },
+      "liability": {
+        "title": "5. 책임 제한",
+        "content": "Renkiva는 보증 없이 \"있는 그대로\" 제공됩니다. 플랫폼은 피어 투 피어 공유를 촉진하며 사용자 간에 공유되는 콘텐츠나 메시 네트워킹의 기술적 문제에 대해 책임을 지지 않습니다."
+      },
+      "changes": {
+        "title": "6. 약관 변경",
+        "content": "이 약관은 주기적으로 업데이트될 수 있습니다. Renkiva를 계속 사용하면 업데이트된 약관에 동의하는 것으로 간주됩니다."
+      }
+    },
+    "privacy": {
+      "privacyFirst": {
+        "title": "1. 개인정보 보호 우선 설계",
+        "content": "Renkiva는 개인정보 보호를 핵심 원칙으로 구축되었습니다. 대부분의 데이터는 기기에 남아 있으며 로컬 블루투스 메시 네트워크를 통해서만 공유됩니다. 최소한의 데이터만 수집하며 정보를 판매하지 않습니다."
+      },
+      "locationData": {
+        "title": "2. 위치 데이터",
+        "notice": "수집 공지(CCPA): 메시 네트워크 서비스를 제공하기 위해 위치 데이터를 수집할 수 있습니다.",
+        "consent": "동의 필요",
+        "consentDesc": "위치 액세스는 데이터 수집 전에 명시적인 동의가 필요합니다.",
+        "minimization": "데이터 최소화",
+        "minimizationDesc": "정확한 GPS 좌표가 아닌 대략적인 위치(약 1km 정밀도)만 저장합니다.",
+        "purpose": "목적",
+        "purposeDesc": "메시 노드 발견, 지역 콘텐츠 전달 및 네트워크 최적화에 사용됩니다.",
+        "retention": "보존 기간",
+        "retentionDesc": "위치 데이터는 90일 후 자동으로 삭제됩니다.",
+        "revocation": "철회",
+        "revocationDesc": "계정 설정에서 언제든지 위치 동의를 철회할 수 있습니다."
+      },
+      "dataCollected": {
+        "title": "3. 수집하는 데이터",
+        "intro": "Renkiva는 필수 정보만 수집합니다:",
+        "account": "계정 데이터",
+        "accountDesc": "사용자 이름, 표시 이름, 선택적 아바타",
+        "content": "콘텐츠 메타데이터",
+        "contentDesc": "동영상 제목, 설명, 카테고리(동영상 자체가 아님)",
+        "usage": "사용 분석",
+        "usageDesc": "콘텐츠 최적화를 위한 익명 시청 통계",
+        "device": "기기 정보",
+        "deviceDesc": "메시 네트워크 운영을 위한 기본 기기 지문(해시 및 익명화됨)",
+        "location": "위치 데이터",
+        "locationDesc": "메시 발견을 위한 대략적인 좌표(동의한 경우)"
+      },
+      "retentionPeriods": {
+        "title": "4. 데이터 보존 기간",
+        "account": "계정 데이터",
+        "accountDesc": "계정 삭제 시까지 보존",
+        "location": "위치 데이터",
+        "locationDesc": "90일 후 자동 삭제",
+        "viewStats": "시청 통계",
+        "viewStatsDesc": "90일 후 자동 삭제",
+        "content": "콘텐츠 메타데이터",
+        "contentDesc": "콘텐츠가 존재하는 동안 보존, 콘텐츠와 함께 삭제",
+        "mesh": "메시 네트워크 데이터",
+        "meshDesc": "노드가 활성 상태인 동안 보존, 90일 비활성 후 삭제"
+      },
+      "dataStorage": {
+        "title": "5. 데이터 저장 및 공유",
+        "local": "로컬 저장소",
+        "localDesc": "동영상과 개인 데이터는 기기에 남아 있습니다.",
+        "mesh": "메시 공유",
+        "meshDesc": "콘텐츠는 연결을 선택한 근처 기기와만 공유됩니다.",
+        "cloud": "클라우드 동기화",
+        "cloudDesc": "설정 및 메타데이터만을 위한 선택적 계정 동기화(동영상 파일 제외).",
+        "thirdParty": "제3자",
+        "thirdPartyDesc": "마케팅 목적으로 개인 데이터를 제3자에게 판매하거나 공유하지 않습니다."
+      },
+      "noTracking": {
+        "title": "6. 추적 또는 타겟 광고 없음",
+        "content": "Renkiva는 추적 쿠키, 개인을 식별하는 분석 또는 타겟 광고를 사용하지 않습니다. 스폰서 콘텐츠는 개인 데이터 수집 없이 메시 네트워크를 통해 배포됩니다."
+      },
+      "offline": {
+        "title": "7. 오프라인 작동",
+        "content": "대부분의 Renkiva 기능은 완전히 오프라인으로 작동합니다. 온라인 동기화가 활성화되면 필수 메타데이터만 전송되며 실제 동영상 콘텐츠는 전송되지 않습니다."
+      },
+      "yourRights": {
+        "title": "8. 귀하의 권리(GDPR 제12-23조)",
+        "intro": "GDPR, CCPA 및 기타 개인정보 보호법에 따라 귀하는 다음과 같은 권리가 있습니다:",
+        "access": "접근권",
+        "accessDesc": "보유한 모든 개인 데이터의 사본 요청",
+        "portability": "이동권",
+        "portabilityDesc": "기계 판독 가능한 형식(JSON)으로 데이터 다운로드",
+        "rectification": "정정권",
+        "rectificationDesc": "부정확한 개인 데이터 수정",
+        "erasure": "삭제권",
+        "erasureDesc": "개인 데이터 삭제 요청(\"잊힐 권리\")",
+        "restriction": "제한권",
+        "restrictionDesc": "데이터 처리 방식 제한",
+        "object": "이의 제기권",
+        "objectDesc": "특정 목적의 데이터 처리에 이의 제기",
+        "withdraw": "동의 철회",
+        "withdrawDesc": "언제든지 주어진 동의 철회",
+        "exercise": "권리 행사:"
+      },
+      "ccpa": {
+        "title": "9. 캘리포니아 개인정보 보호권(CCPA)",
+        "intro": "캘리포니아 거주자는 추가 권리가 있습니다:",
+        "know": "알 권리",
+        "knowDesc": "어떤 개인 정보가 수집, 사용, 공유 또는 판매되는지",
+        "delete": "삭제권",
+        "deleteDesc": "개인 정보 삭제 요청",
+        "optOut": "거부권",
+        "optOutDesc": "개인 정보를 판매하지 않습니다",
+        "nonDiscrim": "비차별권",
+        "nonDiscrimDesc": "개인정보 선택과 관계없이 동등한 서비스"
+      },
+      "security": {
+        "title": "10. 데이터 보안",
+        "content": "전송 중 및 저장 시 암호화, 보안 인증, 정기적인 보안 감사를 포함한 업계 표준 보안 조치를 구현합니다. 메시 네트워크 통신은 종단 간 암호화됩니다."
+      },
+      "children": {
+        "title": "11. 아동 개인정보 보호",
+        "content": "Renkiva는 13세 미만 어린이를 대상으로 하지 않습니다. 13세 미만 어린이의 개인 정보를 고의로 수집하지 않습니다. 그러한 정보를 수집했다고 생각되면 즉시 연락해 주세요."
+      },
+      "contact": {
+        "title": "12. 연락처 및 개인정보 보호 책임자",
+        "content": "개인정보 질문, 데이터 요청 또는 권리 행사:",
+        "email": "이메일",
+        "response": "응답 시간",
+        "responseDesc": "GDPR에서 요구하는 대로 30일 이내에 모든 요청에 응답합니다."
+      },
+      "updates": {
+        "title": "13. 정책 업데이트",
+        "content": "이 정책은 주기적으로 업데이트될 수 있습니다. 중요한 변경 사항은 앱을 통해 통지됩니다. 변경 후 계속 사용하면 업데이트된 정책에 동의하는 것으로 간주됩니다."
+      }
+    }
   }
 }
