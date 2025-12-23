@@ -237,5 +237,160 @@
     "invalidUrl": "请输入有效的URL",
     "invalidTwitterUrl": "请输入有效的Twitter/X URL",
     "invalidGithubUrl": "请输入有效的GitHub URL"
+  },
+  "legal": {
+    "termsOfUse": "使用条款",
+    "privacyPolicy": "隐私政策",
+    "termsTitle": "Renkiva 服务条款",
+    "privacyTitle": "Renkiva 隐私政策",
+    "lastUpdated": "最后更新：2025年1月",
+    "compliance": "符合 GDPR（欧盟）、CCPA（加利福尼亚）和其他隐私法规。",
+    "allRightsReserved": "保留所有权利。",
+    "terms": {
+      "acceptance": {
+        "title": "1. 条款接受",
+        "content": "通过访问和使用 Renkiva，您接受并同意遵守本协议的条款和规定。Renkiva 是一个去中心化的离线优先内容共享平台，通过蓝牙低功耗（BLE）网状网络运行。"
+      },
+      "content": {
+        "title": "2. 内容准则",
+        "intro": "用户同意：",
+        "item1": "仅分享自己拥有或有权分发的内容",
+        "item2": "尊重版权和知识产权",
+        "item3": "不分享非法、有害或不当内容",
+        "item4": "在本地网状网络内负责任地使用平台"
+      },
+      "offline": {
+        "title": "3. 离线和去中心化特性",
+        "content": "Renkiva 主要通过 BLE 网状网络离线运行。用户承认：内容以点对点方式共享，平台无法实时监控所有共享内容，用户对选择下载和分享的内容负责。"
+      },
+      "privacyData": {
+        "title": "4. 隐私和数据",
+        "content": "Renkiva 以隐私优先原则设计。大多数数据保留在您的设备上。有关数据处理的详细信息，请参阅我们的隐私政策。"
+      },
+      "liability": {
+        "title": "5. 责任限制",
+        "content": "Renkiva 按"原样"提供，不作任何保证。该平台促进点对点共享，不对用户之间共享的内容或网状网络的技术问题承担责任。"
+      },
+      "changes": {
+        "title": "6. 条款变更",
+        "content": "这些条款可能会定期更新。继续使用 Renkiva 即表示接受更新后的条款。"
+      }
+    },
+    "privacy": {
+      "privacyFirst": {
+        "title": "1. 隐私优先设计",
+        "content": "Renkiva 以隐私为核心原则构建。您的大部分数据保留在您的设备上，仅通过本地蓝牙网状网络共享。我们收集最少的数据，从不出售您的信息。"
+      },
+      "locationData": {
+        "title": "2. 位置数据",
+        "notice": "收集通知（CCPA）：我们可能收集位置数据以提供网状网络服务。",
+        "consent": "需要同意",
+        "consentDesc": "位置访问需要您在收集任何数据之前明确同意。",
+        "minimization": "数据最小化",
+        "minimizationDesc": "我们仅存储大约位置（约1公里精度），从不存储您的精确 GPS 坐标。",
+        "purpose": "目的",
+        "purposeDesc": "用于网状节点发现、区域内容分发和网络优化。",
+        "retention": "保留期限",
+        "retentionDesc": "位置数据在90天后自动删除。",
+        "revocation": "撤销",
+        "revocationDesc": "您可以随时在账户设置中撤销位置同意。"
+      },
+      "dataCollected": {
+        "title": "3. 我们收集的数据",
+        "intro": "Renkiva 仅收集必要信息：",
+        "account": "账户数据",
+        "accountDesc": "用户名、显示名称、可选头像",
+        "content": "内容元数据",
+        "contentDesc": "视频标题、描述、类别（非视频本身）",
+        "usage": "使用分析",
+        "usageDesc": "用于内容优化的匿名观看统计",
+        "device": "设备信息",
+        "deviceDesc": "用于网状网络操作的基本设备指纹（经过哈希和匿名化处理）",
+        "location": "位置数据",
+        "locationDesc": "大约坐标（如已同意）用于网状发现"
+      },
+      "retentionPeriods": {
+        "title": "4. 数据保留期限",
+        "account": "账户数据",
+        "accountDesc": "保留至您删除账户",
+        "location": "位置数据",
+        "locationDesc": "90天后自动删除",
+        "viewStats": "观看统计",
+        "viewStatsDesc": "90天后自动删除",
+        "content": "内容元数据",
+        "contentDesc": "内容存在期间保留，随内容一起删除",
+        "mesh": "网状网络数据",
+        "meshDesc": "节点活跃期间保留，不活跃90天后清除"
+      },
+      "dataStorage": {
+        "title": "5. 数据存储和共享",
+        "local": "本地存储",
+        "localDesc": "视频和个人数据保留在您的设备上。",
+        "mesh": "网状共享",
+        "meshDesc": "内容仅与您选择连接的附近设备共享。",
+        "cloud": "云同步",
+        "cloudDesc": "可选的账户同步仅用于设置和元数据（从不包括视频文件）。",
+        "thirdParty": "第三方",
+        "thirdPartyDesc": "我们不会出于营销目的向第三方出售或分享您的个人数据。"
+      },
+      "noTracking": {
+        "title": "6. 无跟踪或定向广告",
+        "content": "Renkiva 不使用跟踪 cookie、识别个人身份的分析或定向广告。赞助内容通过网状网络分发，不收集个人数据。"
+      },
+      "offline": {
+        "title": "7. 离线操作",
+        "content": "大多数 Renkiva 功能完全离线运行。启用在线同步时，仅传输必要的元数据——从不传输您的实际视频内容。"
+      },
+      "yourRights": {
+        "title": "8. 您的权利（GDPR 第12-23条）",
+        "intro": "根据 GDPR、CCPA 和其他隐私法律，您有权：",
+        "access": "访问权",
+        "accessDesc": "请求我们持有的所有个人数据副本",
+        "portability": "可携带权",
+        "portabilityDesc": "以机器可读格式（JSON）下载您的数据",
+        "rectification": "更正权",
+        "rectificationDesc": "更正任何不准确的个人数据",
+        "erasure": "删除权",
+        "erasureDesc": "请求删除您的个人数据（"被遗忘权"）",
+        "restriction": "限制权",
+        "restrictionDesc": "限制我们如何处理您的数据",
+        "object": "反对权",
+        "objectDesc": "反对为特定目的处理您的数据",
+        "withdraw": "撤回同意",
+        "withdrawDesc": "随时撤回您给予的任何同意",
+        "exercise": "行使您的权利："
+      },
+      "ccpa": {
+        "title": "9. 加利福尼亚隐私权（CCPA）",
+        "intro": "加利福尼亚居民享有额外权利：",
+        "know": "知情权",
+        "knowDesc": "了解收集、使用、共享或出售了哪些个人信息",
+        "delete": "删除权",
+        "deleteDesc": "请求删除个人信息",
+        "optOut": "选择退出权",
+        "optOutDesc": "我们不出售个人信息",
+        "nonDiscrim": "非歧视权",
+        "nonDiscrimDesc": "无论隐私选择如何，均享受平等服务"
+      },
+      "security": {
+        "title": "10. 数据安全",
+        "content": "我们实施行业标准安全措施，包括传输中和静态加密、安全认证和定期安全审计。您的网状网络通信采用端到端加密。"
+      },
+      "children": {
+        "title": "11. 儿童隐私",
+        "content": "Renkiva 不面向13岁以下儿童。我们不会故意收集13岁以下儿童的个人信息。如果您认为我们收集了此类信息，请立即联系我们。"
+      },
+      "contact": {
+        "title": "12. 联系方式和数据保护官",
+        "content": "如有隐私问题、数据请求或行使您的权利：",
+        "email": "电子邮件",
+        "response": "响应时间",
+        "responseDesc": "我们按照 GDPR 的要求在30天内回复所有请求。"
+      },
+      "updates": {
+        "title": "13. 政策更新",
+        "content": "我们可能会定期更新此政策。重大变更将通过应用程序通知。变更后继续使用即表示接受更新后的政策。"
+      }
+    }
   }
 }
