@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
-import { UserPlus, Trash2, Search, Crown, Shield, User as UserIcon } from 'lucide-react';
+import { UserPlus, Trash2, Search, Crown, Shield, User as UserIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Database } from '@/integrations/supabase/types';
 
 type AppRole = Database['public']['Enums']['app_role'];
@@ -22,34 +22,56 @@ interface UserWithRoles {
   roles: AppRole[];
 }
 
+const USERS_PER_PAGE = 10;
+
 export default function UserManagement() {
   const [users, setUsers] = useState<UserWithRoles[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState<AppRole>('user');
   const [assigningRole, setAssigningRole] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     loadUsers();
-  }, []);
+  }, [currentPage]);
+
+  // Reset to page 1 when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const loadUsers = async () => {
     try {
       setLoading(true);
       
-      // Load profiles
+      // Get total count first
+      const { count, error: countError } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+      if (countError) throw countError;
+      setTotalCount(count || 0);
+
+      // Load profiles with pagination
+      const from = (currentPage - 1) * USERS_PER_PAGE;
+      const to = from + USERS_PER_PAGE - 1;
+
       const { data: profilesData, error: profilesError } = await supabase
         .from('profiles')
         .select('id, username, display_name, avatar_url, created_at')
         .order('created_at', { ascending: false })
-        .limit(100);
+        .range(from, to);
 
       if (profilesError) throw profilesError;
 
-      // Load all user roles
+      // Load all user roles for the fetched users
+      const userIds = (profilesData || []).map(p => p.id);
       const { data: rolesData, error: rolesError } = await supabase
         .from('user_roles')
-        .select('user_id, role');
+        .select('user_id, role')
+        .in('user_id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']);
 
       if (rolesError) throw rolesError;
 
@@ -151,6 +173,16 @@ export default function UserManagement() {
       (user.display_name?.toLowerCase() || '').includes(searchQuery.toLowerCase())
   );
 
+  const totalPages = Math.ceil(totalCount / USERS_PER_PAGE);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  };
+
   if (loading) {
     return (
       <Card className="bg-card border-border">
@@ -165,7 +197,12 @@ export default function UserManagement() {
     <Card className="bg-card border-border">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-foreground">User Management</CardTitle>
+          <div>
+            <CardTitle className="text-foreground">User Management</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              {totalCount} total user{totalCount !== 1 ? 's' : ''}
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -283,6 +320,35 @@ export default function UserManagement() {
               ))}
             </TableBody>
           </Table>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+            <p className="text-sm text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1 || loading}
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages || loading}
+              >
+                Next
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
