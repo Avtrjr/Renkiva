@@ -38,6 +38,43 @@ export default function Settings() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // URL validation errors
+  const [urlErrors, setUrlErrors] = useState<{
+    twitter?: string;
+    github?: string;
+    website?: string;
+  }>({});
+
+  const validateUrl = (url: string, type: 'twitter' | 'github' | 'website'): string | undefined => {
+    if (!url.trim()) return undefined;
+    
+    try {
+      const parsed = new URL(url.startsWith('http') ? url : `https://${url}`);
+      
+      if (type === 'twitter') {
+        if (!parsed.hostname.includes('twitter.com') && !parsed.hostname.includes('x.com')) {
+          return 'Please enter a valid Twitter/X URL';
+        }
+      } else if (type === 'github') {
+        if (!parsed.hostname.includes('github.com')) {
+          return 'Please enter a valid GitHub URL';
+        }
+      }
+      
+      return undefined;
+    } catch {
+      return 'Please enter a valid URL';
+    }
+  };
+
+  const handleSocialUrlChange = (value: string, type: 'twitter' | 'github' | 'website') => {
+    const setters = { twitter: setTwitterUrl, github: setGithubUrl, website: setWebsiteUrl };
+    setters[type](value);
+    
+    const error = validateUrl(value, type);
+    setUrlErrors(prev => ({ ...prev, [type]: error }));
+  };
 
   useEffect(() => {
     if (hasConsent !== null) {
@@ -131,6 +168,22 @@ export default function Settings() {
 
   const handleSaveProfile = async () => {
     if (!user) return;
+    
+    // Validate all URLs before saving
+    const twitterError = validateUrl(twitterUrl, 'twitter');
+    const githubError = validateUrl(githubUrl, 'github');
+    const websiteError = validateUrl(websiteUrl, 'website');
+    
+    setUrlErrors({
+      twitter: twitterError,
+      github: githubError,
+      website: websiteError
+    });
+    
+    if (twitterError || githubError || websiteError) {
+      toast.error('Please fix the URL errors before saving');
+      return;
+    }
     
     setSaving(true);
     try {
@@ -358,34 +411,52 @@ export default function Settings() {
                 </div>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Twitter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <Input
-                      value={twitterUrl}
-                      onChange={(e) => setTwitterUrl(e.target.value)}
-                      placeholder="https://twitter.com/username"
-                      disabled={profileLoading}
-                    />
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Twitter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <Input
+                        value={twitterUrl}
+                        onChange={(e) => handleSocialUrlChange(e.target.value, 'twitter')}
+                        placeholder="https://twitter.com/username"
+                        disabled={profileLoading}
+                        className={urlErrors.twitter ? 'border-destructive' : ''}
+                      />
+                    </div>
+                    {urlErrors.twitter && (
+                      <p className="text-xs text-destructive ml-6">{urlErrors.twitter}</p>
+                    )}
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Github className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <Input
-                      value={githubUrl}
-                      onChange={(e) => setGithubUrl(e.target.value)}
-                      placeholder="https://github.com/username"
-                      disabled={profileLoading}
-                    />
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Github className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <Input
+                        value={githubUrl}
+                        onChange={(e) => handleSocialUrlChange(e.target.value, 'github')}
+                        placeholder="https://github.com/username"
+                        disabled={profileLoading}
+                        className={urlErrors.github ? 'border-destructive' : ''}
+                      />
+                    </div>
+                    {urlErrors.github && (
+                      <p className="text-xs text-destructive ml-6">{urlErrors.github}</p>
+                    )}
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <Input
-                      value={websiteUrl}
-                      onChange={(e) => setWebsiteUrl(e.target.value)}
-                      placeholder="https://yourwebsite.com"
-                      disabled={profileLoading}
-                    />
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <Input
+                        value={websiteUrl}
+                        onChange={(e) => handleSocialUrlChange(e.target.value, 'website')}
+                        placeholder="https://yourwebsite.com"
+                        disabled={profileLoading}
+                        className={urlErrors.website ? 'border-destructive' : ''}
+                      />
+                    </div>
+                    {urlErrors.website && (
+                      <p className="text-xs text-destructive ml-6">{urlErrors.website}</p>
+                    )}
                   </div>
                 </div>
                 
