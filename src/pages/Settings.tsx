@@ -58,17 +58,17 @@ export default function Settings() {
       
       if (type === 'twitter') {
         if (!parsed.hostname.includes('twitter.com') && !parsed.hostname.includes('x.com')) {
-          return 'Please enter a valid Twitter/X URL';
+          return t('validation.invalidTwitterUrl');
         }
       } else if (type === 'github') {
         if (!parsed.hostname.includes('github.com')) {
-          return 'Please enter a valid GitHub URL';
+          return t('validation.invalidGithubUrl');
         }
       }
       
       return undefined;
     } catch {
-      return 'Please enter a valid URL';
+      return t('validation.invalidUrl');
     }
   };
 
@@ -251,13 +251,13 @@ export default function Settings() {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
+      toast.error(t('settings.profile.invalidFileType'));
       return;
     }
 
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('Image must be less than 2MB');
+      toast.error(t('settings.profile.fileTooLarge'));
       return;
     }
 
@@ -290,10 +290,10 @@ export default function Settings() {
       if (updateError) throw updateError;
 
       setAvatarUrl(publicUrl);
-      toast.success('Avatar updated successfully');
+      toast.success(t('settings.profile.avatarUpdated'));
     } catch (err) {
       console.error('Error uploading avatar:', err);
-      toast.error('Failed to upload avatar');
+      toast.error(t('settings.profile.avatarError'));
     } finally {
       setUploading(false);
     }
@@ -738,9 +738,9 @@ export default function Settings() {
             <div className="flex items-start gap-3">
               <Lock className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div className="space-y-1">
-                <p className="font-medium text-sm">Data Retention</p>
+                <p className="font-medium text-sm">{t('settings.privacy.dataRetention')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Location data is automatically deleted after 90 days. Your coordinates are rounded to ~1km precision to protect your privacy.
+                  {t('settings.privacy.dataRetentionDescription')}
                 </p>
               </div>
             </div>
@@ -790,15 +790,15 @@ export default function Settings() {
         {/* Legal Links */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Legal</CardTitle>
+            <CardTitle className="text-base">{t('settings.legal.title')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/legal/privacy-policy')}>
-              Privacy Policy
+              {t('settings.legal.privacyPolicy')}
             </Button>
             <br />
             <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/legal/terms-of-use')}>
-              Terms of Use
+              {t('settings.legal.termsOfUse')}
             </Button>
           </CardContent>
         </Card>

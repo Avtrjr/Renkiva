@@ -47,7 +47,11 @@
       "twitterPlaceholder": "https://twitter.com/ユーザー名",
       "githubPlaceholder": "https://github.com/ユーザー名",
       "websitePlaceholder": "https://あなたのサイト.com",
-      "saveProfile": "プロフィールを保存"
+      "saveProfile": "プロフィールを保存",
+      "invalidFileType": "画像ファイルを選択してください",
+      "fileTooLarge": "画像は2MB未満にしてください",
+      "avatarUpdated": "アバターが正常に更新されました",
+      "avatarError": "アバターのアップロードに失敗しました"
     },
     "privacy": {
       "title": "プライバシー",
@@ -55,6 +59,8 @@
       "location": "位置情報の共有",
       "locationDescription": "メッシュネットワーク検出のための位置情報共有を許可します。これにより、近くのデバイスがあなたを見つけて接続できるようになります。",
       "consentGiven": "{{date}}に同意済み",
+      "dataRetention": "データ保持",
+      "dataRetentionDescription": "位置データは90日後に自動的に削除されます。座標は約1kmの精度に丸められ、プライバシーを保護します。",
       "dataExport": "データをエクスポート",
       "dataExportDescription": "システムに保存されているすべての個人データのコピーをダウンロードします。",
       "deleteAccount": "アカウントを削除",
@@ -92,6 +98,11 @@
       "changePasswordDescription": "アカウントを安全に保つためにパスワードを更新します。",
       "twoFactor": "二要素認証",
       "twoFactorDescription": "アカウントにセキュリティの追加レイヤーを追加します。"
+    },
+    "legal": {
+      "title": "法的情報",
+      "privacyPolicy": "プライバシーポリシー",
+      "termsOfUse": "利用規約"
     }
   },
   "auth": {

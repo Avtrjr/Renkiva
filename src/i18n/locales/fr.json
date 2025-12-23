@@ -47,7 +47,11 @@
       "twitterPlaceholder": "https://twitter.com/utilisateur",
       "githubPlaceholder": "https://github.com/utilisateur",
       "websitePlaceholder": "https://votresite.com",
-      "saveProfile": "Enregistrer le Profil"
+      "saveProfile": "Enregistrer le Profil",
+      "invalidFileType": "Veuillez sélectionner un fichier image",
+      "fileTooLarge": "L'image doit faire moins de 2Mo",
+      "avatarUpdated": "Avatar mis à jour avec succès",
+      "avatarError": "Échec du téléchargement de l'avatar"
     },
     "privacy": {
       "title": "Confidentialité",
@@ -55,6 +59,8 @@
       "location": "Partage de Localisation",
       "locationDescription": "Autorisez le partage de votre localisation pour la découverte du réseau mesh. Cela aide les appareils à proximité à vous trouver et se connecter.",
       "consentGiven": "Consentement donné le {{date}}",
+      "dataRetention": "Conservation des Données",
+      "dataRetentionDescription": "Les données de localisation sont automatiquement supprimées après 90 jours. Vos coordonnées sont arrondies à ~1km de précision pour protéger votre vie privée.",
       "dataExport": "Exporter vos Données",
       "dataExportDescription": "Téléchargez une copie de toutes vos données personnelles stockées dans nos systèmes.",
       "deleteAccount": "Supprimer le Compte",
@@ -92,6 +98,11 @@
       "changePasswordDescription": "Mettez à jour votre mot de passe pour sécuriser votre compte.",
       "twoFactor": "Authentification à Deux Facteurs",
       "twoFactorDescription": "Ajoutez une couche de sécurité supplémentaire à votre compte."
+    },
+    "legal": {
+      "title": "Mentions Légales",
+      "privacyPolicy": "Politique de Confidentialité",
+      "termsOfUse": "Conditions d'Utilisation"
     }
   },
   "auth": {
