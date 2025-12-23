@@ -628,10 +628,13 @@ export type Database = {
           accepted_legal: boolean | null
           avatar_url: string | null
           bio: string | null
+          consent_given_at: string | null
           created_at: string
+          data_export_requested_at: string | null
           display_name: string | null
           id: string
           legal_accepted_at: string | null
+          location_consent: boolean | null
           updated_at: string
           username: string
         }
@@ -639,10 +642,13 @@ export type Database = {
           accepted_legal?: boolean | null
           avatar_url?: string | null
           bio?: string | null
+          consent_given_at?: string | null
           created_at?: string
+          data_export_requested_at?: string | null
           display_name?: string | null
           id: string
           legal_accepted_at?: string | null
+          location_consent?: boolean | null
           updated_at?: string
           username: string
         }
@@ -650,10 +656,13 @@ export type Database = {
           accepted_legal?: boolean | null
           avatar_url?: string | null
           bio?: string | null
+          consent_given_at?: string | null
           created_at?: string
+          data_export_requested_at?: string | null
           display_name?: string | null
           id?: string
           legal_accepted_at?: string | null
+          location_consent?: boolean | null
           updated_at?: string
           username?: string
         }
@@ -1087,6 +1096,7 @@ export type Database = {
           total_size: number
         }[]
       }
+      cleanup_old_location_data: { Args: never; Returns: undefined }
       cleanup_old_view_stats: { Args: never; Returns: undefined }
       discover_nearby_content: {
         Args: never
