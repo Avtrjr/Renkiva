@@ -107,13 +107,6 @@ export type Database = {
             foreignKeyName: "ad_campaigns_sponsor_id_fkey"
             columns: ["sponsor_id"]
             isOneToOne: false
-            referencedRelation: "public_sponsors"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ad_campaigns_sponsor_id_fkey"
-            columns: ["sponsor_id"]
-            isOneToOne: false
             referencedRelation: "sponsors"
             referencedColumns: ["id"]
           },
@@ -386,13 +379,6 @@ export type Database = {
           video_ids?: string[]
         }
         Relationships: [
-          {
-            foreignKeyName: "mesh_bundles_sponsor_id_fkey"
-            columns: ["sponsor_id"]
-            isOneToOne: false
-            referencedRelation: "public_sponsors"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "mesh_bundles_sponsor_id_fkey"
             columns: ["sponsor_id"]
@@ -1180,27 +1166,7 @@ export type Database = {
       }
     }
     Views: {
-      public_sponsors: {
-        Row: {
-          company_name: string | null
-          created_at: string | null
-          id: string | null
-          logo_url: string | null
-        }
-        Insert: {
-          company_name?: string | null
-          created_at?: string | null
-          id?: string | null
-          logo_url?: string | null
-        }
-        Update: {
-          company_name?: string | null
-          created_at?: string | null
-          id?: string | null
-          logo_url?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       calculate_storage_usage: {
@@ -1230,7 +1196,41 @@ export type Database = {
         }[]
       }
       get_admin_dashboard_stats: { Args: never; Returns: Json }
+      get_mesh_nodes_safe: {
+        Args: never
+        Returns: {
+          id: string
+          is_active: boolean
+          is_owner: boolean
+          last_seen: string
+          latitude: number
+          longitude: number
+          node_name: string
+          signal_strength: number
+        }[]
+      }
+      get_public_sponsors: {
+        Args: never
+        Returns: {
+          company_name: string
+          created_at: string
+          id: string
+          logo_url: string
+        }[]
+      }
       get_sponsor_stats: { Args: { sponsor_user_id: string }; Returns: Json }
+      get_view_stats_for_creator: {
+        Args: { video_uuid: string }
+        Returns: {
+          id: string
+          region_lat: number
+          region_lng: number
+          video_id: string
+          viewed_at: string
+          viewer_node_id: string
+          watched_duration_seconds: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
