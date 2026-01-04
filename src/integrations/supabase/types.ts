@@ -107,6 +107,13 @@ export type Database = {
             foreignKeyName: "ad_campaigns_sponsor_id_fkey"
             columns: ["sponsor_id"]
             isOneToOne: false
+            referencedRelation: "public_sponsors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ad_campaigns_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
             referencedRelation: "sponsors"
             referencedColumns: ["id"]
           },
@@ -379,6 +386,13 @@ export type Database = {
           video_ids?: string[]
         }
         Relationships: [
+          {
+            foreignKeyName: "mesh_bundles_sponsor_id_fkey"
+            columns: ["sponsor_id"]
+            isOneToOne: false
+            referencedRelation: "public_sponsors"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "mesh_bundles_sponsor_id_fkey"
             columns: ["sponsor_id"]
@@ -1166,7 +1180,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_sponsors: {
+        Row: {
+          company_name: string | null
+          created_at: string | null
+          id: string | null
+          logo_url: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          logo_url?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string | null
+          id?: string | null
+          logo_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       calculate_storage_usage: {
